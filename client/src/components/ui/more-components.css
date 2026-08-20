@@ -1,0 +1,112 @@
+/* Additional Component Styling */
+
+/* TabBar */
+.tab-bar {
+  display: flex;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.35rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.tab-item {
+  all: unset;
+  cursor: pointer;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 150ms ease;
+  box-shadow: none;
+  background: transparent;
+}
+
+.tab-item:hover {
+  color: #fff;
+  box-shadow: none;
+  transform: none;
+}
+
+.tab-item--active {
+  background: linear-gradient(135deg, #ffad33 0%, #ff7a18 100%);
+  color: #111827;
+}
+
+/* StreakFire */
+.streak-fire {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: rgba(255, 122, 24, 0.15);
+  border: 1px solid rgba(255, 122, 24, 0.3);
+  color: #ff7a18;
+  font-weight: 800;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+}
+
+.streak-fire-emoji {
+  animation: streak-flame 1s ease-in-out infinite alternate;
+}
+
+@keyframes streak-flame {
+  0% { transform: scale(1) rotate(-3deg); }
+  100% { transform: scale(1.15) rotate(3deg); }
+}
+
+/* RatingStars */
+.rating-stars {
+  display: flex;
+  gap: 0.2rem;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.star--filled {
+  color: #ffad33;
+}
+
+/* SearchInput */
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.8rem;
+  opacity: 0.5;
+  font-size: 0.9rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.6rem 2.2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  color: #fff;
+  font-size: 0.85rem;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #63f4ca;
+}
+
+.search-clear-btn {
+  all: unset;
+  position: absolute;
+  right: 0.8rem;
+  cursor: pointer;
+  opacity: 0.5;
+  font-size: 0.8rem;
+  box-shadow: none;
+  background: transparent;
+}

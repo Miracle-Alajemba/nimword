@@ -1,0 +1,5 @@
+export const GAS_ORACLE_THRESHOLDS = {
+  LOW_GWEI: 5,
+  STANDARD_GWEI: 10,
+  HIGH_GWEI: 25,
+};

@@ -1,0 +1,326 @@
+/* ─── Animations: New UI Components ──────────────────────────────── */
+
+/* PulseDot ring animation */
+@keyframes pulse-dot-ring {
+  0% { box-shadow: 0 0 0 0 currentColor; }
+  70% { box-shadow: 0 0 0 8px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* ShimmerText gradient sweep */
+.shimmer-text {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.6) 0%,
+    rgba(99,244,202,0.9) 40%,
+    rgba(255,173,51,0.9) 60%,
+    rgba(255,255,255,0.6) 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer-sweep 2.4s ease-in-out infinite;
+}
+
+@keyframes shimmer-sweep {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+/* SkeletonLoader shimmer */
+.skeleton-loader {
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.04) 25%,
+    rgba(255,255,255,0.1) 50%,
+    rgba(255,255,255,0.04) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* GlassCard */
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.glass-card:hover {
+  border-color: rgba(99, 244, 202, 0.15);
+}
+
+.glass-card--glow {
+  box-shadow: 0 0 20px rgba(99, 244, 202, 0.08), 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* ProgressBar */
+.progress-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.progress-bar-track {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.progress-bar-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.progress-bar-percent {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+/* Tooltip */
+.tooltip-trigger {
+  position: relative;
+  display: inline-flex;
+  cursor: help;
+}
+
+.tooltip-bubble {
+  position: absolute;
+  background: rgba(15, 20, 35, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.35rem 0.65rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 150ms ease, transform 150ms ease;
+  z-index: 1000;
+}
+
+.tooltip-bubble--top {
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+}
+
+.tooltip-bubble--bottom {
+  top: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+.tooltip-trigger:hover .tooltip-bubble,
+.tooltip-trigger:focus .tooltip-bubble {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* EmptyState */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  gap: 0.5rem;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  filter: grayscale(0.3);
+}
+
+.empty-state-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.empty-state-desc {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.4);
+  max-width: 280px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.empty-state-action {
+  margin-top: 0.75rem;
+}
+
+/* Divider */
+.divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 1rem 0;
+}
+
+.divider-labeled {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+}
+
+.divider-label {
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ConfettiExplosion */
+.confetti-explosion {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0;
+}
+
+.confetti-particle {
+  position: absolute;
+  width: var(--confetti-size, 6px);
+  height: var(--confetti-size, 6px);
+  background: var(--confetti-color, #ffad33);
+  border-radius: 2px;
+  animation: confetti-burst var(--confetti-duration, 1200ms) ease-out var(--confetti-delay, 0ms) forwards;
+}
+
+@keyframes confetti-burst {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform:
+      translate(
+        calc(cos(var(--confetti-angle)) * var(--confetti-distance)),
+        calc(sin(var(--confetti-angle)) * var(--confetti-distance))
+      )
+      rotate(720deg)
+      scale(0.3);
+  }
+}
+
+/* ScoreFlash */
+@keyframes score-flash-rise {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translateY(-30px) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.8);
+  }
+}
+
+/* TypewriterText cursor blink */
+.typewriter-cursor {
+  animation: typewriter-blink 0.7s step-end infinite;
+  color: rgba(99, 244, 202, 0.7);
+  font-weight: 300;
+}
+
+@keyframes typewriter-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Chip */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.75);
+  transition: background 150ms ease;
+}
+
+.chip--success {
+  background: rgba(99, 244, 202, 0.12);
+  border-color: rgba(99, 244, 202, 0.25);
+  color: #63f4ca;
+}
+
+.chip--warning {
+  background: rgba(255, 173, 51, 0.12);
+  border-color: rgba(255, 173, 51, 0.25);
+  color: #ffad33;
+}
+
+.chip--error {
+  background: rgba(255, 80, 80, 0.12);
+  border-color: rgba(255, 80, 80, 0.25);
+  color: #ff5050;
+}
+
+.chip-icon {
+  font-size: 0.8rem;
+}
+
+.chip-dismiss {
+  all: unset;
+  cursor: pointer;
+  font-size: 0.85rem;
+  opacity: 0.5;
+  padding: 0 0.15rem;
+  transition: opacity 120ms ease;
+}
+
+.chip-dismiss:hover {
+  opacity: 1;
+}

@@ -1,0 +1,22 @@
+{
+  "name": "wordpot-server",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@socket.io/redis-adapter": "^8.3.0",
+    "bullmq": "^5.79.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "ioredis": "^5.11.1",
+    "pg": "^8.22.0",
+    "socket.io": "^4.8.3",
+    "viem": "^2.48.1"
+  }
+}

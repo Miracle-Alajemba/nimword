@@ -1,0 +1,5 @@
+export const ANIMATION_DURATIONS = {
+  FAST: 150,
+  NORMAL: 300,
+  SLOW: 500,
+};

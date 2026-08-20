@@ -1,0 +1,4 @@
+export const RATE_LIMIT_CONFIG = {
+  MAX_JOIN_ATTEMPTS: 10,
+  WINDOW_MS: 60 * 1000,
+};

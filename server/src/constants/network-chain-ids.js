@@ -1,0 +1,4 @@
+export const EVM_CHAIN_IDS = {
+  CELO_MAINNET: 42220,
+  CELO_ALFAJORES: 44787,
+};

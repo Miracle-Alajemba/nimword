@@ -1,0 +1,7 @@
+{
+  "name": "Wordpot",
+  "short_name": "Wordpot",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0f172a"
+}
