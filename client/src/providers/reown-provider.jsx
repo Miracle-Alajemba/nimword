@@ -23,21 +23,26 @@ const wagmiAdapter = new WagmiAdapter({
   ssr: false,
 });
 
-createAppKit({
-  adapters: [wagmiAdapter],
-  networks,
-  projectId: REOWN_PROJECT_ID,
-  metadata,
-  features: {
-    analytics: false,
-    email:false,
-    socials: false,
-    emailShowWallets: false,
-    swaps: false,
-    onramp: false,
-    history: false,
-  },
-});
+try {
+  createAppKit({
+    adapters: [wagmiAdapter],
+    networks,
+    projectId: REOWN_PROJECT_ID,
+    metadata,
+    features: {
+      analytics: false,
+      email: false,
+      socials: false,
+      emailShowWallets: false,
+      swaps: false,
+      onramp: false,
+      history: false,
+    },
+  });
+} catch (err) {
+  console.warn("Reown AppKit initialization warning:", err);
+}
+
 export function ReownProvider({ children }) {
   return (
     <WagmiProvider config={wagmiAdapter.wagmiConfig}>
