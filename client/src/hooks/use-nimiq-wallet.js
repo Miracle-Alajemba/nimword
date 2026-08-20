@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import HubApi from "@nimiq/hub-api";
 import {
   DEFAULT_TREASURY_ADDRESS,
   NIM_STAKE_LUNA,
@@ -15,9 +14,16 @@ import {
 
 let hubApiInstance = null;
 
-function getHubApi() {
+async function getHubApi() {
   if (!hubApiInstance && typeof window !== "undefined") {
-    hubApiInstance = new HubApi(NIMIQ_HUB_URL);
+    try {
+      const HubApiModule = await import("@nimiq/hub-api");
+      const HubApi = HubApiModule.default || HubApiModule;
+      hubApiInstance = new HubApi(NIMIQ_HUB_URL);
+    } catch (err) {
+      console.warn("Failed to load @nimiq/hub-api:", err);
+      return null;
+    }
   }
   return hubApiInstance;
 }
@@ -123,7 +129,7 @@ export function useNimiqWallet() {
       }
 
       // Hub API fallback for desktop / standard browsers
-      const hub = getHubApi();
+      const hub = await getHubApi();
       if (hub && typeof hub.onLogin === "function") {
         setWalletStatus("Opening Nimiq Hub...");
         const result = await hub.onLogin();
@@ -197,7 +203,7 @@ export function useNimiqWallet() {
     }
 
     // Standard Browser with Hub API
-    const hub = getHubApi();
+    const hub = await getHubApi();
     if (hub && typeof hub.checkout === "function") {
       const result = await hub.checkout({
         appName: "NIMWORD",
