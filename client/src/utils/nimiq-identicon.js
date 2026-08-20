@@ -1,5 +1,3 @@
-import Identicon from "identicon.js";
-
 /**
  * Validates a Nimiq address starting with NQ
  */
@@ -62,24 +60,45 @@ function hashString(str) {
 }
 
 /**
- * Generates an Identicon data URI for a given address
+ * Generates a simple SVG avatar from a wallet address hash.
+ * No external dependencies — pure inline SVG generation.
  */
 export function getNimiqAvatar(address = "") {
   if (!address) return "";
   try {
     const cleanAddress = String(address).replace(/\s+/g, "").toUpperCase();
     const hash = hashString(cleanAddress);
-    const options = {
-      foreground: [0, 180, 216, 255], // Nimiq Blue #00B4D8
-      background: [16, 25, 35, 255],  // Dark glass background
-      margin: 0.1,
-      size: 64,
-      format: "svg",
-    };
-    const data = new Identicon(hash, options).toString();
-    return `data:image/svg+xml;base64,${data}`;
+
+    // Generate a deterministic color from the hash
+    const hue = parseInt(hash.slice(0, 4), 16) % 360;
+    const sat = 60 + (parseInt(hash.slice(4, 6), 16) % 30);
+    const lightness = 45 + (parseInt(hash.slice(6, 8), 16) % 15);
+    const bgHue = (hue + 180) % 360;
+
+    // Create a simple SVG identicon with geometric shapes
+    const cells = 5;
+    const cellSize = 10;
+    const size = cells * cellSize;
+    let rects = "";
+
+    for (let x = 0; x < Math.ceil(cells / 2); x++) {
+      for (let y = 0; y < cells; y++) {
+        const idx = x * cells + y;
+        const charCode = hash.charCodeAt(idx % hash.length);
+        if (charCode % 2 === 0) {
+          // Mirror horizontally for symmetry
+          rects += `<rect x="${x * cellSize}" y="${y * cellSize}" width="${cellSize}" height="${cellSize}" fill="hsl(${hue}, ${sat}%, ${lightness}%)" />`;
+          const mirrorX = (cells - 1 - x) * cellSize;
+          rects += `<rect x="${mirrorX}" y="${y * cellSize}" width="${cellSize}" height="${cellSize}" fill="hsl(${hue}, ${sat}%, ${lightness}%)" />`;
+        }
+      }
+    }
+
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="64" height="64"><rect width="${size}" height="${size}" fill="hsl(${bgHue}, 20%, 15%)" />${rects}</svg>`;
+    const encoded = btoa(svg);
+    return `data:image/svg+xml;base64,${encoded}`;
   } catch (err) {
-    console.warn("Identicon generation error:", err);
+    console.warn("Avatar generation error:", err);
     return "";
   }
 }
