@@ -8,7 +8,7 @@ import {
   CELO_MAINNET_CHAIN_ID,
   GAME_RULES,
 } from "./config/index.js";
-import { useWalletSession } from "./hooks/index.js";
+import { useWalletSession, useNimiqWallet } from "./hooks/index.js";
 import { useBackgroundMusic } from "./hooks/use-background-music.js";
 import { MusicToggle } from "./components/ui/music-toggle.jsx";
 import {
