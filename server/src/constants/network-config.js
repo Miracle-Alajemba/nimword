@@ -1,7 +1,7 @@
-export const CELO_MAINNET_CONFIG = {
+export const NIM_MAINNET_CONFIG = {
   chainId: 42220,
-  chainName: "Celo Mainnet",
-  rpcUrl: "https://forno.celo.org",
-  blockExplorer: "https://celoscan.io",
-  symbol: "CELO",
+  chainName: "Nimiq Mainnet",
+  rpcUrl: "https://forno.nimiq.org",
+  blockExplorer: "https://nimiqwatch.com",
+  symbol: "NIM",
 };

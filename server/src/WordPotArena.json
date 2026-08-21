@@ -1,7 +1,7 @@
 {
   "_format": "hh-sol-artifact-1",
-  "contractName": "WordPotArena",
-  "sourceName": "contracts/WordPotArena.sol",
+  "contractName": "NimWordArena",
+  "sourceName": "contracts/NimWordArena.sol",
   "abi": [
     {
       "inputs": [

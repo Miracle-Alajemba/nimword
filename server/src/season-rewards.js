@@ -1,15 +1,15 @@
 /**
- * Season Leaderboard Bonus Payout Calculator for WordPot.
+ * Season Leaderboard Bonus Payout Calculator for NimWord.
  */
 
 /**
  * Calculate weekly bonus distribution for top leaderboard players.
  * @param {Array<{ address: string, score: number }>} leaderboardEntries - Sorted leaderboard entries
- * @param {number} totalBonusCELO - Total bonus prize pool in CELO (e.g. 1.75 CELO)
+ * @param {number} totalBonusNIM - Total bonus prize pool in NIM (e.g. 1.75 NIM)
  * @returns {{ payouts: Array<{ rank: number, address: string, amount: number }>, totalDistributed: number }}
  */
-export function calculateWeeklySeasonBonus(leaderboardEntries, totalBonusCELO = 1.75) {
-  if (!Array.isArray(leaderboardEntries) || leaderboardEntries.length === 0 || totalBonusCELO <= 0) {
+export function calculateWeeklySeasonBonus(leaderboardEntries, totalBonusNIM = 1.75) {
+  if (!Array.isArray(leaderboardEntries) || leaderboardEntries.length === 0 || totalBonusNIM <= 0) {
     return { payouts: [], totalDistributed: 0 };
   }
 
@@ -19,7 +19,7 @@ export function calculateWeeklySeasonBonus(leaderboardEntries, totalBonusCELO = 
   let totalDistributed = 0;
 
   const payouts = topPlayers.map((player, index) => {
-    const amount = Number((totalBonusCELO * shares[index]).toFixed(4));
+    const amount = Number((totalBonusNIM * shares[index]).toFixed(4));
     totalDistributed += amount;
     return {
       rank: index + 1,

@@ -1,5 +1,5 @@
 /**
- * Synthesized Web Audio Sound Effects Utility for WordPot Client
+ * Synthesized Web Audio Sound Effects Utility for NimWord Client
  */
 
 class WebAudioFxSynthesizer {

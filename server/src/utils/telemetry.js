@@ -1,5 +1,5 @@
 /**
- * System Telemetry & Monitoring Calculator for WordPot Server
+ * System Telemetry & Monitoring Calculator for NimWord Server
  */
 
 /**
@@ -100,7 +100,7 @@ export function buildTelemetryPayload({ rooms = [], dbConnected = false, redisCo
 
   return {
     status: "ok",
-    service: "wordpot-server",
+    service: "nimword-server",
     timestamp: new Date().toISOString(),
     uptimeSeconds: Math.floor(process.uptime()),
     uptimeFormatted: uptimeString,

@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { isOriginAllowed, getCorsOptions } from "../src/utils/cors-options.js";
 
 test("isOriginAllowed allows production domain and localhost", () => {
-  assert.equal(isOriginAllowed("https://wordpot.vercel.app"), true);
+  assert.equal(isOriginAllowed("https://nimword.vercel.app"), true);
   assert.equal(isOriginAllowed("http://localhost:5173"), true);
   assert.equal(isOriginAllowed(null), true);
 });

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
-export function GameLoader({ label = "Loading...", letters = "WORDPOT" }) {
+export function GameLoader({ label = "Loading...", letters = "NIMWORD" }) {
   const containerRef = useRef(null);
   const lettersRef = useRef([]);
 

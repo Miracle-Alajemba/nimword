@@ -5,13 +5,13 @@ import {
   useAppKitProvider,
 } from "@reown/appkit/react";
 import {
-  CELO_MAINNET_CHAIN_ID,
+  NIM_MAINNET_CHAIN_ID,
   REOWN_PROJECT_ID,
   WALLET_STORAGE_KEY,
 } from "../config/app-config.js";
 import { useDisconnect } from "wagmi";
 import {
-  createCeloPublicClient,
+  createNimiqPublicClient,
   createInjectedWalletClient,
   createWalletClientFromProvider,
   getInjectedWalletProvider,
@@ -32,7 +32,7 @@ function toHexChainId(chainId) {
   return `0x${Number(chainId).toString(16)}`;
 }
 
-async function ensureCeloMainnet(provider, chainId = CELO_MAINNET_CHAIN_ID) {
+async function ensureNimiqMainnet(provider, chainId = NIM_MAINNET_CHAIN_ID) {
   const targetChainId = toHexChainId(chainId);
   const currentChainId = await provider.request({ method: "eth_chainId" });
 
@@ -54,10 +54,10 @@ async function ensureCeloMainnet(provider, chainId = CELO_MAINNET_CHAIN_ID) {
       method: "wallet_addEthereumChain",
       params: [{
         chainId: targetChainId,
-        chainName: "Celo Mainnet",
-        nativeCurrency: { name: "CELO", symbol: "CELO", decimals: 18 },
-        rpcUrls: ["https://forno.celo.org"],
-        blockExplorerUrls: ["https://celoscan.io"],
+        chainName: "Nimiq Mainnet",
+        nativeCurrency: { name: "NIM", symbol: "NIM", decimals: 18 },
+        rpcUrls: ["https://forno.nimiq.org"],
+        blockExplorerUrls: ["https://nimiqwatch.com"],
       }],
     });
   }
@@ -65,7 +65,7 @@ async function ensureCeloMainnet(provider, chainId = CELO_MAINNET_CHAIN_ID) {
 
 function getWalletProviderName(provider) {
   if (!provider) return "No wallet";
-  if (provider.isMiniPay) return "MiniPay";
+  if (provider.isNimiq Pay) return "Nimiq Pay";
   if (provider.isMetaMask) return "MetaMask";
   return "Injected wallet";
 }
@@ -73,8 +73,8 @@ function getWalletProviderName(provider) {
 function getNetworkLabel(chainId) {
   const normalized = parseChainId(chainId);
   if (!normalized) return "Unknown network";
-  if (normalized === CELO_MAINNET_CHAIN_ID) return "Celo Mainnet";
-  if (normalized === 11142220) return "Celo Sepolia";
+  if (normalized === NIM_MAINNET_CHAIN_ID) return "Nimiq Mainnet";
+  if (normalized === 11142220) return "Nimiq Sepolia";
   return `Chain ${normalized}`;
 }
 
@@ -90,7 +90,7 @@ export function useWalletSession() {
   const { walletProvider: appKitProvider } = useAppKitProvider("eip155");
   const injectedProvider = useMemo(() => getInjectedWalletProvider(), []);
   const provider = injectedProvider?.request ? injectedProvider : appKitProvider || null;
-  const isMiniPay = Boolean(injectedProvider?.isMiniPay);
+  const isNimiq Pay = Boolean(injectedProvider?.isNimiq Pay);
   const hasInjectedProvider = Boolean(injectedProvider?.request);
   const hasWalletConnect = Boolean(REOWN_PROJECT_ID);
 
@@ -102,7 +102,7 @@ export function useWalletSession() {
     () => getNetworkLabel(walletChainId),
     [walletChainId],
   );
-  const walletReady = Boolean(walletAddress) && parseChainId(walletChainId) === CELO_MAINNET_CHAIN_ID;
+  const walletReady = Boolean(walletAddress) && parseChainId(walletChainId) === NIM_MAINNET_CHAIN_ID;
 
   useEffect(() => {
     const storedWallet =
@@ -126,8 +126,8 @@ export function useWalletSession() {
         setWalletAddress(nextWallet);
         window.localStorage.setItem(WALLET_STORAGE_KEY, nextWallet);
         setWalletStatus(
-          injectedProvider?.isMiniPay
-            ? `MiniPay is available as ${shortenWalletAddress(nextWallet)}.`
+          injectedProvider?.isNimiq Pay
+            ? `Nimiq Pay is available as ${shortenWalletAddress(nextWallet)}.`
             : "Using previously connected wallet.",
         );
       })
@@ -151,7 +151,7 @@ export function useWalletSession() {
     function handleChainChanged(chainId) {
       const normalized = parseChainId(chainId);
       setWalletChainId(normalized);
-      setWalletStatus(normalized === CELO_MAINNET_CHAIN_ID ? "Wallet ready on Celo Mainnet." : `Connected on ${getNetworkLabel(normalized)}.`);
+      setWalletStatus(normalized === NIM_MAINNET_CHAIN_ID ? "Wallet ready on Nimiq Mainnet." : `Connected on ${getNetworkLabel(normalized)}.`);
     }
 
     injectedProvider.on("accountsChanged", handleAccountsChanged);
@@ -181,9 +181,9 @@ export function useWalletSession() {
         const normalizedChainId = parseChainId(chainId);
         setWalletChainId(normalizedChainId);
         setWalletStatus(
-          normalizedChainId === CELO_MAINNET_CHAIN_ID
-            ? `Wallet ready on Celo Mainnet as ${shortenWalletAddress(appKitAddress)}.`
-            : `Wallet connected as ${shortenWalletAddress(appKitAddress)}. Switch to Celo Mainnet to continue.`,
+          normalizedChainId === NIM_MAINNET_CHAIN_ID
+            ? `Wallet ready on Nimiq Mainnet as ${shortenWalletAddress(appKitAddress)}.`
+            : `Wallet connected as ${shortenWalletAddress(appKitAddress)}. Switch to Nimiq Mainnet to continue.`,
         );
       })
       .catch(() => {
@@ -196,14 +196,14 @@ export function useWalletSession() {
       throw new Error("WalletConnect finished without a usable wallet session.");
     }
 
-    setWalletStatus("Wallet connected. Preparing Celo Mainnet...");
-    await ensureCeloMainnet(appKitProvider, CELO_MAINNET_CHAIN_ID);
+    setWalletStatus("Wallet connected. Preparing Nimiq Mainnet...");
+    await ensureNimiqMainnet(appKitProvider, NIM_MAINNET_CHAIN_ID);
     const chainId = await appKitProvider.request({ method: "eth_chainId" });
     const normalizedChainId = parseChainId(chainId);
 
     setWalletAddress(appKitAddress);
     setWalletChainId(normalizedChainId);
-    setWalletStatus(`Ready on Celo Mainnet as ${shortenWalletAddress(appKitAddress)}`);
+    setWalletStatus(`Ready on Nimiq Mainnet as ${shortenWalletAddress(appKitAddress)}`);
     if (typeof window !== "undefined") {
       window.localStorage.setItem(WALLET_STORAGE_KEY, appKitAddress);
     }
@@ -229,11 +229,11 @@ export function useWalletSession() {
     }
 
     try {
-      setWalletStatus(provider.isMiniPay ? "Requesting MiniPay connection..." : "Requesting wallet connection...");
+      setWalletStatus(provider.isNimiq Pay ? "Requesting Nimiq Pay connection..." : "Requesting wallet connection...");
       const accounts = await provider.request({
         method: "eth_requestAccounts",
       });
-      const walletClient = createInjectedWalletClient(CELO_MAINNET_CHAIN_ID);
+      const walletClient = createInjectedWalletClient(NIM_MAINNET_CHAIN_ID);
       const clientAddresses = walletClient ? await walletClient.getAddresses() : [];
       const nextWallet = clientAddresses?.[0] || accounts?.[0] || "";
 
@@ -241,16 +241,16 @@ export function useWalletSession() {
         throw new Error("Connected account is not a valid wallet address.");
       }
 
-      setWalletStatus(provider.isMiniPay ? "MiniPay connected. Preparing Celo Mainnet..." : "Wallet connected. Preparing Celo Mainnet...");
-      await ensureCeloMainnet(provider, CELO_MAINNET_CHAIN_ID);
+      setWalletStatus(provider.isNimiq Pay ? "Nimiq Pay connected. Preparing Nimiq Mainnet..." : "Wallet connected. Preparing Nimiq Mainnet...");
+      await ensureNimiqMainnet(provider, NIM_MAINNET_CHAIN_ID);
       const chainId = await provider.request({ method: "eth_chainId" });
 
       setWalletAddress(nextWallet);
       setWalletChainId(parseChainId(chainId));
       setWalletStatus(
-        provider.isMiniPay
-          ? `MiniPay ready on Celo Mainnet as ${shortenWalletAddress(nextWallet)}`
-          : `Ready on Celo Mainnet as ${shortenWalletAddress(nextWallet)}`,
+        provider.isNimiq Pay
+          ? `Nimiq Pay ready on Nimiq Mainnet as ${shortenWalletAddress(nextWallet)}`
+          : `Ready on Nimiq Mainnet as ${shortenWalletAddress(nextWallet)}`,
       );
       window.localStorage.setItem(WALLET_STORAGE_KEY, nextWallet);
     } catch (error) {
@@ -285,21 +285,21 @@ export function useWalletSession() {
     walletChainId,
     hasInjectedProvider,
     hasWalletConnect,
-    isMiniPay,
+    isNimiq Pay,
     walletProviderName,
     walletNetworkLabel,
     walletReady,
     connectWallet,
     disconnectWallet,
     clearWalletSession,
-    ensureCeloMainnet,
+    ensureNimiqMainnet,
     parseChainId,
     getInjectedProvider: () => provider,
-    getWalletClient: (chainId = CELO_MAINNET_CHAIN_ID) =>
+    getWalletClient: (chainId = NIM_MAINNET_CHAIN_ID) =>
       provider?.request
         ? createWalletClientFromProvider(provider, chainId)
         : createInjectedWalletClient(chainId),
-    getPublicClient: createCeloPublicClient,
+    getPublicClient: createNimiqPublicClient,
     setWalletStatus,
   };
 }

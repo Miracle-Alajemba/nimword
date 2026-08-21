@@ -1,5 +1,5 @@
 export const APP_VERSION_INFO = {
   version: "1.4.0",
-  network: "Celo Mainnet",
+  network: "Nimiq Mainnet",
   environment: process.env.NODE_ENV || "production",
 };

@@ -1,7 +1,7 @@
 export function getSystemNoticeBanner() {
   return {
     active: false,
-    message: "WordPot Arena Season 1 is Live!",
+    message: "NimWord Arena Season 1 is Live!",
     type: "info",
   };
 }

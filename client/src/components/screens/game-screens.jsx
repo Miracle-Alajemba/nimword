@@ -480,7 +480,7 @@ export function LobbyScreen({
 
         <div className="room-topbar">
           <div>
-            <p className="play-label">WordPot Arena</p>
+            <p className="play-label">NimWord Arena</p>
             <h1>{room?.id || "LOADING"}</h1>
           </div>
           <div className="room-topbar__stats">
@@ -560,7 +560,7 @@ export function LobbyScreen({
               </div>
               <SocialShareBar roomId={room?.id} />
               <p className="field-hint">
-                Entry fees are non-refundable. If the room expires before the game starts your fee goes to the WordPot treasury.
+                Entry fees are non-refundable. If the room expires before the game starts your fee goes to the NimWord treasury.
               </p>
             </div>
 
@@ -593,7 +593,7 @@ export function LobbyScreen({
 
             <div className="notice-strip notice-strip--neutral">
               {joinMode === "contract_join"
-                ? `Contract room ${room?.onchain?.contractRoomId ?? "--"} is live on WordPotArena. Players join this room onchain before the match starts.`
+                ? `Contract room ${room?.onchain?.contractRoomId ?? "--"} is live on NimWordArena. Players join this room onchain before the match starts.`
                 : "Treasury beta mode is active for this room while contract-backed joins are still being prepared."}
             </div>
 
@@ -865,7 +865,7 @@ export function MatchRoomScreen({
 
         <div className="room-topbar">
           <div>
-            <p className="play-label">WordPot Arena</p>
+            <p className="play-label">NimWord Arena</p>
             <h1>{room?.id || "LIVE"}</h1>
           </div>
           <div className="room-topbar__stats">

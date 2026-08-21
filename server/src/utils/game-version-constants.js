@@ -1,4 +1,4 @@
-export const WORDPOT_VERSION = {
+export const NIMWORD_VERSION = {
   major: 1,
   minor: 5,
   patch: 0,

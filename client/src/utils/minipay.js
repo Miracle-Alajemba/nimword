@@ -1,36 +1,36 @@
 import { createPublicClient, createWalletClient, custom, http } from "viem";
-import { celo, celoSepolia } from "viem/chains";
+import { nimiq, nimiqSepolia } from "viem/chains";
 
 const CHAIN_LOOKUP = {
-  42220: celo,
-  11142220: celoSepolia,
+  42220: nimiq,
+  11142220: nimiqSepolia,
 };
 
 export function getInjectedWalletProvider() {
   if (typeof window === "undefined") return null;
 
   if (window.ethereum?.providers?.length) {
-    const minipay = window.ethereum.providers.find((p) => p.isMiniPay);
+    const minipay = window.ethereum.providers.find((p) => p.isNimiq Pay);
     if (minipay) return minipay;
     const metamask = window.ethereum.providers.find((p) => p.isMetaMask && !p.isBraveWallet);
     if (metamask) return metamask;
     return window.ethereum.providers[0];
   }
 
-  if (window.ethereum?.isMiniPay) return window.ethereum;
-  return window.ethereum || window.celo || window.web3?.currentProvider || null;
+  if (window.ethereum?.isNimiq Pay) return window.ethereum;
+  return window.ethereum || window.nimiq || window.web3?.currentProvider || null;
 }
 
-export function isMiniPayEnvironment() {
+export function isNimiq PayEnvironment() {
   if (typeof window === "undefined") return false;
   const provider = getInjectedWalletProvider();
-  const isMiniPayProvider = Boolean(provider?.isMiniPay || window.ethereum?.isMiniPay);
-  const isMiniPayUserAgent = typeof navigator !== "undefined" && Boolean(navigator.userAgent?.includes("MiniPay"));
-  return isMiniPayProvider || isMiniPayUserAgent;
+  const isNimiq PayProvider = Boolean(provider?.isNimiq Pay || window.ethereum?.isNimiq Pay);
+  const isNimiq PayUserAgent = typeof navigator !== "undefined" && Boolean(navigator.userAgent?.includes("Nimiq Pay"));
+  return isNimiq PayProvider || isNimiq PayUserAgent;
 }
 
-export function getCeloChain(chainId = 42220) {
-  return CHAIN_LOOKUP[Number(chainId)] || celo;
+export function getNimiqChain(chainId = 42220) {
+  return CHAIN_LOOKUP[Number(chainId)] || nimiq;
 }
 
 export function createInjectedWalletClient(chainId = 42220) {
@@ -42,14 +42,14 @@ export function createWalletClientFromProvider(provider, chainId = 42220) {
   if (!provider) return null;
 
   return createWalletClient({
-    chain: getCeloChain(chainId),
+    chain: getNimiqChain(chainId),
     transport: custom(provider),
   });
 }
 
-export function createCeloPublicClient(chainId = 42220) {
+export function createNimiqPublicClient(chainId = 42220) {
   return createPublicClient({
-    chain: getCeloChain(chainId),
+    chain: getNimiqChain(chainId),
     transport: http(),
   });
 }

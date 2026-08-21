@@ -1,5 +1,5 @@
 /**
- * In-Memory Key-Value TTL Cache Engine for WordPot Server
+ * In-Memory Key-Value TTL Cache Engine for NimWord Server
  */
 
 class TtlCacheEngine {

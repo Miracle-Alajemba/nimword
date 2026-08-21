@@ -9,6 +9,6 @@ describe("Client String Helpers Module", () => {
   });
 
   it("should convert string into slug format", () => {
-    assert.strictEqual(slugifyText("WordPot Game Room #1!"), "wordpot-game-room-1");
+    assert.strictEqual(slugifyText("NimWord Game Room #1!"), "nimword-game-room-1");
   });
 });

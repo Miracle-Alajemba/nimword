@@ -1,5 +1,5 @@
 /**
- * Matchmaking & lobby queue sorting utilities for WordPot.
+ * Matchmaking & lobby queue sorting utilities for NimWord.
  */
 
 /**

@@ -1,5 +1,5 @@
 /**
- * In-Memory Request Rate Limiter Utility for WordPot Server
+ * In-Memory Request Rate Limiter Utility for NimWord Server
  */
 
 class MemoryRateLimiter {

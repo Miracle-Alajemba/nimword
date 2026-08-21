@@ -66,7 +66,7 @@ describe("Telemetry Utility Module", () => {
       redisConnected: false,
     });
     assert.strictEqual(payload.status, "ok");
-    assert.strictEqual(payload.service, "wordpot-server");
+    assert.strictEqual(payload.service, "nimword-server");
     assert.strictEqual(payload.services.database, "connected");
     assert.strictEqual(payload.services.redis, "in_memory");
     assert.strictEqual(payload.rooms.totalRooms, 1);

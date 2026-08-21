@@ -1,5 +1,5 @@
 export function saveMuteState(muted = false) {
   if (typeof localStorage !== "undefined") {
-    localStorage.setItem("wordpot_muted", String(muted));
+    localStorage.setItem("nimword_muted", String(muted));
   }
 }

@@ -1,5 +1,5 @@
 /**
- * Mathematical utilities for score calculations, win rates, and prize fractions in WordPot.
+ * Mathematical utilities for score calculations, win rates, and prize fractions in NimWord.
  */
 
 /**

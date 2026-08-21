@@ -9,7 +9,7 @@ export function useBackgroundMusic(screen) {
   const audioRef = useRef(null);
   const [muted, setMuted] = useState(() => {
     try {
-      return localStorage.getItem("wordpot_music_muted") === "true";
+      return localStorage.getItem("nimword_music_muted") === "true";
     } catch {
       return false;
     }
@@ -51,7 +51,7 @@ export function useBackgroundMusic(screen) {
   // Sync mute state and local storage
   useEffect(() => {
     try {
-      localStorage.setItem("wordpot_music_muted", String(muted));
+      localStorage.setItem("nimword_music_muted", String(muted));
     } catch { }
 
     if (audioRef.current) {

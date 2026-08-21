@@ -1,3 +1,3 @@
-export function isMiniPayUserAgent(ua = "") {
-  return /minipay/i.test(ua);
+export function isNimiqPayUserAgent(ua = "") {
+  return /nimiqpay|minipay/i.test(ua);
 }

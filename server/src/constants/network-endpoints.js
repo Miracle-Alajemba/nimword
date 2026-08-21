@@ -1,5 +1,5 @@
 export const NETWORK_ENDPOINTS = {
-  MAINNET_RPC: "https://forno.celo.org",
-  EXPLORER_TX: "https://celoscan.io/tx/",
-  EXPLORER_ADDRESS: "https://celoscan.io/address/",
+  MAINNET_RPC: "https://forno.nimiq.org",
+  EXPLORER_TX: "https://nimiqwatch.com/tx/",
+  EXPLORER_ADDRESS: "https://nimiqwatch.com/address/",
 };

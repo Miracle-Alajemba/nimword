@@ -45,7 +45,7 @@ export function DailyChallenge({
   getInjectedProvider,
   getWalletClient,
   getPublicClient,
-  ensureCeloMainnet,
+  ensureNimiqMainnet,
 }) {
   const [roundSeed, setRoundSeed] = useState(null);
   const [phase, setPhase] = useState("idle");
@@ -89,7 +89,7 @@ export function DailyChallenge({
       if (walletReady && getInjectedProvider && getWalletClient && getPublicClient && treasuryWallet) {
         const provider = getInjectedProvider();
         if (provider?.request) {
-          await ensureCeloMainnet(provider);
+          await ensureNimiqMainnet(provider);
           const walletClient = getWalletClient();
           const publicClient = getPublicClient();
           if (walletClient && publicClient) {
@@ -98,7 +98,7 @@ export function DailyChallenge({
               account,
               chain: walletClient.chain,
               to: treasuryWallet,
-              value: BigInt(50000000000000000), // 0.05 CELO
+              value: BigInt(50000000000000000), // 0.1 NIM
             });
             await publicClient.waitForTransactionReceipt({ hash: txHash });
           }
@@ -703,7 +703,7 @@ export function DailyChallenge({
                   <strong style={{ fontSize: "1rem", display: "block", color: "#ffffff", fontWeight: "700", marginBottom: "0.15rem" }}>🎮 Easy</strong>
                   <span style={{ fontSize: "0.78rem", color: "#63f4ca", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 40 pts</span>
                 </div>
-                <strong style={{ color: "#ffffff", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>0.05 CELO</strong>
+                <strong style={{ color: "#ffffff", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>0.1 NIM</strong>
               </button>
 
               <button
@@ -730,7 +730,7 @@ export function DailyChallenge({
                   <strong style={{ fontSize: "1rem", display: "block", color: "#ffffff", fontWeight: "700", marginBottom: "0.15rem" }}>⚔️ Medium</strong>
                   <span style={{ fontSize: "0.78rem", color: "#63f4ca", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 60 pts</span>
                 </div>
-                <strong style={{ color: "#ffffff", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>1 CELO</strong>
+                <strong style={{ color: "#ffffff", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>1 NIM</strong>
               </button>
 
               <button
@@ -757,7 +757,7 @@ export function DailyChallenge({
                   <strong style={{ fontSize: "1rem", display: "block", color: "#ffffff", fontWeight: "700", marginBottom: "0.15rem" }}>👑 Hard</strong>
                   <span style={{ fontSize: "0.78rem", color: "#63f4ca", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 80 pts</span>
                 </div>
-                <strong style={{ color: "#ffffff", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>2 CELO</strong>
+                <strong style={{ color: "#ffffff", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>2 NIM</strong>
               </button>
             </div>
           </div>
@@ -800,7 +800,7 @@ export function DailyChallenge({
                     type="button"
                     className="dc-result-card__share-btn"
                     onClick={() => {
-                      const text = `I scored ${score} pts on WordPot Daily Challenge today! Can you beat me? 🎮\n\nPlay free at https://wordpot.vercel.app\n\n#WordPot #BuildOnCelo #Celo`;
+                      const text = `I scored ${score} pts on NimWord Daily Challenge today! Can you beat me? 🎮\n\nPlay free at https://nimword.vercel.app\n\n#NimWord #BuildOnNimiq #Nimiq`;
                       if (navigator.share) {
                         navigator.share({ text });
                       } else {

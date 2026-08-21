@@ -1,9 +1,9 @@
 /**
- * CORS Configuration options for WordPot server.
+ * CORS Configuration options for NimWord server.
  */
 
 const ALLOWED_ORIGINS = [
-  "https://wordpot.vercel.app",
+  "https://nimword.vercel.app",
   "http://localhost:5173",
   "http://localhost:3000",
   "http://127.0.0.1:5173",

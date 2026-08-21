@@ -1,7 +1,7 @@
 export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "https://wordpot-production.up.railway.app/api";
+  import.meta.env.VITE_API_BASE_URL || "https://your-nimword-server.railway.app/api";
 export const APP_URL =
-  import.meta.env.VITE_APP_URL || "https://wordpot.vercel.app";
+  import.meta.env.VITE_APP_URL || "https://nimword.vercel.app";
 
 export const WALLET_STORAGE_KEY = "nimword_connected_wallet";
 export const ROOM_SESSION_STORAGE_KEY = "nimword_room_session";

@@ -1,5 +1,5 @@
 /**
- * Server-side username validation and formatting for WordPot.
+ * Server-side username validation and formatting for NimWord.
  */
 
 import { filterProfanity } from "./word-filter.js";

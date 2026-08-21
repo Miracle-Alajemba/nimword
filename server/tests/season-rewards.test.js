@@ -15,9 +15,9 @@ test("calculateWeeklySeasonBonus distributes bonus pool to top 3 leaderboard pla
   assert.equal(payouts.length, 3);
   assert.equal(payouts[0].rank, 1);
   assert.equal(payouts[0].address, "0x1111111111111111111111111111111111111111");
-  assert.equal(payouts[0].amount, 1.0); // ~1.0 CELO for 1st
-  assert.equal(payouts[1].amount, 0.5); // ~0.5 CELO for 2nd
-  assert.equal(payouts[2].amount, 0.25); // ~0.25 CELO for 3rd
+  assert.equal(payouts[0].amount, 1.0); // ~1.0 NIM for 1st
+  assert.equal(payouts[1].amount, 0.5); // ~0.5 NIM for 2nd
+  assert.equal(payouts[2].amount, 0.25); // ~0.25 NIM for 3rd
   assert.equal(totalDistributed, 1.75);
 });
 

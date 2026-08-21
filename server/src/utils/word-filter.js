@@ -1,5 +1,5 @@
 /**
- * Profanity and offensive word filtering utility for WordPot chat rooms and display names.
+ * Profanity and offensive word filtering utility for NimWord chat rooms and display names.
  */
 
 const BLOCKED_WORDS = [

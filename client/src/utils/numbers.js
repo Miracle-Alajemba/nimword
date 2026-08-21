@@ -20,12 +20,12 @@ export function compactNumber(num, decimals = 1) {
 }
 
 /**
- * Format a CELO wei value to a display string.
+ * Format a NIM wei value to a display string.
  * @param {string | number | bigint} wei
  * @param {number} [decimals=4]
  * @returns {string}
  */
-export function formatCeloFromWei(wei, decimals = 4) {
+export function formatNimiqFromWei(wei, decimals = 4) {
   const value = Number(BigInt(wei || 0)) / 1e18;
   return value.toFixed(decimals);
 }

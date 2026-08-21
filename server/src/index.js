@@ -9,7 +9,7 @@ import { Server } from "socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { recoverMessageAddress } from "viem";
 import { canBuildFromSource, getDynamicRound } from "./rounds.js";
-import { createWordPotContractService } from "./wordpot-contract.js";
+import { createNimWordContractService } from "./nimword-contract.js";
 import { query, initDb } from "./db.js";
 import { redis } from "./redis.js";
 import { buildTelemetryPayload } from "./utils/telemetry.js";
@@ -76,15 +76,15 @@ const MAX_PLAYERS = 5;
 const ROUND_SECONDS = 60;
 const TREASURY_WALLET =
   process.env.TREASURY_WALLET || "0x0000000000000000000000000000000000000000";
-const WORDPOT_CONTRACT_ADDRESS =
-  process.env.WORDPOT_CONTRACT_ADDRESS ||
+const NIMWORD_CONTRACT_ADDRESS =
+  process.env.NIMWORD_CONTRACT_ADDRESS ||
   process.env.LEXMASH_CONTRACT_ADDRESS ||
   "";
 const CONTRACT_OPERATOR_PRIVATE_KEY =
   process.env.CONTRACT_OPERATOR_PRIVATE_KEY || "";
-const CELO_MAINNET_RPC_URL =
-  process.env.CELO_MAINNET_RPC_URL || "https://forno.celo.org";
-const CELO_CHAIN_ID = Number(process.env.CELO_CHAIN_ID || 42220);
+const NIM_MAINNET_RPC_URL =
+  process.env.NIM_MAINNET_RPC_URL || "https://forno.nimiq.org";
+const NIM_CHAIN_ID = Number(process.env.NIM_CHAIN_ID || 42220);
 const JOIN_PAYMENT_WEI = process.env.JOIN_PAYMENT_WEI || "100000";
 const JOIN_PAYMENT_DISPLAY = process.env.JOIN_PAYMENT_DISPLAY || "1 NIM";
 const ENTRY_FEE = JOIN_PAYMENT_DISPLAY;
@@ -246,11 +246,11 @@ const dailyLeaderboard = loadDailyLeaderboard();
 let roomStateVersion = 0;
 let leaderboardCache = null;
 
-const wordPotContract = createWordPotContractService({
-  contractAddress: WORDPOT_CONTRACT_ADDRESS,
+const wordPotContract = createNimWordContractService({
+  contractAddress: NIMWORD_CONTRACT_ADDRESS,
   operatorPrivateKey: CONTRACT_OPERATOR_PRIVATE_KEY,
-  rpcUrl: CELO_MAINNET_RPC_URL,
-  chainId: CELO_CHAIN_ID,
+  rpcUrl: NIM_MAINNET_RPC_URL,
+  chainId: NIM_CHAIN_ID,
 });
 
 const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "";
@@ -293,6 +293,18 @@ app.use((req, res, next) => {
   };
 
   next();
+});
+
+app.get("/api/health", (_req, res) => {
+  res.json({
+    status: "ok",
+    service: "nimword-server",
+    timestamp: new Date().toISOString(),
+    nimiq: {
+      treasury: process.env.NIMIQ_TREASURY_ADDRESS ? "configured" : "missing",
+      rpc: process.env.NIMIQ_RPC_URL || "default",
+    },
+  });
 });
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -618,13 +630,12 @@ function getWordScore(word) {
   return 3;
 }
 
-function isWalletAddress(value) {
-  if (!value) return false;
-  const str = String(value).trim();
-  const cleanNimiq = str.replace(/\s+/g, "").toUpperCase();
-  if (/^NQ[0-9A-Z]{34}$/.test(cleanNimiq)) return true;
-  return /^0x[a-fA-F0-9]{40}$/.test(str);
+function isValidPlayerAddress(value) {
+  const v = String(value || "").trim();
+  return v.length >= 10;
 }
+const isWalletAddress = isValidPlayerAddress;
+const DAILY_TARGET_SCORE = 40;
 
 
 const ALLOWED_DIFFICULTIES = ["easy", "medium", "hard"];
@@ -709,12 +720,12 @@ function shortenAddress(value) {
   return `${value.slice(0, 6)}...${value.slice(-4)}`;
 }
 
-function getCeloExplorerTxUrl(hash) {
+function getNimiqExplorerTxUrl(hash) {
   const txHash = String(hash || "").trim();
   if (!txHash) return "";
-  return CELO_CHAIN_ID === 44787
-    ? `https://alfajores.celoscan.io/tx/${txHash}`
-    : `https://celoscan.io/tx/${txHash}`;
+  return NIM_CHAIN_ID === 44787
+    ? `https://alfajores.nimiqwatch.com/tx/${txHash}`
+    : `https://nimiqwatch.com/tx/${txHash}`;
 }
 
 function normalizeRefundErrorMessage(message) {
@@ -897,7 +908,7 @@ async function getRoomSummary(room, options = {}) {
     roundDurationSeconds: ROUND_SECONDS,
     hostPlayerId: room.hostPlayerId,
     sourceWord: room.sourceWord || null,
-    rewardPool: `${getRewardPool(room.players.length)} CELO`,
+    rewardPool: `${getRewardPool(room.players.length)} NIM`,
     createdAt: room.createdAt,
     expiresAt:
       room.status === "waiting" && room.createdAt
@@ -924,9 +935,9 @@ async function getRoomSummary(room, options = {}) {
     scoreboard: derived.scoreboard,
     payouts: room.status === "finished" ? derived.payouts : [],
     onchain: {
-      chainId: CELO_CHAIN_ID,
+      chainId: NIM_CHAIN_ID,
       treasuryWallet: TREASURY_WALLET,
-      contractAddress: WORDPOT_CONTRACT_ADDRESS,
+      contractAddress: NIMWORD_CONTRACT_ADDRESS,
       contractRoomId: room.contractRoomId || null,
       contractRoomCreateTx: room.contractRoomCreateTx || null,
       contractSettleTx: room.contractSettleTx || null,
@@ -941,13 +952,13 @@ async function getRoomSummary(room, options = {}) {
       joinPaymentWei: JOIN_PAYMENT_WEI,
       joinPaymentDisplay: JOIN_PAYMENT_DISPLAY,
       joinMode:
-        isWalletAddress(WORDPOT_CONTRACT_ADDRESS) &&
+        isWalletAddress(NIMWORD_CONTRACT_ADDRESS) &&
         wordPotContract.enabled &&
         room.contractRoomId
           ? "contract_join"
           : "contract_unavailable",
       payoutMode:
-        isWalletAddress(WORDPOT_CONTRACT_ADDRESS) &&
+        isWalletAddress(NIMWORD_CONTRACT_ADDRESS) &&
         wordPotContract.enabled &&
         room.contractRoomId
           ? "contract_claim"
@@ -1057,7 +1068,7 @@ function buildSettlementPayload(room) {
   }));
 }
 
-const SIGNED_MESSAGE_PREFIX = "wordpot-auth:";
+const SIGNED_MESSAGE_PREFIX = "nimword-auth:";
 
 async function verifyWalletSignature(walletAddress, signature, message) {
   if (!signature) return false;
@@ -1273,16 +1284,16 @@ app.post("/api/users/profile", async (req, res) => {
 
 app.get("/api/meta", (_req, res) => {
   res.json({
-    name: "WordPot",
+    name: "NimWord",
     entryFee: ENTRY_FEE,
     roundDurationSeconds: 60,
     minPlayers: MIN_PLAYERS,
     maxPlayers: MAX_PLAYERS,
     minWordLength: 3,
     onchain: {
-      chainId: CELO_CHAIN_ID,
+      chainId: NIM_CHAIN_ID,
       treasuryWallet: TREASURY_WALLET,
-      contractAddress: WORDPOT_CONTRACT_ADDRESS,
+      contractAddress: NIMWORD_CONTRACT_ADDRESS,
       contractReady: wordPotContract.enabled,
       contractOperatorAddress: wordPotContract.enabled
         ? wordPotContract.account
@@ -1290,11 +1301,11 @@ app.get("/api/meta", (_req, res) => {
       joinPaymentWei: JOIN_PAYMENT_WEI,
       joinPaymentDisplay: JOIN_PAYMENT_DISPLAY,
       joinMode:
-        isWalletAddress(WORDPOT_CONTRACT_ADDRESS) && wordPotContract.enabled
+        isWalletAddress(NIMWORD_CONTRACT_ADDRESS) && wordPotContract.enabled
           ? "contract_join"
           : "contract_unavailable",
       payoutMode:
-        isWalletAddress(WORDPOT_CONTRACT_ADDRESS) && wordPotContract.enabled
+        isWalletAddress(NIMWORD_CONTRACT_ADDRESS) && wordPotContract.enabled
           ? "contract_claim"
           : "contract_unavailable",
     },
@@ -1369,12 +1380,12 @@ app.get("/api/stats", (_req, res) => {
         let onChain = null;
         if (
           wordPotContract?.enabled &&
-          isWalletAddress(WORDPOT_CONTRACT_ADDRESS)
+          isWalletAddress(NIMWORD_CONTRACT_ADDRESS)
         ) {
           onChain = await wordPotContract.getContractBalance();
         }
 
-        const prizePool = onChain || `${totalPrize.toFixed(4)} CELO`;
+        const prizePool = onChain || `${totalPrize.toFixed(4)} NIM`;
 
         res.json({
           prizePool,
@@ -1385,7 +1396,7 @@ app.get("/api/stats", (_req, res) => {
         });
       } catch (err) {
         res.json({
-          prizePool: `${totalPrize.toFixed(4)} CELO`,
+          prizePool: `${totalPrize.toFixed(4)} NIM`,
           onChainBalance: null,
           playersOnline,
           activeRooms,
@@ -1474,9 +1485,9 @@ app.get("/api/rounds/daily-challenge", async (_req, res) => {
     }
 
     const DIFFICULTY_RULES = {
-      easy: { targetScore: 40, rewardWei: "50000000000000000", rewardDisplay: "0.05 CELO" },
-      medium: { targetScore: 60, rewardWei: "1000000000000000000", rewardDisplay: "1 CELO" },
-      hard: { targetScore: 110, rewardWei: "2000000000000000000", rewardDisplay: "2 CELO" }
+      easy: { targetScore: 40, rewardWei: "50000000000000000", rewardDisplay: "0.1 NIM" },
+      medium: { targetScore: 60, rewardWei: "1000000000000000000", rewardDisplay: "1 NIM" },
+      hard: { targetScore: 110, rewardWei: "2000000000000000000", rewardDisplay: "2 NIM" }
     };
 
     const rules = DIFFICULTY_RULES[difficulty];
@@ -1627,123 +1638,46 @@ app.post("/api/daily/finalize", async (req, res) => {
 
 app.post("/api/daily/claim", async (req, res) => {
   const walletAddress = String(req.body?.walletAddress || "").trim();
-  const signature = String(req.body?.signature || "").trim();
   const sessionId = String(req.body?.sessionId || "").trim();
+  const score = Number(req.body?.score || 0);
 
-  if (!isWalletAddress(walletAddress)) {
-    return res
-      .status(400)
-      .json({ error: "A valid wallet address is required." });
+  if (!isValidPlayerAddress(walletAddress)) {
+    return res.status(400).json({ error: "A valid Nimiq wallet address is required." });
   }
 
-  if (signature) {
-    const authMessage = `${SIGNED_MESSAGE_PREFIX}daily-claim:${walletAddress}`;
-    const validSig = await verifyWalletSignature(
-      walletAddress,
-      signature,
-      authMessage,
-    );
-    if (!validSig) {
-      return res.status(403).json({
-        error:
-          "Wallet signature verification failed. Connect your wallet and try again.",
-      });
-    }
+  const claimKey = getTodayKey(walletAddress);
+  if (dailyClaims.has(claimKey)) {
+    return res.status(409).json({ error: "You have already claimed your daily reward today. Come back tomorrow." });
   }
 
-  const session = await getDailyChallengeSession(sessionId);
-  if (!session) {
-    return res
-      .status(404)
-      .json({ error: "Daily Challenge session not found. Start a new round." });
+  if (score < DAILY_TARGET_SCORE) {
+    return res.status(400).json({ error: `You need at least ${DAILY_TARGET_SCORE} points to claim the daily reward.` });
   }
 
-  if (session.walletAddress.toLowerCase() !== walletAddress.toLowerCase()) {
-    return res.status(403).json({
-      error: "This Daily Challenge session belongs to another wallet.",
-    });
-  }
-
-  const targetScore = session.targetScore || 40;
-  if (session.score < targetScore) {
-    return res.status(400).json({
-      error: `You need at least ${targetScore} points to claim this daily reward.`,
-    });
-  }
-
-  const walletKey = walletAddress.toLowerCase();
-  const todayStr = getDayKeyFromTimestamp();
-
-  // Check if already claimed today
-  const claimCheck = await query(
-    "SELECT 1 FROM daily_challenge_claims WHERE wallet_address = $1 AND DATE(claimed_at) = $2",
-    [walletKey, todayStr]
-  );
-  if (claimCheck.rows.length > 0) {
-    return res.status(409).json({
-      error: "You have already claimed your daily reward today. Come back tomorrow.",
-    });
-  }
-
-  // Record that this wallet played today in PostgreSQL
-  try {
-    const playedAt = new Date();
-    await query(
-      `INSERT INTO daily_challenge_plays (wallet_address, played_date, played_at)
-       VALUES ($1, $2, $3)
-       ON CONFLICT (wallet_address, played_date) DO UPDATE
-       SET played_at = EXCLUDED.played_at`,
-      [walletKey, todayStr, playedAt]
-    );
-  } catch (err) {
-    console.warn("Failed to persist daily play cooldown in database:", err.message);
-  }
-
-  if (!wordPotContract.enabled || !isWalletAddress(WORDPOT_CONTRACT_ADDRESS)) {
-    return res.status(503).json({
-      error: "Daily rewards are not available right now. Try again later.",
-    });
-  }
-
-  if (
-    isWalletAddress(wordPotContract.account) &&
-    wordPotContract.account.toLowerCase() === walletAddress.toLowerCase()
-  ) {
-    return res.status(400).json({
-      error:
-        "Daily rewards must be claimed with a player wallet, not the treasury/operator wallet.",
-    });
+  const nimiqService = createNimWordContractService();
+  if (!nimiqService.enabled) {
+    return res.status(503).json({ error: "Daily rewards are not available right now. Try again later." });
   }
 
   try {
-    const rewardWei = session.rewardWei || "10000000000000000";
-    const rewardDisplay = session.rewardDisplay || "0.01 CELO";
-    const txHash = await wordPotContract.sendReward(
+    const rewardNim = parseFloat(process.env.DAILY_REWARD_NIM || "0.1");
+    const txHash = await nimiqService.sendDailyReward(walletAddress, rewardNim);
+
+    dailyClaims.set(claimKey, {
       walletAddress,
-      rewardWei,
-    );
+      claimedAt: new Date().toISOString(),
+      txHash,
+      amount: `${rewardNim} NIM`,
+    });
 
-    const claimedAt = new Date();
-    const amountCelo = Number(rewardWei) / 1e18;
-    await query(
-      `INSERT INTO daily_challenge_claims (wallet_address, session_id, score, claimed_at, tx_hash, amount_celo)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [walletKey, sessionId, session.score, claimedAt, txHash, amountCelo]
-    );
-
-    await deleteDailyChallengeSession(sessionId);
     return res.json({
       ok: true,
       txHash,
-      amount: rewardDisplay,
-      score: session.score,
-      explorerUrl: `https://celoscan.io/tx/${txHash}`,
+      amount: `${rewardNim} NIM`,
     });
   } catch (error) {
     console.error("[daily-claim] failed:", error.message);
-    return res.status(502).json({
-      error: "Unable to send the daily reward right now. Please try again.",
-    });
+    return res.status(502).json({ error: "Unable to send daily NIM reward right now. Please try again." });
   }
 });
 
@@ -1761,7 +1695,7 @@ app.get("/api/daily/status", async (req, res) => {
     const todayStr = getDayKeyFromTimestamp();
     
     const claimRes = await query(
-      "SELECT claimed_at, tx_hash, amount_celo FROM daily_challenge_claims WHERE wallet_address = $1 AND DATE(claimed_at) = $2",
+      "SELECT claimed_at, tx_hash, amount_nimiq FROM daily_challenge_claims WHERE wallet_address = $1 AND DATE(claimed_at) = $2",
       [walletKey, todayStr]
     );
     const claimed = claimRes.rows.length > 0;
@@ -1785,7 +1719,7 @@ app.get("/api/daily/status", async (req, res) => {
       played,
       claimedAt: claimEntry?.claimed_at || null,
       txHash: claimEntry?.tx_hash || null,
-      amount: claimEntry?.amount_celo ? `${claimEntry.amount_celo} CELO` : null,
+      amount: claimEntry?.amount_nimiq ? `${claimEntry.amount_nimiq} NIM` : null,
       policy: "rolling-24h",
       nextAvailableAt,
       treasuryWallet: TREASURY_WALLET,
@@ -1929,11 +1863,11 @@ app.post("/api/rooms/quick-match", async (req, res) => {
   if (!room) {
     if (
       REQUIRE_ONCHAIN_ROOM &&
-      (!isWalletAddress(WORDPOT_CONTRACT_ADDRESS) || !wordPotContract.enabled)
+      (!isWalletAddress(NIMWORD_CONTRACT_ADDRESS) || !wordPotContract.enabled)
     ) {
       return res.status(503).json({
         error:
-          "Live rooms are waiting for the WordPot contract operator to be configured. Restart the server with the contract key and try again.",
+          "Live rooms are waiting for the NimWord contract operator to be configured. Restart the server with the contract key and try again.",
       });
     }
 
@@ -1962,7 +1896,7 @@ app.post("/api/rooms/quick-match", async (req, res) => {
     await addRoomToWaiting(room.id, difficulty);
 
     // Create contract room in background — player lands in lobby immediately
-    if (wordPotContract.enabled && isWalletAddress(WORDPOT_CONTRACT_ADDRESS)) {
+    if (wordPotContract.enabled && isWalletAddress(NIMWORD_CONTRACT_ADDRESS)) {
       room._contractRoomPending = true;
       await saveRoom(room);
       wordPotContract
@@ -1976,7 +1910,7 @@ app.post("/api/rooms/quick-match", async (req, res) => {
             if (currentRoom.contractRoomId) {
               pushSystemEvent(
                 currentRoom,
-                `Onchain room ${currentRoom.contractRoomId} opened on WordPotArena`,
+                `Onchain room ${currentRoom.contractRoomId} opened on NimWordArena`,
               );
             }
             markRoomDirty(currentRoom);
@@ -2499,7 +2433,7 @@ app.post("/api/rooms/:roomId/claim", async (req, res) => {
   }
 
   try {
-    const nimiqService = createWordPotContractService();
+    const nimiqService = createNimWordContractService();
     const txHash = await nimiqService.sendDailyReward(walletAddress, payout.amount);
     return res.json({ ok: true, txHash, amount: `${payout.amount} NIM` });
   } catch (error) {
@@ -2540,7 +2474,7 @@ app.post("/api/rooms/:roomId/settle", async (req, res) => {
 
   if (
     !wordPotContract.enabled ||
-    !isWalletAddress(WORDPOT_CONTRACT_ADDRESS) ||
+    !isWalletAddress(NIMWORD_CONTRACT_ADDRESS) ||
     !room.contractRoomId
   ) {
     return res.status(503).json({
@@ -2616,7 +2550,7 @@ app.post("/api/rooms/:roomId/cancel", async (req, res) => {
   if (getPaidPlayerIds(room).size > 0) {
     if (
       !wordPotContract.enabled ||
-      !isWalletAddress(WORDPOT_CONTRACT_ADDRESS) ||
+      !isWalletAddress(NIMWORD_CONTRACT_ADDRESS) ||
       !room.contractRoomId
     ) {
       return res
@@ -2631,7 +2565,7 @@ app.post("/api/rooms/:roomId/cancel", async (req, res) => {
       return res.status(200).json({
         room: await getRoomSummary(room),
         txHash: result.hash,
-        explorerUrl: getCeloExplorerTxUrl(result.hash),
+        explorerUrl: getNimiqExplorerTxUrl(result.hash),
       });
     } catch (error) {
       console.error("[cancel-room] refund failed:", error.message);
@@ -2770,6 +2704,6 @@ initDb()
   })
   .finally(() => {
     httpServer.listen(port, () => {
-      console.log(`WordPot server listening on http://localhost:${port}`);
+      console.log(`NimWord server listening on http://localhost:${port}`);
     });
   });

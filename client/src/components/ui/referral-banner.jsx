@@ -10,7 +10,7 @@ export function ReferralBanner({ walletAddress, className = "" }) {
   if (!code) return null;
 
   const shareUrl = `${window.location.origin}/?ref=${code}`;
-  const shareText = `🎁 Join WordPot with my invite code ${code} and race me in Celo word matches! Play here: ${shareUrl}`;
+  const shareText = `🎁 Join NimWord with my invite code ${code} and race me in Nimiq word matches! Play here: ${shareUrl}`;
 
   const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
   const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`;

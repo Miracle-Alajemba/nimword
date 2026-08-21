@@ -1,10 +1,10 @@
 /**
- * Helper module for managing referral codes and affiliate commission calculations in WordPot.
+ * Helper module for managing referral codes and affiliate commission calculations in NimWord.
  */
 
 /**
  * Generate a deterministic 6-character referral code for a wallet address.
- * @param {string} address - Celo EVM wallet address
+ * @param {string} address - Nimiq EVM wallet address
  * @returns {string} 6-character uppercase referral code
  */
 export function generateReferralCode(address) {
@@ -29,7 +29,7 @@ export function isValidReferralCode(code) {
 /**
  * Calculate affiliate referral commission split from treasury fee.
  * Default referral cut is 20% of treasury fee (equivalent to 2% of total room pot when treasury is 10%).
- * @param {number} treasuryFee - Total treasury fee in CELO
+ * @param {number} treasuryFee - Total treasury fee in NIM
  * @param {number} referralBps - Basis points for referrer (e.g. 2000 = 20%)
  * @returns {{ netTreasuryFee: number, referrerCommission: number }}
  */

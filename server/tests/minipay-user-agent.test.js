@@ -1,8 +1,8 @@
 import test from "node:test";
 import assert from "node:assert";
-import { isMiniPayUserAgent } from "../src/utils/minipay-user-agent.js";
+import { isNimiqPayUserAgent } from "../src/utils/minipay-user-agent.js";
 
-test("detects MiniPay string in User-Agent header", () => {
-  assert.strictEqual(isMiniPayUserAgent("Mozilla/5.0 (Linux; Android 10; MiniPay)"), true);
-  assert.strictEqual(isMiniPayUserAgent("Mozilla/5.0 (Windows NT 10.0)"), false);
+test("detects Nimiq Pay User Agent header", () => {
+  assert.strictEqual(isNimiqPayUserAgent("Mozilla/5.0 NimiqPay/1.0"), true);
+  assert.strictEqual(isNimiqPayUserAgent("Mozilla/5.0 Chrome/120"), false);
 });

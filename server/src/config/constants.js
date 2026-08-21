@@ -1,5 +1,5 @@
 /**
- * Centralized game configuration constants for WordPot.
+ * Centralized game configuration constants for NimWord.
  */
 
 export const GAME_RULES = {

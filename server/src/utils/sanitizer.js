@@ -1,5 +1,5 @@
 /**
- * Utility functions for sanitizing user inputs and EVM parameters in WordPot.
+ * Utility functions for sanitizing user inputs and EVM parameters in NimWord.
  */
 
 /**

@@ -1,3 +1,3 @@
-export function formatDailyStats(claimedCount = 0, poolCelo = "0.05") {
-  return { claimedCount, poolCelo, timestamp: new Date().toISOString() };
+export function formatDailyStats(claimedCount = 0, poolNimiq = "0.05") {
+  return { claimedCount, poolNimiq, timestamp: new Date().toISOString() };
 }

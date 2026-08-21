@@ -44,11 +44,11 @@ test("calculateRewardSplit allocates 90% prize pool proportionally by score", ()
     { address: "0x1111111111111111111111111111111111111111", score: 60 },
     { address: "0x2222222222222222222222222222222222222222", score: 40 },
   ];
-  const totalPool = 1.0; // 1 CELO total
+  const totalPool = 1.0; // 1 NIM total
 
   const result = calculateRewardSplit(totalPool, players);
 
   assert.equal(result.treasuryFee, 0.1); // 10% treasury fee
-  assert.equal(result.payouts[0].amount, 0.54); // 60% of 0.9 = 0.54 CELO
-  assert.equal(result.payouts[1].amount, 0.36); // 40% of 0.9 = 0.36 CELO
+  assert.equal(result.payouts[0].amount, 0.54); // 60% of 0.9 = 0.54 NIM
+  assert.equal(result.payouts[1].amount, 0.36); // 40% of 0.9 = 0.36 NIM
 });

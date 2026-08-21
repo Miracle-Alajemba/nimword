@@ -1,3 +1,3 @@
-export function buildRoomInviteLink(roomCode = "", origin = "https://wordpot.app") {
+export function buildRoomInviteLink(roomCode = "", origin = "https://nimword.app") {
   return `${origin}/join?code=${encodeURIComponent(roomCode)}`;
 }

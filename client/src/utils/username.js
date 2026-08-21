@@ -1,10 +1,10 @@
 /**
- * Client-side username helper for WordPot player profiles.
+ * Client-side username helper for NimWord player profiles.
  */
 
 import { getPlayerAlias } from "./ui-helpers.js";
 
-const USERNAME_STORAGE_PREFIX = "wordpot_username_";
+const USERNAME_STORAGE_PREFIX = "nimword_username_";
 
 /**
  * Get saved player username for a wallet address or fallback to default alias.

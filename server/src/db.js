@@ -19,7 +19,7 @@ export const pool = new Pool(
         port: Number(process.env.PGPORT || 5432),
         user: process.env.PGUSER || "postgres",
         password: process.env.PGPASSWORD || "",
-        database: process.env.PGDATABASE || "wordpot",
+        database: process.env.PGDATABASE || "nimword",
         connectionTimeoutMillis: 3000,
       }
 );
@@ -84,7 +84,7 @@ export async function initDb() {
       score INT NOT NULL,
       claimed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       tx_hash VARCHAR(66) NOT NULL CHECK (tx_hash ~ '^0x[a-fA-F0-9]{64}$'),
-      amount_celo NUMERIC(20, 6) NOT NULL
+      amount_nimiq NUMERIC(20, 6) NOT NULL
     );
   `;
 
@@ -105,7 +105,7 @@ export async function initDb() {
       difficulty VARCHAR(10) NOT NULL,
       source_word VARCHAR(15),
       entry_fee_wei NUMERIC(30, 0) NOT NULL,
-      reward_pool_celo NUMERIC(10, 4) NOT NULL,
+      reward_pool_nimiq NUMERIC(10, 4) NOT NULL,
       contract_room_id INT,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       started_at TIMESTAMP,

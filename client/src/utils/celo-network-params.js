@@ -1,7 +1,7 @@
-export const CELO_MAINNET_PARAMS = {
+export const NIM_MAINNET_PARAMS = {
   chainId: "0xa4ec",
-  chainName: "Celo Mainnet",
-  nativeCurrency: { name: "CELO", symbol: "CELO", decimals: 18 },
-  rpcUrls: ["https://forno.celo.org"],
-  blockExplorerUrls: ["https://celoscan.io"],
+  chainName: "Nimiq Mainnet",
+  nativeCurrency: { name: "NIM", symbol: "NIM", decimals: 18 },
+  rpcUrls: ["https://forno.nimiq.org"],
+  blockExplorerUrls: ["https://nimiqwatch.com"],
 };

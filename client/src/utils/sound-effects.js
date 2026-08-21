@@ -1,5 +1,5 @@
 /**
- * Web Audio API Sound Effects Synthesizer for WordPot UI feedback.
+ * Web Audio API Sound Effects Synthesizer for NimWord UI feedback.
  */
 
 class SoundEffects {

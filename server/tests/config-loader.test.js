@@ -7,7 +7,7 @@ describe("Config Loader Module", () => {
     const config = loadServerConfig({});
     assert.strictEqual(config.port, 4000);
     assert.strictEqual(config.nodeEnv, "development");
-    assert.strictEqual(config.celoChainId, 42220);
+    assert.strictEqual(config.nimiqChainId, 42220);
     assert.strictEqual(config.joinPaymentDisplay, "0.01");
   });
 

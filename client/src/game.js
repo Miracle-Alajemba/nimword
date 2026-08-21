@@ -46,7 +46,7 @@ export function evaluatePracticeSubmission({
     return {
       ok: false,
       code: "letters_only",
-      message: "Only letters are allowed in WordPot.",
+      message: "Only letters are allowed in NimWord.",
       word: normalized,
     };
   }

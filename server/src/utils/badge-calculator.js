@@ -5,7 +5,7 @@
 export const BADGE_DEFINITIONS = {
   WORD_SMITH: { id: "WORD_SMITH", name: "Word Smith", icon: "🧠", minScore: 50 },
   SPEED_DEMON: { id: "SPEED_DEMON", name: "Speed Demon", icon: "⚡", minWords: 10 },
-  CELO_CHAMP: { id: "CELO_CHAMP", name: "Celo Champ", icon: "🏆", minWins: 5 },
+  NIM_CHAMP: { id: "NIM_CHAMP", name: "Nimiq Champ", icon: "🏆", minWins: 5 },
   DAILY_STREAK: { id: "DAILY_STREAK", name: "Daily Streak", icon: "🔥", minStreak: 3 },
 };
 
@@ -24,8 +24,8 @@ export function calculateUnlockedBadges(stats = {}) {
   if (totalWords >= BADGE_DEFINITIONS.SPEED_DEMON.minWords) {
     unlocked.push(BADGE_DEFINITIONS.SPEED_DEMON);
   }
-  if (wins >= BADGE_DEFINITIONS.CELO_CHAMP.minWins) {
-    unlocked.push(BADGE_DEFINITIONS.CELO_CHAMP);
+  if (wins >= BADGE_DEFINITIONS.NIM_CHAMP.minWins) {
+    unlocked.push(BADGE_DEFINITIONS.NIM_CHAMP);
   }
   if (streak >= BADGE_DEFINITIONS.DAILY_STREAK.minStreak) {
     unlocked.push(BADGE_DEFINITIONS.DAILY_STREAK);

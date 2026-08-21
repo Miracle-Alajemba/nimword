@@ -20,7 +20,7 @@ const BUNDLED_DICTIONARY_PATH = fileURLToPath(
 );
 
 const DICTIONARY_CANDIDATE_PATHS = [
-  process.env.WORDPOT_DICTIONARY_PATH,
+  process.env.NIMWORD_DICTIONARY_PATH,
   BUNDLED_DICTIONARY_PATH,
   "/usr/share/dict/words",
   "/usr/share/dict/american-english",
@@ -284,7 +284,7 @@ function loadDictionary() {
       `Dictionary loaded: ${dictionaryWords.length} words from ${dictionaryPath}`,
     );
   } catch (error) {
-    console.error(`Unable to load WordPot dictionary: ${error.message}`);
+    console.error(`Unable to load NimWord dictionary: ${error.message}`);
     dictionaryWords = [];
     dictionaryWordCounts = [];
     dictionaryBitmasks = [];

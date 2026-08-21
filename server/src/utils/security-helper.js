@@ -1,5 +1,5 @@
 /**
- * Security and Input Sanitization Utility for WordPot Server
+ * Security and Input Sanitization Utility for NimWord Server
  */
 
 /**

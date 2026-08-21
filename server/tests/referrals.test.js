@@ -30,8 +30,8 @@ test("isValidReferralCode validates 6-character alphanumeric strings", () => {
 });
 
 test("calculateReferralCommission splits 20% of treasury fee to referrer", () => {
-  const treasuryFee = 0.10; // 0.10 CELO
+  const treasuryFee = 0.10; // 0.10 NIM
   const split = calculateReferralCommission(treasuryFee, 2000); // 20% of fee
-  assert.equal(split.referrerCommission, 0.02); // 0.02 CELO
-  assert.equal(split.netTreasuryFee, 0.08); // 0.08 CELO
+  assert.equal(split.referrerCommission, 0.02); // 0.02 NIM
+  assert.equal(split.netTreasuryFee, 0.08); // 0.08 NIM
 });

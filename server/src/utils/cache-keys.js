@@ -1,6 +1,6 @@
 export function getRoomCacheKey(roomId) {
-  return `wordpot:room:${roomId}`;
+  return `nimword:room:${roomId}`;
 }
 export function getUserCacheKey(address) {
-  return `wordpot:user:${address.toLowerCase()}`;
+  return `nimword:user:${address.toLowerCase()}`;
 }
