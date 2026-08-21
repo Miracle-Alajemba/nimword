@@ -2473,6 +2473,42 @@ app.post("/api/rooms/:roomId/claim-tx", async (req, res) => {
   return res.status(201).json({ room: await getRoomSummary(room) });
 });
 
+app.post("/api/rooms/:roomId/claim", async (req, res) => {
+  const room = await getRoomOr404(req.params.roomId, res);
+  if (!room) return;
+
+  const playerId = String(req.body?.playerId || "").trim();
+  const walletAddress = String(req.body?.walletAddress || "").trim();
+
+  if (!playerId) return res.status(400).json({ error: "Player id is required." });
+  if (!walletAddress) return res.status(400).json({ error: "Wallet address is required." });
+
+  settleRoom(room);
+
+  if (room.status !== "finished") {
+    return res.status(400).json({ error: "Room is not finished yet." });
+  }
+
+  const derived = getRoomDerived(room);
+  const payout = derived.payouts.find(
+    (p) => p.walletAddress?.toLowerCase() === walletAddress.toLowerCase()
+  );
+
+  if (!payout || payout.amount <= 0) {
+    return res.status(400).json({ error: "No reward available for this wallet." });
+  }
+
+  try {
+    const nimiqService = createWordPotContractService();
+    const txHash = await nimiqService.sendDailyReward(walletAddress, payout.amount);
+    return res.json({ ok: true, txHash, amount: `${payout.amount} NIM` });
+  } catch (error) {
+    console.error("[claim] failed:", error.message);
+    return res.status(502).json({ error: error.message || "Unable to send NIM reward." });
+  }
+});
+
+
 app.post("/api/rooms/:roomId/settle", async (req, res) => {
   const room = await getRoomOr404(req.params.roomId, res);
   if (!room) return;

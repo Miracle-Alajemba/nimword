@@ -432,7 +432,7 @@ export function LobbyScreen({
   const roomReadyToStart = enoughPlayers && allPaid;
   const joinMode = room?.onchain?.joinMode || "treasury_beta";
   const canStart = room?.status === "waiting" && enoughPlayers && isHost && allPaid;
-  const joinPayment = room?.onchain?.joinPaymentDisplay || "0.001 CELO";
+  const joinPayment = room?.onchain?.joinPaymentDisplay || "1 NIM";
   const hasPaid = (room?.onchain?.joinTransactions || []).some((entry) => entry.playerId === playerId);
   const inviteLink =
     room?.id && typeof window !== "undefined"
@@ -484,7 +484,7 @@ export function LobbyScreen({
             <h1>{room?.id || "LOADING"}</h1>
           </div>
           <div className="room-topbar__stats">
-            <span>{room?.entryFee || "0.001 CELO"}</span>
+            <span>{room?.entryFee || "1 NIM"}</span>
             <span>{room?.rewardPool || "--"}</span>
             <span>{room?.players?.length || 0}/{room?.maxPlayers || 5} players</span>
             <span className={syncMeta.className}>{syncMeta.label}</span>
@@ -567,7 +567,7 @@ export function LobbyScreen({
             <div className="lobby-summary-grid">
               <div className="lobby-stat-card">
                 <span>Entry Fee</span>
-                <strong>{room?.entryFee || "0.001 CELO"}</strong>
+                <strong>{room?.entryFee || "1 NIM"}</strong>
               </div>
               <div className="lobby-stat-card">
                 <span>Prize Pool</span>
@@ -732,7 +732,7 @@ export function MatchRoomScreen({
   const claimStatusCopy = claimRecorded
     ? `Your latest claim reference is ${shortenHash(myClaimTx?.txHash)}.`
     : payoutAmount > 0
-      ? "Scores are settled onchain. Click Claim Reward to receive your CELO."
+      ? "Scores are settled onchain. Click Claim Reward to receive your NIM."
       : "You finished the room, but there is no positive payout available for this wallet.";
 
   const sourceLetters = String(room?.sourceWord || "").split("");
@@ -871,7 +871,7 @@ export function MatchRoomScreen({
           <div className="room-topbar__stats">
             <span>{room?.players?.length || 0}/{room?.maxPlayers || 5} players online</span>
             <span>{room?.rewardPool || "--"}</span>
-            <span>{room?.entryFee || "0.001 CELO"}</span>
+            <span>{room?.entryFee || "1 NIM"}</span>
             <span className={syncMeta.className}>{syncMeta.label}</span>
           </div>
         </div>
@@ -1034,7 +1034,7 @@ export function MatchRoomScreen({
                 <div className="claim-card__top">
                   <div>
                     <span className="claim-card__label">Your reward</span>
-                    <strong className="claim-card__amount">{payoutAmount.toFixed(4)} CELO</strong>
+                    <strong className="claim-card__amount">{payoutAmount.toFixed(4)} NIM</strong>
                   </div>
                   <span className={`claim-card__status ${claimRecorded ? "claim-card__status--success" : payoutAmount > 0 ? "claim-card__status--ready" : ""}`}>
                     {claimStatusTitle}
@@ -1090,7 +1090,7 @@ export function MatchRoomScreen({
                       <strong>{getPlayerAlias(entry.walletAddress)}</strong>
                       <p>{shortenWalletAddress(entry.walletAddress)}</p>
                     </div>
-                    <span className="self-pill">{entry.amount} CELO</span>
+                    <span className="self-pill">{entry.amount} NIM</span>
                   </div>
                 ))}
               </div>

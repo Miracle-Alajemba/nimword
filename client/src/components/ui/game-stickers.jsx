@@ -1,9 +1,9 @@
 import React from "react";
 
 const STICKER_CONFIGS = {
-  celoArena: {
+  nimiqArena: {
     icon: "🏆",
-    label: "CELO ARENA",
+    label: "NIMIQ ARENA",
     bg: "linear-gradient(135deg, #f59e0b, #d97706)",
     color: "#fff",
     border: "rgba(251, 191, 36, 0.6)",
@@ -48,8 +48,8 @@ const STICKER_CONFIGS = {
   },
 };
 
-export function GameSticker({ type = "celoArena", size = "medium", className = "" }) {
-  const config = STICKER_CONFIGS[type] || STICKER_CONFIGS.celoArena;
+export function GameSticker({ type = "nimiqArena", size = "medium", className = "" }) {
+  const config = STICKER_CONFIGS[type] || STICKER_CONFIGS.nimiqArena;
 
   const isSmall = size === "small";
   const isLarge = size === "large";
@@ -94,7 +94,7 @@ export function GameStickerStrip({ className = "" }) {
         margin: "12px 0",
       }}
     >
-      <GameSticker type="celoArena" />
+      <GameSticker type="nimiqArena" />
       <GameSticker type="hotStreak" />
       <GameSticker type="wordMaster" />
       <GameSticker type="fastFingers" />

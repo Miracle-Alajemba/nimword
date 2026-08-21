@@ -1,62 +1,27 @@
 import { Component, Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
-import { zeroAddress } from "viem";
 import { io } from "socket.io-client";
 import { AppBottomNav, GameLoader } from "./components/ui/index.js";
 import { HomeScreen, LobbyScreen, MatchRoomScreen } from "./components/screens/index.js";
 import {
   API_BASE_URL,
-  CELO_MAINNET_CHAIN_ID,
   GAME_RULES,
 } from "./config/index.js";
-import { useWalletSession, useNimiqWallet } from "./hooks/index.js";
+import { useNimiqWallet } from "./hooks/index.js";
 import { useBackgroundMusic } from "./hooks/use-background-music.js";
 import { MusicToggle } from "./components/ui/music-toggle.jsx";
 import {
   clearRoomSession,
-  isWalletAddress,
   readRoomSession,
   saveRoomSession,
-  shortenWalletAddress,
 } from "./utils/index.js";
 
-const WORDPOT_ARENA_ABI = [
-  {
-    inputs: [{ internalType: "uint256", name: "roomId", type: "uint256" }],
-    name: "joinRoom",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "roomId", type: "uint256" }],
-    name: "claimReward",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address payable", name: "player", type: "address" },
-      { internalType: "uint256", name: "amount", type: "uint256" },
-    ],
-    name: "sendDailyReward",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      { internalType: "address payable", name: "recipient", type: "address" },
-    ],
-    name: "withdrawTo",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-];
+function isNimiqOrAnyAddress(value) {
+  const v = String(value || "").trim();
+  return v.length > 10; // accepts NQ... Nimiq addresses
+}
+
 const ROOM_FEED_LIMIT = 24;
 const ROOM_TX_LIMIT = 12;
-const SIGNED_MESSAGE_PREFIX = "wordpot-auth:";
 
 const PracticeScreen = lazy(() =>
   import("./components/screens/practice-screen.jsx").then((module) => ({
@@ -244,7 +209,7 @@ export default function App() {
   }, [screen, room?.id]);
 
   useEffect(() => {
-    if (!isWalletAddress(walletAddress)) return undefined;
+    if (!isNimiqOrAnyAddress(walletAddress)) return undefined;
 
     const session = readRoomSession();
     if (!session) return undefined;
@@ -304,7 +269,7 @@ export default function App() {
 
   useEffect(() => {
     if (inviteRoomJoinAttemptedRef.current) return;
-    if (!isWalletAddress(walletAddress.trim()) || !walletReady) return;
+    if (!isNimiqOrAnyAddress(walletAddress.trim()) || !walletReady) return;
 
     const params = new URLSearchParams(window.location.search);
     const inviteRoomId = String(params.get("room") || "").trim();
@@ -315,7 +280,7 @@ export default function App() {
   }, [walletAddress, walletReady]);
 
   async function checkDailyStatus() {
-    if (!isWalletAddress(walletAddress.trim())) return;
+    if (!isNimiqOrAnyAddress(walletAddress.trim())) return;
 
     try {
       const response = await fetch(
@@ -338,13 +303,13 @@ export default function App() {
   }
 
   useEffect(() => {
-    if (screen === "daily-challenge" && isWalletAddress(walletAddress.trim())) {
+    if (screen === "daily-challenge" && isNimiqOrAnyAddress(walletAddress.trim())) {
       checkDailyStatus();
     }
   }, [screen, walletAddress]);
 
   async function recordDailyPlay() {
-    if (!isWalletAddress(walletAddress.trim())) return false;
+    if (!isNimiqOrAnyAddress(walletAddress.trim())) return false;
 
     try {
       const response = await fetch(`${API_BASE_URL}/daily/play`, {
@@ -373,23 +338,11 @@ export default function App() {
     }
   }
 
-  async function signWalletMessage(message) {
-    const provider = getInjectedProvider();
-    if (!provider?.request) {
-      throw new Error("Reconnect your wallet in this browser, then claim again.");
-    }
-
-    return provider.request({
-      method: "personal_sign",
-      params: [message, walletAddress.trim()],
-    });
-  }
-
   async function claimDailyReward(sessionId) {
     setDailyClaimError("");
     setDailyClaimMessage("");
 
-    if (!isWalletAddress(walletAddress.trim())) {
+    if (!walletAddress.trim()) {
       await connectWallet();
       return;
     }
@@ -406,16 +359,12 @@ export default function App() {
 
     setDailyClaimBusy(true);
     try {
-      const signature = await signWalletMessage(
-        `${SIGNED_MESSAGE_PREFIX}daily-claim:${walletAddress.trim()}`,
-      );
       const response = await fetch(`${API_BASE_URL}/daily/claim`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           walletAddress: walletAddress.trim(),
           sessionId,
-          signature,
         }),
       });
       const data = await response.json();
@@ -428,7 +377,7 @@ export default function App() {
       setDailyPlayed(true);
       setDailyClaimTx(data.txHash || "");
       setDailyClaimAmount(data.amount || "");
-      setDailyClaimMessage(`Claimed! ${data.amount || "Your reward"} is on its way to your wallet.`);
+      setDailyClaimMessage(`Claimed! ${data.amount || "Your NIM reward"} is on its way to your wallet.`);
     } catch (error) {
       setDailyClaimError(error.message || "Unable to claim daily reward.");
     } finally {
@@ -456,7 +405,7 @@ export default function App() {
     setRoomError("");
     setRoomMessage("");
 
-    if (!isWalletAddress(walletAddress.trim())) {
+    if (!isNimiqOrAnyAddress(walletAddress.trim())) {
       setRoomError("Connect a valid wallet before joining quick match.");
       return;
     }
@@ -709,30 +658,12 @@ export default function App() {
       return;
     }
 
-    const contractAddress = room?.onchain?.contractAddress;
-    const contractRoomId = room?.onchain?.contractRoomId;
-
-    if (!isWalletAddress(contractAddress) || contractAddress === zeroAddress || !contractRoomId) {
-      setRoomError("Contract configuration incomplete. Please wait for the operator to settle the room.");
-      return;
-    }
-
-    const provider = getInjectedProvider();
-    if (!provider?.request) {
-      setRoomError("Open WordPot inside MiniPay or a wallet browser to claim your reward.");
-      return;
-    }
-
     setClaimBusy(true);
     try {
       setRoomError("");
-      setRoomMessage(
-        isMiniPay
-          ? "MiniPay will finalize scores onchain, then ask you to confirm the reward claim."
-          : "Finalizing scores onchain before reward claim...",
-      );
+      setRoomMessage("Requesting NIM reward payout from server...");
 
-      const settleResponse = await fetch(`${API_BASE_URL}/rooms/${room.id}/settle`, {
+      const response = await fetch(`${API_BASE_URL}/rooms/${room.id}/claim`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -740,71 +671,29 @@ export default function App() {
           walletAddress: myPlayer.walletAddress,
         }),
       });
-      const settleData = await settleResponse.json();
 
-      if (!settleResponse.ok) {
-        throw new Error(settleData.error || "Unable to settle this room onchain yet.");
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to claim reward.");
       }
 
-      if (settleData.room) {
-        setRoom(settleData.room);
-      }
-
-      setRoomMessage(
-        isMiniPay
-          ? "MiniPay will now ask you to confirm the reward claim transaction."
-          : "Confirm the reward claim in your wallet...",
-      );
-
-      await ensureCeloMainnet(provider, room?.onchain?.chainId || CELO_MAINNET_CHAIN_ID);
-      const targetChainId = room?.onchain?.chainId || CELO_MAINNET_CHAIN_ID;
-      const walletClient = getWalletClient(targetChainId);
-      const publicClient = getPublicClient(targetChainId);
-
-      let txHash = "";
-      if (walletClient && publicClient) {
-        const [account] = await walletClient.getAddresses();
-        
-        // Call the smart contract's claimReward function
-        txHash = await walletClient.writeContract({
-          account,
-          chain: walletClient.chain,
-          address: contractAddress,
-          abi: WORDPOT_ARENA_ABI,
-          functionName: "claimReward",
-          args: [BigInt(contractRoomId)],
-        });
-
-        // Wait for the transaction to be confirmed on the blockchain
-        await publicClient.waitForTransactionReceipt({ hash: txHash });
-      } else {
-        setRoomError("Wallet client not available. Please use MiniPay or MetaMask.");
-        return;
-      }
-
-      // Record the claim transaction on the server
       const recordResponse = await fetch(`${API_BASE_URL}/rooms/${room.id}/claim-tx`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           playerId,
           walletAddress: myPlayer.walletAddress,
-          txHash,
+          txHash: data.txHash || "",
           amount: String(myPayout.amount),
         }),
       });
 
       const recordData = await recordResponse.json();
+      if (recordData.room) setRoom(recordData.room);
 
-      if (!recordResponse.ok) {
-        throw new Error(recordData.error || "Failed to record the claim transaction.");
-      }
-
-      setRoom(recordData.room);
       setRoomMessage(
-        isMiniPay
-          ? `MiniPay claim confirmed! You will receive ${myPayout.amount} CELO. TX: ${txHash.slice(0, 10)}...`
-          : `Claim confirmed! You will receive ${myPayout.amount} CELO. TX: ${txHash.slice(0, 10)}...`,
+        `NIM reward sent! You will receive ${myPayout.amount} NIM. TX: ${(data.txHash || "").slice(0, 14)}...`
       );
     } catch (error) {
       setRoomError(error.message || "Unable to claim reward.");
@@ -856,16 +745,14 @@ export default function App() {
       walletAddress={walletAddress}
       walletStatus={walletStatus}
       walletReady={walletReady}
-      walletProviderName={walletProviderName}
-      walletNetworkLabel={walletNetworkLabel}
       walletConnectLabel={walletConnectLabel}
-      walletEnvironmentHint={walletEnvironmentHint}
-      isMiniPay={isMiniPay}
-      hasInjectedProvider={hasInjectedProvider}
       onConnectWallet={connectWallet}
       onDisconnectWallet={disconnectWallet}
       walletHint={walletHint}
       roomError={roomError}
+      avatarUrl={avatarUrl}
+      nimBalance={nimBalance}
+      shortenedAddress={shortenedAddress}
     />
   );
 
@@ -902,10 +789,6 @@ export default function App() {
             onRecordPlay={recordDailyPlay}
             onClaimDaily={claimDailyReward}
             onRefreshStatus={checkDailyStatus}
-            getInjectedProvider={getInjectedProvider}
-            getWalletClient={getWalletClient}
-            getPublicClient={getPublicClient}
-            ensureCeloMainnet={ensureCeloMainnet}
           />
         </Suspense>
       </DailyChallengeErrorBoundary>
@@ -964,11 +847,6 @@ export default function App() {
           walletAddress={walletAddress}
           walletReady={walletReady}
           onConnectWallet={connectWallet}
-          getInjectedProvider={getInjectedProvider}
-          getWalletClient={getWalletClient}
-          getPublicClient={getPublicClient}
-          ensureCeloMainnet={ensureCeloMainnet}
-          isMiniPay={isMiniPay}
         />
       </Suspense>
     );

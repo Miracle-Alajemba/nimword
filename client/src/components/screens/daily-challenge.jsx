@@ -222,12 +222,12 @@ export function DailyChallenge({
     }
 
     const rules = {
-      easy: { target: 40, reward: "0.05 CELO" },
-      medium: { target: 60, reward: "1 CELO" },
-      hard: { target: 80, reward: "2 CELO" }
+      easy: { target: 40, reward: "0.1 NIM" },
+      medium: { target: 60, reward: "1 NIM" },
+      hard: { target: 80, reward: "2 NIM" }
     };
     const target = rules[difficulty]?.target || 60;
-    const reward = rules[difficulty]?.reward || "1 CELO";
+    const reward = rules[difficulty]?.reward || "1 NIM";
 
     await loadDailyRound(
       difficulty,
@@ -442,7 +442,7 @@ export function DailyChallenge({
             <div className="trophy-cup-animated" style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🏆</div>
             <h2>Sign In to Play</h2>
             <p style={{ marginBottom: "1.5rem" }}>
-              Connect your Celo wallet to play the Daily Challenge and claim your reward (up to 2 CELO) once per day.
+              Connect your Nimiq wallet to play the Daily Challenge and claim your reward (up to 2 NIM) once per day.
             </p>
             <div className="hero-actions">
               <button type="button" onClick={onConnectWallet}>
@@ -492,7 +492,7 @@ export function DailyChallenge({
                 className="primary-button"
                 style={{ background: "var(--accent-mint)", color: "#121212", padding: "0.75rem 1.5rem", borderRadius: "8px", fontWeight: "bold" }}
               >
-                {isRetrying ? "Processing..." : "Buy Retry Ticket (0.05 CELO)"}
+                {isRetrying ? "Processing..." : "Buy Retry Ticket (0.1 NIM)"}
               </button>
               {retryError ? (
                 <div className="notice-strip notice-strip--error" style={{ marginTop: "10px" }}>{retryError}</div>
@@ -521,23 +521,23 @@ export function DailyChallenge({
           <div className="dc-claimed-screen">
             <div className="dc-claimed-screen__icon trophy-cup-animated">🏆</div>
             <h2 className="dc-claimed-screen__title">Reward Claimed</h2>
-            <p className="dc-claimed-screen__sub">You claimed your 0.05 CELO reward today.</p>
-            <div className="dc-claimed-screen__amount">0.05 CELO</div>
+            <p className="dc-claimed-screen__sub">You claimed your 0.1 NIM reward today.</p>
+            <div className="dc-claimed-screen__amount">0.1 NIM</div>
             {dailyClaimTx ? (
               <a
                 className="dc-result-card__tx-link"
-                href={`https://celoscan.io/tx/${dailyClaimTx}`}
+                href={`https://nimiqwatch.com/tx/${dailyClaimTx}`}
                 target="_blank"
                 rel="noreferrer"
               >
-                View transaction on Celoscan →
+                View transaction on Nimiq Explorer →
               </a>
             ) : null}
             <button
               type="button"
               className="dc-result-card__share-btn"
               onClick={() => {
-                const text = `I just claimed real CELO on WordPot! 🏆\n\nWordPot Daily Challenge pays 0.05 CELO every day — completely free to play.\n\nTry it at https://wordpot.vercel.app\n\n#WordPot #BuildOnCelo #Celo #Web3Gaming`;
+                const text = `I just claimed real NIM on NIMWORD! 🏆\n\nNIMWORD Daily Challenge pays 0.1 NIM every day — completely free to play.\n\nTry it at https://nimword.vercel.app\n\n#NIMWORD #Nimiq #Web3Gaming`;
                 if (navigator.share) {
                   navigator.share({ text });
                 } else {
@@ -575,7 +575,7 @@ export function DailyChallenge({
               <p className="play-label">Today's Word</p>
               <h1>{roundSeed?.sourceWord || "LOADING"}</h1>
               <p className="lede">
-                Score {roundSeed?.targetScore || 40} points in one free round to claim today's {roundSeed?.rewardDisplay || "0.01 CELO"} reward.
+                Score {roundSeed?.targetScore || 40} points in one free round to claim today's {roundSeed?.rewardDisplay || "0.1 NIM"} reward.
               </p>
               <div className="letter-rack letter-rack--play">
                 {sourceLetters.map((letter, index) => (
@@ -818,23 +818,23 @@ export function DailyChallenge({
                     ✓ Reward Claimed
                   </div>
                   <p className="dc-result-card__message">
-                    0.05 CELO has been sent to your wallet.
+                    0.1 NIM has been sent to your wallet.
                   </p>
                   {dailyClaimTx ? (
                     <a
                       className="dc-result-card__tx-link"
-                      href={`https://celoscan.io/tx/${dailyClaimTx}`}
+                      href={`https://nimiqwatch.com/tx/${dailyClaimTx}`}
                       target="_blank"
                       rel="noreferrer"
                     >
-                      View on Celoscan → {dailyClaimTx.slice(0, 10)}...{dailyClaimTx.slice(-6)}
+                      View on Nimiq Explorer → {dailyClaimTx.slice(0, 10)}...{dailyClaimTx.slice(-6)}
                     </a>
                   ) : null}
                   <button
                     type="button"
                     className="dc-result-card__share-btn"
                     onClick={() => {
-                      const text = `I just claimed 0.05 CELO on WordPot Daily Challenge! 🏆\n\nI scored ${score} pts from the word ${roundSeed?.sourceWord || ""}.\n\nPlay free at https://wordpot.vercel.app\n\n#WordPot #BuildOnCelo #Celo`;
+                      const text = `I just claimed 0.1 NIM on NIMWORD Daily Challenge! 🏆\n\nI scored ${score} pts from the word ${roundSeed?.sourceWord || ""}.\n\nPlay free at https://nimword.vercel.app\n\n#NIMWORD #Nimiq`;
                       if (navigator.share) {
                         navigator.share({ text });
                       } else {
@@ -858,7 +858,7 @@ export function DailyChallenge({
                     <div className="notice-strip notice-strip--error">{dailyClaimError}</div>
                   ) : null}
                   <p className="dc-result-card__message">
-                    You hit the target. Claim your <strong>0.05 CELO</strong> reward now.
+                    You hit the target. Claim your <strong>0.1 NIM</strong> reward now.
                   </p>
                   <button
                     type="button"
@@ -866,13 +866,13 @@ export function DailyChallenge({
                     onClick={handleClaim}
                     disabled={dailyClaimBusy}
                   >
-                    {dailyClaimBusy ? "Sending reward..." : walletConnected ? "Claim 0.05 CELO" : "Connect Wallet to Claim"}
+                    {dailyClaimBusy ? "Sending reward..." : walletConnected ? "Claim 0.1 NIM" : "Connect Nimiq Wallet to Claim"}
                   </button>
                   <button
                     type="button"
                     className="dc-result-card__share-btn"
                     onClick={() => {
-                      const text = `I scored ${score} pts on WordPot Daily Challenge and hit the target! 🎯\n\nPlay free and earn CELO at https://wordpot.vercel.app\n\n#WordPot #BuildOnCelo #Celo`;
+                      const text = `I scored ${score} pts on NIMWORD Daily Challenge and hit the target! 🎯\n\nPlay free and earn NIM at https://nimword.vercel.app\n\n#NIMWORD #Nimiq`;
                       if (navigator.share) {
                         navigator.share({ text });
                       } else {

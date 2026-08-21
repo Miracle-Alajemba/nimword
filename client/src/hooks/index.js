@@ -1,5 +1,5 @@
 export { useNimiqWallet } from "./use-nimiq-wallet.js";
-export { useWalletSession } from "./use-wallet-session.js";
+
 
 export { useMediaQuery } from "./use-media-query.js";
 export { useClipboard } from "./use-clipboard.js";
