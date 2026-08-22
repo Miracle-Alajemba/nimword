@@ -18,7 +18,7 @@ async function getHubApi() {
   if (!hubApiInstance && typeof window !== "undefined") {
     try {
       const HubApiModule = await import("@nimiq/hub-api");
-      const HubApi = HubApiModule.default || HubApiModule;
+      const HubApi = HubApiModule.default || HubApiModule.HubApi || HubApiModule;
       hubApiInstance = new HubApi(NIMIQ_HUB_URL);
     } catch (err) {
       console.warn("Failed to load @nimiq/hub-api:", err);
@@ -128,12 +128,25 @@ export function useNimiqWallet() {
         }
       }
 
-      // Hub API fallback for desktop / standard browsers
+      // Standard Browser: Use Nimiq Hub API chooseAddress or login
       const hub = await getHubApi();
-      if (hub && typeof hub.onLogin === "function") {
+      if (hub) {
         setWalletStatus("Opening Nimiq Hub...");
-        const result = await hub.onLogin();
-        const addr = result?.address || result?.account?.address || "";
+        let result = null;
+        try {
+          if (typeof hub.chooseAddress === "function") {
+            result = await hub.chooseAddress({ appName: "NimWord" });
+          } else if (typeof hub.login === "function") {
+            result = await hub.login({ appName: "NimWord" });
+          } else if (typeof hub.onboard === "function") {
+            result = await hub.onboard({ appName: "NimWord" });
+          }
+        } catch (hubErr) {
+          console.warn("Nimiq Hub prompt closed or cancelled:", hubErr);
+          // If popup is blocked or user cancelled, do not crash
+        }
+
+        const addr = result?.address || result?.account?.address || (Array.isArray(result?.addresses) && result.addresses[0]?.address) || "";
         if (addr && isNimiqAddress(addr)) {
           const formatted = formatNimiqAddress(addr);
           setWalletAddress(formatted);
@@ -145,7 +158,7 @@ export function useNimiqWallet() {
         }
       }
 
-      // Fallback generator for demo/testing when Hub API popups are disabled
+      // Direct fallback mock wallet for test environments if Hub popup was dismissed
       const mockAddress = "NQ43 8S3S J4D4 7979 K2D8 X7B0 XL0D 43K9";
       setWalletAddress(mockAddress);
       window.localStorage.setItem(NIMWORD_STORAGE_KEY, mockAddress);
