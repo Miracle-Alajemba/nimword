@@ -174,27 +174,18 @@ export function HomeScreen({
             </div>
           ) : null}
 
-          <div className="wallet-compact" style={{ marginTop: "1rem" }}>
-            <span className={`wallet-chip ${walletAddress ? "wallet-chip--ok" : "wallet-chip--warn"}`}>
-              {walletAddress
-                ? `● Connected · ${shortenWalletAddress(walletAddress)}`
-                : "○ No wallet connected"}
-            </span>
-            {walletAddress ? (
+          {walletAddress ? (
+            <div className="wallet-compact" style={{ marginTop: "0.5rem" }}>
+              <span className="wallet-chip wallet-chip--ok">
+                ● Connected · {shortenWalletAddress(walletAddress)}
+              </span>
               <div className="wallet-compact__actions">
                 <button type="button" className="button-secondary" onClick={onDisconnectWallet}>
                   Disconnect
                 </button>
               </div>
-            ) : (
-              <div className="wallet-compact__actions">
-                <button type="button" onClick={onConnectWallet}>
-                  Connect Wallet
-                </button>
-              </div>
-            )}
-            {walletStatus ? <p className="field-hint">{walletStatus}</p> : null}
-          </div>
+            </div>
+          ) : null}
 
           <TotalPayoutsBanner />
         </div>
@@ -289,15 +280,9 @@ export function HomeScreen({
             <button type="button" className="button-secondary" onClick={onOpenProfile}>
               View Profile
             </button>
-            {!walletAddress ? (
-              <button type="button" onClick={onConnectWallet}>
-                Connect Nimiq Wallet
-              </button>
-            ) : (
-              <button type="button" className="button-secondary" onClick={onOpenSettings}>
-                Settings
-              </button>
-            )}
+            <button type="button" className="button-secondary" onClick={onOpenSettings}>
+              Settings
+            </button>
           </div>
 
           <div className="sample-scoring-footer">
@@ -310,10 +295,10 @@ export function HomeScreen({
               </span>
             </div>
             <div className="sample-scoring-footer__matrix">
-              <div className="sample-scoring-footer__item"><span>3 LTRS</span><strong>3 pts</strong></div>
-              <div className="sample-scoring-footer__item"><span>4 LTRS</span><strong>5 pts</strong></div>
-              <div className="sample-scoring-footer__item"><span>5 LTRS</span><strong>8 pts</strong></div>
-              <div className="sample-scoring-footer__item"><span>6+ LTRS</span><strong>12 pts</strong></div>
+              <div className="scoring-pill"><span>3 LTRS</span><strong>3 pts</strong></div>
+              <div className="scoring-pill"><span>4 LTRS</span><strong>5 pts</strong></div>
+              <div className="scoring-pill"><span>5 LTRS</span><strong>8 pts</strong></div>
+              <div className="scoring-pill"><span>6+ LTRS</span><strong>12 pts</strong></div>
             </div>
           </div>
         </div>
