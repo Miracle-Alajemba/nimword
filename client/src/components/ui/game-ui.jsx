@@ -1,11 +1,10 @@
+import { AvatarCircle } from "./avatar-circle.jsx";
 import {
   formatEventTime,
   formatRoomTimer,
-  getAvatarStyle,
   getPlayerAlias,
   shortenWalletAddress,
 } from "../../utils/ui-helpers.js";
-
 
 export function ScoreBadge({ label, value, className = "" }) {
   return (
@@ -41,10 +40,8 @@ export function TimerTone({ seconds }) {
 
 export function PlayerIdentity({ walletAddress, emphasis = false }) {
   return (
-    <div className="player-identity">
-      <span className={`player-avatar ${emphasis ? "player-avatar--large" : ""}`} style={getAvatarStyle(walletAddress)}>
-        {walletAddress?.slice(2, 4).toUpperCase() || "WP"}
-      </span>
+    <div className="player-identity" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <AvatarCircle address={walletAddress} size={emphasis ? 36 : 28} />
       <div className="player-identity__copy">
         <strong>{getPlayerAlias(walletAddress)}</strong>
         <span>{shortenWalletAddress(walletAddress)}</span>

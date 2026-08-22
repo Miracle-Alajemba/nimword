@@ -1,3 +1,13 @@
+import Identicons, { IdenticonsAssets } from "@nimiq/identicons/dist/identicons.bundle.min.js";
+
+// Ensure IdenticonsAssets is available globally as required by @nimiq/identicons bundle
+const g = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : global;
+if (g && g.IdenticonsAssets === undefined) {
+  g.IdenticonsAssets = IdenticonsAssets;
+}
+
+const identiconCache = new Map();
+
 /**
  * Validates a Nimiq address starting with NQ
  */
@@ -46,59 +56,34 @@ export function shortenWalletAddress(address = "") {
 }
 
 /**
- * Simple string hash to generate a hex seed for Identicon
+ * Generates the official Nimiq Identicon data URL (same hash -> same hex face / parts)
  */
-function hashString(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0;
+export async function getNimiqAvatarAsync(address = "") {
+  if (!address) return "";
+  const clean = String(address).trim();
+  if (identiconCache.has(clean)) {
+    return identiconCache.get(clean);
   }
-  // Convert to 15-char hex string required by identicon.js
-  const hex = Math.abs(hash).toString(16).padStart(15, "0");
-  return hex.repeat(2).slice(0, 15);
+  try {
+    const dataUrl = await Identicons.toDataUrl(clean);
+    identiconCache.set(clean, dataUrl);
+    return dataUrl;
+  } catch (err) {
+    console.warn("Failed to generate official Nimiq identicon:", err);
+    return "";
+  }
 }
 
 /**
- * Generates a simple SVG avatar from a wallet address hash.
- * No external dependencies — pure inline SVG generation.
+ * Synchronous accessor returning cached data URL or placeholder
  */
 export function getNimiqAvatar(address = "") {
   if (!address) return "";
-  try {
-    const cleanAddress = String(address).replace(/\s+/g, "").toUpperCase();
-    const hash = hashString(cleanAddress);
-
-    // Generate a deterministic color from the hash
-    const hue = parseInt(hash.slice(0, 4), 16) % 360;
-    const sat = 60 + (parseInt(hash.slice(4, 6), 16) % 30);
-    const lightness = 45 + (parseInt(hash.slice(6, 8), 16) % 15);
-    const bgHue = (hue + 180) % 360;
-
-    // Create a simple SVG identicon with geometric shapes
-    const cells = 5;
-    const cellSize = 10;
-    const size = cells * cellSize;
-    let rects = "";
-
-    for (let x = 0; x < Math.ceil(cells / 2); x++) {
-      for (let y = 0; y < cells; y++) {
-        const idx = x * cells + y;
-        const charCode = hash.charCodeAt(idx % hash.length);
-        if (charCode % 2 === 0) {
-          // Mirror horizontally for symmetry
-          rects += `<rect x="${x * cellSize}" y="${y * cellSize}" width="${cellSize}" height="${cellSize}" fill="hsl(${hue}, ${sat}%, ${lightness}%)" />`;
-          const mirrorX = (cells - 1 - x) * cellSize;
-          rects += `<rect x="${mirrorX}" y="${y * cellSize}" width="${cellSize}" height="${cellSize}" fill="hsl(${hue}, ${sat}%, ${lightness}%)" />`;
-        }
-      }
-    }
-
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="64" height="64"><rect width="${size}" height="${size}" fill="hsl(${bgHue}, 20%, 15%)" />${rects}</svg>`;
-    const encoded = btoa(svg);
-    return `data:image/svg+xml;base64,${encoded}`;
-  } catch (err) {
-    console.warn("Avatar generation error:", err);
-    return "";
+  const clean = String(address).trim();
+  if (identiconCache.has(clean)) {
+    return identiconCache.get(clean);
   }
+  // Trigger async load to populate cache for subsequent renders
+  getNimiqAvatarAsync(clean).catch(() => {});
+  return "";
 }

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { MetricCard, PlayerIdentity, GameLoader, UsernameModal } from "../ui";
+import { MetricCard, PlayerIdentity, GameLoader, UsernameModal, AvatarCircle } from "../ui";
 import { getSavedUsername } from "../../utils/username.js";
 
 import {
-  getAvatarStyle,
+  formatNimiqAddress,
   getPlayerAlias,
   isWalletAddress,
   shortenWalletAddress,
@@ -157,13 +157,11 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onBack }) {
 
         <section className="profile-shell">
           <article className="panel profile-panel profile-panel--hero">
-            <div className="profile-head">
-              <span className="profile-avatar" style={getAvatarStyle(walletAddress || "guest-wallet")}>
-                {(connected ? walletAddress.slice(2, 4) : "WP").toUpperCase()}
-              </span>
+            <div className="profile-head" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <AvatarCircle address={walletAddress} size={64} />
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                  <h1 className="profile-title" style={{ margin: 0 }}>{alias}</h1>
+                  <h1 className="profile-title" style={{ margin: 0, fontSize: "1.4rem" }}>{alias}</h1>
                   {connected && (
                     <button
                       type="button"
@@ -175,20 +173,22 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onBack }) {
                     </button>
                   )}
                 </div>
-                <p className="profile-subtitle">{connected ? shortenWalletAddress(walletAddress) : "Connect a wallet to personalise your profile."}</p>
-                <span className="rank-badge">Word Artist • Level 7</span>
+                <p className="profile-subtitle" style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", marginTop: "4px" }}>
+                  {connected ? formatNimiqAddress(walletAddress) || shortenWalletAddress(walletAddress) : "Connect a Nimiq wallet to personalise your profile."}
+                </p>
+                <span className="rank-badge" style={{ marginTop: "6px", display: "inline-block" }}>Word Artist • Level 7</span>
               </div>
             </div>
-            {!connected ? <button type="button" onClick={onConnectWallet}>Connect Wallet</button> : null}
+            {!connected ? <button type="button" onClick={onConnectWallet} style={{ marginTop: "12px" }}>Connect Nimiq Wallet</button> : null}
           </article>
 
           <article className="panel profile-panel">
-            <h3>Stats</h3>
+            <h3>Player Stats</h3>
             <div className="profile-stats-grid">
               <MetricCard label="Wins" value="18" hint="Lifetime arena wins" />
               <MetricCard label="Streak" value="4" hint="Current win streak" />
               <MetricCard label="Level" value="7" hint="Progression level" />
-              <MetricCard label="Earnings" value="$24.60" hint="Total rewards earned" />
+              <MetricCard label="Earnings" value="24.6 NIM" hint="Total rewards earned" />
             </div>
           </article>
 
