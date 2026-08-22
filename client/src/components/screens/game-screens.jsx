@@ -69,6 +69,7 @@ export function HomeScreen({
   const [sampleScore, setSampleScore] = useState(0);
   const [sampleWords, setSampleWords] = useState([]);
   const [sampleFeedback, setSampleFeedback] = useState(null);
+  const [showRulesModal, setShowRulesModal] = useState(false);
 
   const sampleLetters = "BLOCKCHAIN".split("");
   const sampleCandidate = sampleIndexes.map((i) => sampleLetters[i]).join("");
@@ -117,8 +118,8 @@ export function HomeScreen({
   }
 
   const joinLabel = walletAddress
-    ? "Stake 1 NIM & Play"
-    : "Connect Nimiq Wallet";
+    ? "🎮 Stake 1 NIM & Play"
+    : "⚡ Connect Nimiq Wallet";
 
   return (
     <main className="page-shell">
@@ -132,31 +133,39 @@ export function HomeScreen({
             />
             <h1 className="hero-logo__name">NimWord</h1>
           </div>
-          <GameStickerStrip />
 
-          <p className="lede">
-            A fast multiplayer word challenge where players build words from a
-            shared prompt, race the clock, and earn a share of the pot based on
-            how well they perform. Multiplayer rooms use wallet identity so
-            payouts can go straight back to players.
-          </p>
-          <p className="lede lede--tagline">
-            Build words. Beat the clock. Earn NIM.
+          <p className="lede lede--tagline" style={{ fontSize: "1.15rem", marginBottom: "0.5rem" }}>
+            Form words. Beat the clock. Win NIM.
           </p>
 
-          <div className="hero-actions hero-actions--grid">
-            <button type="button" onClick={onQuickMatch}>
+          <div className="feature-strip" style={{ marginBottom: "1rem" }}>
+            <div className="feature-pill">⚡ 60s Rounds</div>
+            <div className="feature-pill">🪙 1 NIM Entry</div>
+            <div className="feature-pill">🏆 90% Win Pool</div>
+          </div>
+
+          <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.6rem", width: "100%" }}>
+            <button type="button" onClick={onQuickMatch} style={{ padding: "0.95rem 1.4rem", fontSize: "1.05rem" }}>
               {joinLabel}
             </button>
-            <button type="button" className="button-secondary" onClick={onOpenDailyChallenge}>
-              Daily Challenge
-            </button>
-            <button type="button" className="button-secondary" onClick={onStartPractice}>
-              Practice Arena
-            </button>
-            <button type="button" className="button-secondary button-accent-blue" onClick={onOpenLeaderboard}>
-              Leaderboard
-            </button>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%" }}>
+              <button type="button" className="button-secondary" onClick={onOpenDailyChallenge}>
+                ⭐ Daily Challenge
+              </button>
+              <button type="button" className="button-secondary" onClick={onStartPractice}>
+                🎯 Practice Arena
+              </button>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%" }}>
+              <button type="button" className="button-secondary button-accent-blue" onClick={onOpenLeaderboard}>
+                🏆 Leaderboard
+              </button>
+              <button type="button" className="button-secondary" onClick={() => setShowRulesModal(true)}>
+                📖 How to Play
+              </button>
+            </div>
           </div>
 
           {roomError ? (
@@ -165,7 +174,7 @@ export function HomeScreen({
             </div>
           ) : null}
 
-          <div className="wallet-compact">
+          <div className="wallet-compact" style={{ marginTop: "1rem" }}>
             <span className={`wallet-chip ${walletAddress ? "wallet-chip--ok" : "wallet-chip--warn"}`}>
               {walletAddress
                 ? `● Connected · ${shortenWalletAddress(walletAddress)}`
@@ -180,25 +189,15 @@ export function HomeScreen({
             ) : (
               <div className="wallet-compact__actions">
                 <button type="button" onClick={onConnectWallet}>
-                  Connect Nimiq Wallet
+                  Connect Wallet
                 </button>
               </div>
             )}
             {walletStatus ? <p className="field-hint">{walletStatus}</p> : null}
           </div>
 
-          <div className="feature-strip">
-            <div className="feature-pill">60 second rounds</div>
-            <div className="feature-pill">1 NIM entry</div>
-            <div className="feature-pill">90% split by score</div>
-            <div className="feature-pill">Live room chat</div>
-            <div className="feature-pill">Free practice arena</div>
-            <div className="feature-pill">Daily challenge mode</div>
-          </div>
-
           <TotalPayoutsBanner />
         </div>
-
 
         <div className="hero-card hero-card--interactive">
           <div className="hero-card__top">
@@ -251,33 +250,33 @@ export function HomeScreen({
               </button>
               <button
                 type="button"
-                style={{ padding: "0.4rem 1rem", fontSize: "0.75rem" }}
+                style={{ padding: "0.4rem 0.9rem", fontSize: "0.75rem" }}
                 onClick={handleTestSampleWord}
-                disabled={sampleIndexes.length < 3}
+                disabled={!sampleCandidate}
               >
                 Test Word
               </button>
             </div>
           </div>
 
-          {sampleFeedback && (
-            <div className={`sample-feedback sample-feedback--${sampleFeedback.type}`}>
+          {sampleFeedback ? (
+            <div className={`notice-strip notice-strip--${sampleFeedback.type}`}>
               {sampleFeedback.text}
             </div>
-          )}
+          ) : null}
 
-          {sampleWords.length > 0 && (
-            <div className="sample-words-list">
-              <span className="field-hint" style={{ fontSize: "0.75rem" }}>Found Words:</span>
-              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap", marginTop: "4px" }}>
+          {sampleWords.length > 0 ? (
+            <div className="sample-found-list">
+              <span className="field-hint">Words Found ({sampleWords.length}):</span>
+              <div className="sample-chips-row">
                 {sampleWords.map((w, idx) => (
-                  <span key={`${w.word}-${idx}`} className="sample-word-tag">
-                    {w.word} <strong>+{w.points}</strong>
+                  <span key={idx} className="word-chip">
+                    <strong>{w.word}</strong> <small>+{w.points}</small>
                   </span>
                 ))}
               </div>
             </div>
-          )}
+          ) : null}
 
           <div className="hero-card__grid">
             <span>Timer: 60s</span>
@@ -286,7 +285,7 @@ export function HomeScreen({
             <span>Pool: 90% shared</span>
           </div>
 
-          <div className="hero-card__actions">
+          <div className="hero-card__footer">
             <button type="button" className="button-secondary" onClick={onOpenProfile}>
               View Profile
             </button>
@@ -296,7 +295,7 @@ export function HomeScreen({
               </button>
             ) : (
               <button type="button" className="button-secondary" onClick={onOpenSettings}>
-                Display Settings
+                Settings
               </button>
             )}
           </div>
@@ -311,50 +310,101 @@ export function HomeScreen({
               </span>
             </div>
             <div className="sample-scoring-footer__matrix">
-              <div className="scoring-pill"><span>3 Ltrs</span> <strong>3 pts</strong></div>
-              <div className="scoring-pill"><span>4 Ltrs</span> <strong>5 pts</strong></div>
-              <div className="scoring-pill"><span>5 Ltrs</span> <strong>8 pts</strong></div>
-              <div className="scoring-pill"><span>6+ Ltrs</span> <strong>12 pts</strong></div>
+              <div className="sample-scoring-footer__item"><span>3 LTRS</span><strong>3 pts</strong></div>
+              <div className="sample-scoring-footer__item"><span>4 LTRS</span><strong>5 pts</strong></div>
+              <div className="sample-scoring-footer__item"><span>5 LTRS</span><strong>8 pts</strong></div>
+              <div className="sample-scoring-footer__item"><span>6+ LTRS</span><strong>12 pts</strong></div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="content-grid">
-        <article className="panel">
-          <h3>Core Loop</h3>
-          <ol>
-            <li>Join a NIMWORD match room</li>
-            <li>Get a shared 7-letter source word</li>
-            <li>Submit valid words before 60s timer ends</li>
-            <li>Score points from word length & bonuses</li>
-            <li>90% NIM prize pool distributed to top scoring players</li>
-          </ol>
-        </article>
+      {showRulesModal ? (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowRulesModal(false)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0, 0, 0, 0.75)",
+            backdropFilter: "blur(6px)",
+            zIndex: 1000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "1rem",
+          }}
+        >
+          <div
+            className="modal-content panel"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: "500px",
+              width: "100%",
+              maxHeight: "85vh",
+              overflowY: "auto",
+              padding: "1.75rem",
+              borderRadius: "16px",
+              background: "#13131a",
+              border: "1px solid rgba(255, 255, 255, 0.15)",
+              boxShadow: "0 20px 60px rgba(0,0,0,0.8)",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+              <h2 style={{ fontSize: "1.5rem", margin: 0, color: "#f5f7ff" }}>📖 How to Play NimWord</h2>
+              <button
+                type="button"
+                className="button-secondary"
+                onClick={() => setShowRulesModal(false)}
+                style={{ padding: "0.3rem 0.7rem", fontSize: "0.85rem" }}
+              >
+                ✕
+              </button>
+            </div>
 
-        <article className="panel">
-          <h3>Game Rules</h3>
-          <ul>
-            {gameRules.length ? (
-              gameRules.map((rule) => (
-                <li key={rule}>{rule}</li>
-              ))
-            ) : (
-              <li>Rules are loading for this round.</li>
-            )}
-          </ul>
-        </article>
+            <article style={{ marginBottom: "1.25rem" }}>
+              <h3 style={{ fontSize: "1.1rem", color: "#00B4D8", marginBottom: "0.4rem" }}>🎮 Core Loop</h3>
+              <ol style={{ paddingLeft: "1.2rem", lineHeight: "1.6", color: "#a0a5c2", fontSize: "0.95rem" }}>
+                <li>Join a NIMWORD match room or practice solo</li>
+                <li>Get a shared 7-letter source word</li>
+                <li>Submit valid English words before the 60s timer expires</li>
+                <li>Score points based on word length and speed</li>
+                <li>90% NIM prize pool is shared by score rankings</li>
+              </ol>
+            </article>
 
-        <article className="panel panel-wide">
-          <h3>Prize Logic</h3>
-          <p>
-            Every match room starts with a 1 NIM entry stake from each player. NIMWORD
-            keeps a 10% treasury fee, and the remaining 90% is shared using a
-            simple formula: your score divided by total room score, multiplied by
-            the reward pool. Payouts are transferred directly to your Nimiq address.
-          </p>
-        </article>
-      </section>
+            <article style={{ marginBottom: "1.25rem" }}>
+              <h3 style={{ fontSize: "1.1rem", color: "#63f4ca", marginBottom: "0.4rem" }}>📜 Game Rules</h3>
+              <ul style={{ paddingLeft: "1.2rem", lineHeight: "1.6", color: "#a0a5c2", fontSize: "0.95rem" }}>
+                <li>Words must be at least 3 letters long</li>
+                <li>Use each letter only as many times as it appears in the prompt</li>
+                <li>Duplicate word submissions in the same round do not score</li>
+                <li>Every valid word scores based on length: 3L = 3pts, 4L = 5pts, 5L = 8pts, 6L+ = 12pts</li>
+              </ul>
+            </article>
+
+            <article style={{ marginBottom: "1.5rem" }}>
+              <h3 style={{ fontSize: "1.1rem", color: "#FFD700", marginBottom: "0.4rem" }}>🪙 Prize Logic</h3>
+              <p style={{ color: "#a0a5c2", fontSize: "0.92rem", lineHeight: "1.5" }}>
+                Every match room starts with a 1 NIM entry stake. NIMWORD takes a 10% treasury fee, and the remaining 90% is shared using:
+                <br />
+                <code style={{ display: "block", background: "rgba(0,0,0,0.4)", padding: "0.5rem", borderRadius: "6px", margin: "0.5rem 0", color: "#ffd700", fontFamily: "var(--font-mono)" }}>
+                  (Your Score / Total Room Score) × Prize Pool
+                </code>
+                Payouts are transferred directly to your Nimiq address upon round completion.
+              </p>
+            </article>
+
+            <button
+              type="button"
+              onClick={() => setShowRulesModal(false)}
+              style={{ width: "100%", padding: "0.85rem", fontSize: "1rem" }}
+            >
+              Got it, Let's Play!
+            </button>
+          </div>
+        </div>
+      ) : null}
     </main>
   );
 }
