@@ -151,15 +151,21 @@ async function removeRoomFromWaiting(roomId, difficulty) {
   await redis.srem(`waiting_rooms:${targetDifficulty}`, roomId);
 }
 
-async function getWaitingRoom(difficulty) {
+async function getWaitingRoom(difficulty, stakeAmount = 1) {
   const targetDifficulty = normalizeDifficultyParam(difficulty);
+  const targetStake = Math.max(0.1, Number(stakeAmount) || 1);
   try {
     const roomIds = await redis.smembers(`waiting_rooms:${targetDifficulty}`);
     for (const roomId of roomIds) {
       const room = await getRoom(roomId);
-      if (room && room.status === "waiting" && room.players.length < MAX_PLAYERS) {
+      if (
+        room &&
+        room.status === "waiting" &&
+        room.players.length < MAX_PLAYERS &&
+        (room.entryFeeNim === targetStake || (!room.entryFeeNim && targetStake === 1))
+      ) {
         return room;
-      } else {
+      } else if (!room || room.status !== "waiting" || room.players.length >= MAX_PLAYERS) {
         await removeRoomFromWaiting(roomId, targetDifficulty);
       }
     }
@@ -609,12 +615,9 @@ function makeId(prefix) {
   return `${prefix}_${crypto.randomUUID().split("-")[0]}`;
 }
 
-function getRewardPool(playerCount) {
-  return (
-    playerCount *
-    (Number(JOIN_PAYMENT_WEI) / 1_000_000_000_000_000_000) *
-    0.9
-  ).toFixed(4);
+function getRewardPool(playerCount, entryFeeNim = 1) {
+  const fee = Math.max(0.1, Number(entryFeeNim) || 1);
+  return (playerCount * fee * 0.9).toFixed(2);
 }
 
 function normalizeWord(value) {
@@ -805,7 +808,8 @@ function getRoomDerived(room) {
   const scoreboard = Array.from(playerStats.values()).sort(
     (a, b) => b.score - a.score,
   );
-  const rewardPool = Number(getRewardPool(room.players.length));
+  const entryFeeNim = Math.max(0.1, Number(room.entryFeeNim) || 1);
+  const rewardPool = Number(getRewardPool(room.players.length, entryFeeNim));
   const totalScore = scoreboard.reduce((sum, entry) => sum + entry.score, 0);
   const payouts = totalScore
     ? scoreboard.map((entry) => ({
@@ -902,13 +906,14 @@ async function getRoomSummary(room, options = {}) {
     id: room.id,
     status: room.status,
     difficulty: room.difficulty || "medium",
-    entryFee: ENTRY_FEE,
+    entryFee: room.entryFee || `${room.entryFeeNim || 1} NIM`,
+    entryFeeNim: room.entryFeeNim || 1,
     minPlayers: MIN_PLAYERS,
     maxPlayers: MAX_PLAYERS,
     roundDurationSeconds: ROUND_SECONDS,
     hostPlayerId: room.hostPlayerId,
     sourceWord: room.sourceWord || null,
-    rewardPool: `${getRewardPool(room.players.length)} NIM`,
+    rewardPool: `${getRewardPool(room.players.length, room.entryFeeNim || 1)} NIM`,
     createdAt: room.createdAt,
     expiresAt:
       room.status === "waiting" && room.createdAt
@@ -1836,6 +1841,7 @@ app.post("/api/rooms/quick-match", async (req, res) => {
   const walletAddress = String(req.body?.walletAddress || "").trim();
   const signature = String(req.body?.signature || "").trim();
   const difficulty = normalizeDifficultyParam(req.body?.difficulty);
+  const stakeAmount = Math.max(0.1, Math.min(1000, Number(req.body?.stakeAmount || req.body?.entryFee || 1)));
 
   if (!isWalletAddress(walletAddress)) {
     return res
@@ -1858,7 +1864,7 @@ app.post("/api/rooms/quick-match", async (req, res) => {
     }
   }
 
-  let room = await getWaitingRoom(difficulty);
+  let room = await getWaitingRoom(difficulty, stakeAmount);
 
   if (!room) {
     if (
@@ -1876,6 +1882,8 @@ app.post("/api/rooms/quick-match", async (req, res) => {
       id: makeId("room"),
       status: "waiting",
       difficulty,
+      entryFeeNim: stakeAmount,
+      entryFee: `${stakeAmount} NIM`,
       hostPlayerId,
       createdAt: new Date().toISOString(),
       players: [],

@@ -117,8 +117,11 @@ export function HomeScreen({
     setSampleFeedback(null);
   }
 
+  const [stakeAmount, setStakeAmount] = useState(1);
+  const STAKE_PRESETS = [1, 5, 10, 25, 50, 100];
+
   const joinLabel = walletAddress
-    ? "🎮 Stake 1 NIM & Play"
+    ? `🎮 Stake ${stakeAmount} NIM & Play`
     : "⚡ Connect Nimiq Wallet";
 
   return (
@@ -138,14 +141,47 @@ export function HomeScreen({
             Form words. Beat the clock. Win NIM.
           </p>
 
-          <div className="feature-strip" style={{ marginBottom: "1rem" }}>
+          <div className="feature-strip" style={{ marginBottom: "0.8rem" }}>
             <div className="feature-pill">⚡ 60s Rounds</div>
-            <div className="feature-pill">🪙 1 NIM Entry</div>
+            <div className="feature-pill">🪙 {stakeAmount} NIM Stake</div>
             <div className="feature-pill">🏆 90% Win Pool</div>
           </div>
 
           <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.6rem", width: "100%" }}>
-            <button type="button" onClick={onQuickMatch} style={{ padding: "0.95rem 1.4rem", fontSize: "1.05rem" }}>
+            {/* Stake Selector */}
+            <div style={{ background: "rgba(15, 23, 42, 0.6)", border: "1px solid rgba(233, 178, 19, 0.25)", borderRadius: "12px", padding: "8px 12px", display: "flex", flexDirection: "column", gap: "6px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.82rem", color: "rgba(255,255,255,0.75)" }}>
+                <span>Choose Stake Amount:</span>
+                <strong style={{ color: "#E9B213", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
+                  {stakeAmount} NIM
+                </strong>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "4px" }}>
+                {STAKE_PRESETS.map((amt) => (
+                  <button
+                    key={amt}
+                    type="button"
+                    onClick={() => setStakeAmount(amt)}
+                    style={{
+                      padding: "6px 2px",
+                      fontSize: "0.8rem",
+                      fontWeight: 700,
+                      background: stakeAmount === amt ? "rgba(233, 178, 19, 0.3)" : "rgba(255,255,255,0.05)",
+                      border: stakeAmount === amt ? "1px solid #E9B213" : "1px solid rgba(255,255,255,0.12)",
+                      color: stakeAmount === amt ? "#E9B213" : "rgba(255,255,255,0.8)",
+                      borderRadius: "6px",
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
+                      minHeight: "auto",
+                    }}
+                  >
+                    {amt}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <button type="button" onClick={() => onQuickMatch(stakeAmount)} style={{ padding: "0.95rem 1.4rem", fontSize: "1.05rem" }}>
               {joinLabel}
             </button>
 

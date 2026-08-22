@@ -385,7 +385,7 @@ export default function App() {
     }
   }
 
-  async function handleHomeJoin() {
+  async function handleHomeJoin(selectedStake = 1) {
     setRoomError("");
 
     if (!walletAddress) {
@@ -398,10 +398,10 @@ export default function App() {
       return;
     }
 
-    await handleQuickMatch();
+    await handleQuickMatch("", selectedStake);
   }
 
-  async function handleQuickMatch(targetRoomId = "") {
+  async function handleQuickMatch(targetRoomId = "", selectedStake = 1) {
     setRoomError("");
     setRoomMessage("");
 
@@ -421,7 +421,10 @@ export default function App() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ walletAddress: walletAddress.trim() }),
+        body: JSON.stringify({
+          walletAddress: walletAddress.trim(),
+          stakeAmount: typeof selectedStake === "number" ? selectedStake : 1,
+        }),
       });
       const data = await response.json();
 
@@ -541,12 +544,14 @@ export default function App() {
       return;
     }
 
+    const feeAmount = Math.max(0.1, Number(room?.entryFeeNim) || 1);
+
     try {
       setPaymentBusy(true);
       setRoomError("");
-      setRoomMessage("Confirming 1 NIM entry fee checkout...");
+      setRoomMessage(`Confirming ${feeAmount} NIM entry fee checkout...`);
 
-      const txHash = await stakeNimToPlay(1);
+      const txHash = await stakeNimToPlay(feeAmount);
 
       const recordResponse = await fetch(`${API_BASE_URL}/rooms/${room.id}/join-tx`, {
         method: "POST",
@@ -557,20 +562,20 @@ export default function App() {
           playerId,
           walletAddress: walletAddress.trim(),
           txHash,
-          amount: "1 NIM",
+          amount: `${feeAmount} NIM`,
           mode: "nimiq_pay",
         }),
       });
       const recordData = await recordResponse.json();
 
       if (!recordResponse.ok) {
-        throw new Error(recordData.error || "Unable to record the 1 NIM entry fee transaction.");
+        throw new Error(recordData.error || `Unable to record the ${feeAmount} NIM entry fee transaction.`);
       }
 
       setRoom(recordData.room);
-      setRoomMessage(`1 NIM entry confirmed! Tx: ${txHash.slice(0, 14)}... Your seat is locked in.`);
+      setRoomMessage(`${feeAmount} NIM entry confirmed! Tx: ${txHash.slice(0, 14)}... Your seat is locked in.`);
     } catch (error) {
-      setRoomError(error.message || "Unable to complete 1 NIM stake payment.");
+      setRoomError(error.message || `Unable to complete ${feeAmount} NIM stake payment.`);
     } finally {
       setPaymentBusy(false);
     }
