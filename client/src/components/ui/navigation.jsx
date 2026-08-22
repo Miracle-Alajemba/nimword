@@ -52,7 +52,7 @@ function Icon({ name }) {
   return <svg aria-hidden="true" {...common}>{paths[name] || paths.home}</svg>;
 }
 
-export function AppBottomNav({ screen, onNavigate, walletAddress, onWalletAction, musicToggle }) {
+export function AppBottomNav({ screen, onNavigate, walletAddress, onWalletAction }) {
   const items = [
     { id: "home", label: "Home", icon: "home" },
     { id: "daily-challenge", label: "Daily", icon: "daily" },
@@ -110,12 +110,6 @@ export function AppBottomNav({ screen, onNavigate, walletAddress, onWalletAction
         <Icon name="wallet" />
         <span className="bottom-nav__label">{walletLabel}</span>
       </button>
-
-      {musicToggle ? (
-        <div className="bottom-nav__music">
-          {musicToggle}
-        </div>
-      ) : null}
     </nav>
   );
 }

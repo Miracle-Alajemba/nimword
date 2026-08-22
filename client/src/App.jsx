@@ -881,7 +881,6 @@ export default function App() {
         onNavigate={setScreen}
         walletAddress={walletAddress}
         onWalletAction={walletAddress ? disconnectWallet : connectWallet}
-        musicToggle={musicToggleEl}
       />
     </div>
   );
