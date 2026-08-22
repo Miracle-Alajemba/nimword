@@ -299,25 +299,26 @@ button:disabled {
   align-items: center;
   display: flex;
   flex-direction: row;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  gap: 0.2rem;
+  margin-bottom: 1.2rem;
 }
 
 .hero-logo__img {
   display: block;
-  filter: drop-shadow(0 4px 16px rgba(201, 146, 10, 0.3));
-  height: auto;
-  width: clamp(64px, 12vw, 160px);
-  border-radius: 12px;
-  overflow: hidden;
+  filter: drop-shadow(0 4px 16px rgba(233, 178, 19, 0.3));
+  height: clamp(52px, 7vw, 76px);
+  width: auto;
+  margin-right: -0.45rem;
+  border-radius: 8px;
+  object-fit: contain;
 }
 
 .hero-logo__name {
   color: #f0f0f5;
   font-family: "Oxanium", "Rajdhani", sans-serif;
-  font-size: 2rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   line-height: 1;
   margin: 0;
 }
@@ -3669,20 +3670,24 @@ small,
   }
 
   .hero-logo {
-    gap: 0.35rem;
+    gap: 0.15rem;
     justify-content: center;
-    flex-direction: column;
-    margin-bottom: 0.9rem;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0.75rem;
   }
 
   .hero-logo__img {
-    width: clamp(42px, 13vw, 56px);
+    height: 48px;
+    width: auto;
+    margin-right: -0.35rem;
     filter: drop-shadow(0 2px 8px rgba(0,0,0,0.25));
-    border-radius: 10px;
+    border-radius: 8px;
+    object-fit: contain;
   }
 
   .hero-logo__name {
-    font-size: clamp(1.6rem, 9vw, 2.2rem);
+    font-size: clamp(1.8rem, 8vw, 2.2rem);
     letter-spacing: 0.04em;
   }
 
