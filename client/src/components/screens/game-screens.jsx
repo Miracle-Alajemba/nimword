@@ -174,18 +174,38 @@ export function HomeScreen({
             </div>
           ) : null}
 
-          {walletAddress ? (
-            <div className="wallet-compact" style={{ marginTop: "0.5rem" }}>
-              <span className="wallet-chip wallet-chip--ok">
-                ● Connected · {shortenWalletAddress(walletAddress)}
-              </span>
-              <div className="wallet-compact__actions">
-                <button type="button" className="button-secondary" onClick={onDisconnectWallet}>
-                  Disconnect
-                </button>
+          <div
+            className="daily-reward-callout"
+            onClick={onOpenDailyChallenge}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: "0.75rem",
+              padding: "0.75rem 1rem",
+              background: "linear-gradient(135deg, rgba(233, 178, 19, 0.12), rgba(5, 130, 202, 0.12))",
+              border: "1px solid rgba(233, 178, 19, 0.3)",
+              borderRadius: "12px",
+              cursor: "pointer",
+              marginTop: "0.75rem",
+              transition: "transform 120ms ease, border-color 120ms ease",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+              <span style={{ fontSize: "1.4rem" }}>🎁</span>
+              <div>
+                <strong style={{ fontSize: "0.88rem", color: "#FFD700", display: "block" }}>
+                  Free Daily Challenge Available
+                </strong>
+                <span style={{ fontSize: "0.75rem", color: "#A0A5C2" }}>
+                  Play 1 round today to claim 0.1 NIM
+                </span>
               </div>
             </div>
-          ) : null}
+            <span style={{ fontSize: "0.78rem", fontWeight: "700", color: "#00E5FF" }}>
+              Play →
+            </span>
+          </div>
 
           <TotalPayoutsBanner />
         </div>
