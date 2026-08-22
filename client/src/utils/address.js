@@ -15,13 +15,18 @@ export function truncateAddress(address, startChars = 6, endChars = 4) {
   return `${address.slice(0, startChars)}…${address.slice(-endChars)}`;
 }
 
+import { isNimiqAddress } from "./nimiq-identicon.js";
+
 /**
- * Check if a string is a valid Ethereum-style address.
+ * Check if a string is a valid wallet address (Nimiq or EVM).
  * @param {string} address
  * @returns {boolean}
  */
 export function isValidAddress(address) {
-  return /^0x[a-fA-F0-9]{40}$/.test(String(address || "").trim());
+  if (!address) return false;
+  const str = String(address).trim();
+  if (isNimiqAddress(str)) return true;
+  return /^0x[a-fA-F0-9]{40}$/.test(str);
 }
 
 /**

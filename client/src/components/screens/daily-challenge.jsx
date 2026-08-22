@@ -1,14 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { normalizeWord } from "../../game.js";
 import { GameLoader } from "../ui/index.js";
+import { isWalletAddress, isNimiqAddress, formatNimiqAddress } from "../../utils/nimiq-identicon.js";
 
 const DAILY_TARGET_SCORE = 40;
 const DAILY_ROUND_SECONDS = 60;
-
-
-function isWalletAddress(value) {
-  return /^0x[a-fA-F0-9]{40}$/.test(String(value || "").trim());
-}
 
 function ScoreBadge({ label, value, className = "" }) {
   return (
