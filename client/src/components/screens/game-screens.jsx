@@ -127,23 +127,25 @@ export function HomeScreen({
           <div className="hero-logo">
             <img
               src="/logo.png"
-              alt="NIMWORD"
+              alt="NimWord"
               className="hero-logo__img"
             />
-            <h1 className="hero-logo__name" style={{ color: "#00B4D8" }}>NIMWORD</h1>
+            <h1 className="hero-logo__name">NimWord</h1>
           </div>
           <GameStickerStrip />
 
           <p className="lede">
-            A Nimiq Pay Mini App where players race the 60-second timer to build valid words,
-            stake 1 NIM in multiplayer rooms, and win direct NIM prize distributions to their wallet.
+            A fast multiplayer word challenge where players build words from a
+            shared prompt, race the clock, and earn a share of the pot based on
+            how well they perform. Multiplayer rooms use wallet identity so
+            payouts can go straight back to players.
           </p>
-          <p className="lede lede--tagline" style={{ color: "#FFD700", fontWeight: "700" }}>
-            Build words. Beat the clock. Stake & Earn NIM!
+          <p className="lede lede--tagline">
+            Build words. Beat the clock. Earn NIM.
           </p>
 
           <div className="hero-actions hero-actions--grid">
-            <button type="button" onClick={onQuickMatch} style={{ background: "linear-gradient(135deg, #00B4D8, #0077B6)", color: "#fff" }}>
+            <button type="button" onClick={onQuickMatch}>
               {joinLabel}
             </button>
             <button type="button" className="button-secondary" onClick={onOpenDailyChallenge}>
@@ -163,49 +165,40 @@ export function HomeScreen({
             </div>
           ) : null}
 
-          <div className="wallet-compact" style={{ background: "rgba(16, 25, 35, 0.75)", border: "1px solid rgba(0, 180, 216, 0.3)", borderRadius: "16px", padding: "14px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "10px", flexWrap: "wrap" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <AvatarCircle address={walletAddress} size={40} />
-                <div>
-                  <span className={`wallet-chip ${walletAddress ? "wallet-chip--ok" : "wallet-chip--warn"}`} style={{ fontSize: "0.85rem", background: "rgba(0, 180, 216, 0.15)", borderColor: "rgba(0, 180, 216, 0.4)", color: "#00B4D8" }}>
-                    {walletAddress
-                      ? `Nimiq Wallet: ${shortenNimiqAddress(walletAddress)}`
-                      : "No wallet connected"}
-                  </span>
-                  {walletAddress ? (
-                    <div style={{ fontSize: "0.85rem", color: "#FFD700", fontWeight: "700", marginTop: "2px" }}>
-                      ⚡ Balance: {nimBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })} NIM
-                    </div>
-                  ) : null}
-                </div>
+          <div className="wallet-compact">
+            <span className={`wallet-chip ${walletAddress ? "wallet-chip--ok" : "wallet-chip--warn"}`}>
+              {walletAddress
+                ? `● Connected · ${shortenWalletAddress(walletAddress)}`
+                : "○ No wallet connected"}
+            </span>
+            {walletAddress ? (
+              <div className="wallet-compact__actions">
+                <button type="button" className="button-secondary" onClick={onDisconnectWallet}>
+                  Disconnect
+                </button>
               </div>
-              {walletAddress ? (
-                <div className="wallet-compact__actions">
-                  <button type="button" className="button-secondary" onClick={onDisconnectWallet} style={{ fontSize: "0.8rem", padding: "0.5rem 0.9rem" }}>
-                    Disconnect
-                  </button>
-                </div>
-              ) : (
-                <button type="button" onClick={onConnectWallet} style={{ fontSize: "0.85rem", padding: "0.6rem 1.1rem" }}>
+            ) : (
+              <div className="wallet-compact__actions">
+                <button type="button" onClick={onConnectWallet}>
                   Connect Nimiq Wallet
                 </button>
-              )}
-            </div>
-            {walletStatus ? <p className="field-hint" style={{ marginTop: "8px" }}>{walletStatus}</p> : null}
+              </div>
+            )}
+            {walletStatus ? <p className="field-hint">{walletStatus}</p> : null}
           </div>
 
           <div className="feature-strip">
-            <div className="feature-pill" style={{ borderColor: "rgba(0, 180, 216, 0.3)", color: "#00B4D8" }}>60s Timed Rounds</div>
-            <div className="feature-pill" style={{ borderColor: "rgba(255, 215, 0, 0.3)", color: "#FFD700" }}>1 NIM Entry Fee</div>
-            <div className="feature-pill">90% Winner Split</div>
-            <div className="feature-pill">Identicon Avatars</div>
-            <div className="feature-pill">Free Practice Arena</div>
-            <div className="feature-pill">Nimiq Pay Auto-Connect</div>
+            <div className="feature-pill">60 second rounds</div>
+            <div className="feature-pill">1 NIM entry</div>
+            <div className="feature-pill">90% split by score</div>
+            <div className="feature-pill">Live room chat</div>
+            <div className="feature-pill">Free practice arena</div>
+            <div className="feature-pill">Daily challenge mode</div>
           </div>
 
           <TotalPayoutsBanner />
         </div>
+
 
         <div className="hero-card hero-card--interactive">
           <div className="hero-card__top">
