@@ -865,7 +865,7 @@ export default function App() {
   return (
     <div
       className={[
-        "app-light-mode",
+        "app-dark-mode",
         settings.largeText ? "app-text-scale" : "",
         settings.highContrast ? "app-high-contrast" : "",
       ].filter(Boolean).join(" ")}
