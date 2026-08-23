@@ -9,7 +9,7 @@ import { Server } from "socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { recoverMessageAddress } from "viem";
 import { canBuildFromSource, getDynamicRound } from "./rounds.js";
-import { createNimWordContractService } from "./nimword-contract.js";
+import { createNimWordContractService } from "./wordpot-contract.js";
 import { query, initDb } from "./db.js";
 import { redis } from "./redis.js";
 import { buildTelemetryPayload } from "./utils/telemetry.js";
@@ -1736,6 +1736,9 @@ app.get("/api/daily/status", async (req, res) => {
 });
 
 app.get("/api/daily/clear-all-plays-claims", async (req, res) => {
+  if (!isAdminRequest(req)) {
+    return res.status(403).json({ error: "Forbidden" });
+  }
   try {
     await query("TRUNCATE daily_challenge_plays, daily_challenge_claims CASCADE");
     return res.json({

@@ -70,4 +70,3 @@ export function createNimiqPayoutService() {
 }
 
 export const createNimWordContractService = createNimiqPayoutService;
-export const createNimiqPayoutService = createNimiqPayoutService;
