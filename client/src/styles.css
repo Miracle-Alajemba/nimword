@@ -1,16 +1,74 @@
+/* ═══════════════════════════════════════════════════════════════════
+   NimWord design tokens — single source of truth.
+
+   Colour values are Nimiq's own, taken from `nimiq-css` (the design
+   system linked under "UI & Design" on nimiq.dev), so the app reads as
+   native inside Nimiq Pay rather than as a themed skin. Typeface is
+   Nimiq's official pair: Mulish (variable 200–1000) and Fira Code.
+
+   Everything below is defined here and only here. Downstream rules
+   consume these via var() — never a literal colour.
+   ═══════════════════════════════════════════════════════════════════ */
 :root {
-  color: #f5f7ff;
-  font-family: "Rajdhani", "Oxanium", sans-serif;
-  background:
-    radial-gradient(circle at 16% 12%, rgba(255, 191, 92, 0.2), transparent 18%),
-    radial-gradient(circle at 84% 14%, rgba(99, 244, 202, 0.16), transparent 18%),
-    radial-gradient(circle at 50% 120%, rgba(110, 104, 255, 0.14), transparent 30%),
-    linear-gradient(180deg, #060811 0%, #0b1220 42%, #0a0f1d 100%);
+  color-scheme: light;
+
+  /* ── Nimiq brand ramp (nimiq-css) ───────────────────────────────── */
+  --nq-darkblue: oklch(0.2737 0.068 276.29);
+  --nq-blue: oklch(0.5849 0.1438 244.29);
+  --nq-blue-deep: oklch(0.481 0.1164 243.72);
+  --nq-green: oklch(0.6932 0.1245 178.48);
+  --nq-green-deep: oklch(0.5564 0.0992 178.59);
+  --nq-orange: oklch(0.7387 0.179 56.67);
+  --nq-gold: oklch(0.7924 0.1593 85.61);
+  --nq-red: oklch(0.598 0.1886 30.3);
+
+  /* ── Surfaces & ink ─────────────────────────────────────────────── */
+  --ground: oklch(0.9791 0 89.88);
+  --surface: oklch(1 0 90);
+  --surface-sunk: oklch(0.9677 0.0027 286.35);
+  --ink: var(--nq-darkblue);
+  --ink-2: oklch(0.4374 0.0495 279.71);
+  --ink-muted: oklch(0.5889 0.0335 281.21);
+  --rule: oklch(0.9203 0.0067 286.27);
+  --rule-strong: oklch(0.8681 0.0096 279.67);
+
+  /* ── One accent, one interactive ────────────────────────────────── */
+  --interactive: var(--nq-blue);
+  --interactive-ink: var(--nq-blue-deep);
+  /* Nimiq's gold gradient — earns exactly one appearance per screen. */
+  --accent-gradient: linear-gradient(135deg, var(--nq-orange), var(--nq-gold));
+
+  /* ── Status (reserved; never reused as decoration) ──────────────── */
+  --good: var(--nq-green-deep);
+  --warn: oklch(0.6642 0.1329 85.55);
+  --bad: var(--nq-red);
+
+  /* ── Tile system ────────────────────────────────────────────────── */
+  --tile-radius: 12px;
+  --tile-size: 3rem;
+  --tile-size-compact: 2.6rem;
+  --tile-face: var(--surface);
+  --tile-edge: var(--rule-strong);
+  --tile-ink: var(--ink);
+  --tile-lift: 0 1px 0 var(--rule-strong), 0 2px 6px oklch(0.2737 0.068 276.29 / 0.09);
+  --tile-lift-raised: 0 1px 0 var(--rule-strong), 0 10px 20px oklch(0.2737 0.068 276.29 / 0.16);
+
+  /* ── Type ───────────────────────────────────────────────────────── */
+  --font-sans: "Mulish", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono-stack: "Fira Code", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* ── Motion ─────────────────────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--ground);
 }
 
 * {
   box-sizing: border-box;
-  font-family: "Rajdhani", "Oxanium", sans-serif;
+  font-family: var(--font-sans);
   padding: 0;
 }
 
@@ -39,7 +97,7 @@ body {
 
 body,
 * {
-  font-family: "Rajdhani", "Oxanium", sans-serif;
+  font-family: var(--font-sans);
 }
 
 body::before,
@@ -83,7 +141,7 @@ input {
 }
 
 button {
-  font-family: "Oxanium", "Rajdhani", sans-serif;
+  font-family: var(--font-sans);
   background: linear-gradient(135deg, #ffad33 0%, #ff7a18 100%);
   border: 0;
   border-radius: 999px;
@@ -116,19 +174,23 @@ button:disabled {
   color: #eef2ff;
 }
 
+/* Legacy token names, repointed at the tokens above.
+   Kept as aliases so the ~4,400 rules already consuming them adopt the
+   new identity without any rule being rewritten. Prefer the canonical
+   names in new code; these are a compatibility layer, not a palette. */
 :root {
-  --cream: #f5f3f0;
-  --cream-2: #fafaf8;
-  --sage: #a8c5a8;
-  --sage-deep: #7ea67e;
-  --coral: #e8b4a8;
-  --blue: #7a9fb5;
-  --charcoal: #2c2c2c;
-  --muted: #6f7680;
-  --line-soft: rgba(44, 44, 44, 0.08);
-  --font-ui: "Rajdhani", "Oxanium", sans-serif;
-  --font-display: "Oxanium", "Rajdhani", sans-serif;
-  --font-mono: "Space Mono", monospace;
+  --cream: var(--ground);
+  --cream-2: var(--surface);
+  --sage: var(--nq-green);
+  --sage-deep: var(--nq-green-deep);
+  --coral: var(--nq-orange);
+  --blue: var(--interactive);
+  --charcoal: var(--ink);
+  --muted: var(--ink-muted);
+  --line-soft: var(--rule);
+  --font-ui: var(--font-sans);
+  --font-display: var(--font-sans);
+  --font-mono: var(--font-mono-stack);
 }
 
 .page-shell {
@@ -315,7 +377,7 @@ button:disabled {
 
 .hero-logo__name {
   color: #f0f0f5;
-  font-family: "Oxanium", "Rajdhani", sans-serif;
+  font-family: var(--font-sans);
   font-size: 2.6rem;
   font-weight: 700;
   letter-spacing: 0.04em;
@@ -714,47 +776,102 @@ button:disabled {
   gap: 0.6rem;
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   The tile — the one primitive the whole UI is built from.
+
+   A word game's material is letters, so the tile is the system: letter
+   cells, keycaps, buttons, stat cards and leaderboard rows are all this
+   shape at different scales. Defined ONCE here. It was previously
+   declared three times in this file (an orange era, a cream era and a
+   dark era), which is why the rendered tile took its geometry from one
+   generation and its skin from another.
+
+   The press is a real 3D rotation on the X axis, GPU-composited — the
+   physical "key" feel a game needs, at no bundle cost.
+   ═══════════════════════════════════════════════════════════════════ */
 .letter-tile {
   align-items: center;
-  background:
-    linear-gradient(180deg, rgba(255, 199, 123, 0.18), rgba(255, 120, 48, 0.12));
-  border: 1px solid rgba(255, 170, 81, 0.34);
-  border-radius: 16px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  color: #fff5df;
+  background: var(--tile-face);
+  border: 1px solid var(--tile-edge);
+  border-radius: var(--tile-radius);
+  box-shadow: var(--tile-lift);
+  color: var(--tile-ink);
   display: inline-flex;
-  font-size: 1.05rem;
-  font-weight: 800;
-  height: 3rem;
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+  height: var(--tile-size);
   justify-content: center;
-  min-width: 3rem;
+  letter-spacing: 0.01em;
+  min-width: var(--tile-size);
+  text-transform: uppercase;
+  /* Establishes the 3D context the press rotates within. */
+  transform: perspective(320px) rotateX(0deg);
+  transform-style: preserve-3d;
+  user-select: none;
 }
 
 .letter-tile--interactive {
   cursor: pointer;
   transition:
-    transform 320ms cubic-bezier(0.34, 1.56, 0.64, 1),
-    box-shadow 320ms ease,
-    border-color 320ms ease,
-    background 320ms ease;
+    transform 220ms var(--ease-spring),
+    box-shadow 220ms var(--ease-out),
+    border-color 220ms var(--ease-out),
+    background 220ms var(--ease-out);
 }
 
-.letter-tile--interactive:hover {
-  transform: translateY(-2px) scale(1.03);
+/* Hover is a bonus, never the only signal — touch gets the same state
+   from :active and --selected, so nothing is hover-dependent. */
+@media (hover: hover) and (pointer: fine) {
+  .letter-tile--interactive:hover {
+    border-color: var(--interactive);
+    box-shadow: var(--tile-lift-raised);
+    transform: perspective(320px) rotateX(0deg) translateY(-2px);
+  }
+}
+
+/* The press: tile tips away from the viewer and settles down onto the
+   board, like a physical key taking weight. */
+.letter-tile--interactive:active {
+  box-shadow: var(--tile-lift);
+  transform: perspective(320px) rotateX(9deg) translateY(1px) scale(0.97);
+  transition-duration: 90ms;
 }
 
 .letter-tile--selected {
-  background: rgba(168, 197, 168, 0.28);
-  border-color: rgba(168, 197, 168, 0.5);
-  box-shadow: 0 16px 26px rgba(168, 197, 168, 0.18);
-  transform: scale(1.05);
+  background: var(--interactive);
+  border-color: var(--interactive);
+  box-shadow: var(--tile-lift-raised);
+  color: var(--surface);
+  transform: perspective(320px) rotateX(0deg) translateY(-3px);
+}
+
+.letter-tile--interactive:focus-visible {
+  outline: 2px solid var(--interactive-ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .letter-tile,
+  .letter-tile--interactive,
+  .letter-tile--interactive:hover,
+  .letter-tile--interactive:active,
+  .letter-tile--selected {
+    transform: none;
+    transition-duration: 1ms;
+  }
 }
 
 .letter-rack--play {
   margin-top: 1.25rem;
 }
 
+/* `--play` is the in-round rack tile: the primitive at a larger size,
+   flat face, so the selected tile is the only lifted thing on the board. */
 .letter-tile--play {
+  background: var(--tile-face);
+  color: var(--tile-ink);
   font-size: 1.2rem;
   height: 3.4rem;
   min-width: 3.4rem;
@@ -1153,12 +1270,13 @@ button:disabled {
   gap: 0.5rem;
 }
 
+/* The single `--compact` definition. It varies size and nothing else —
+   face, edge and ink stay inherited from the primitive so a small tile
+   is the same object seen smaller, not a differently-skinned one. */
 .letter-tile--compact {
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(122, 159, 181, 0.16);
-  color: var(--charcoal);
-  height: 2.6rem;
-  min-width: 2.6rem;
+  font-size: 1rem;
+  height: var(--tile-size-compact);
+  min-width: var(--tile-size-compact);
 }
 
 .word-preview {
@@ -1323,7 +1441,7 @@ button:disabled {
 
 .player-identity__copy span {
   color: var(--muted);
-  font-family: "Space Mono", monospace;
+  font-family: var(--font-mono-stack);
   font-size: 0.74rem;
 }
 
@@ -1974,18 +2092,6 @@ button:hover {
   min-width: 140px;
 }
 
-.letter-tile {
-  background: rgba(255, 255, 255, 0.84);
-  border: 1px solid rgba(122, 159, 181, 0.18);
-  box-shadow: 0 10px 20px rgba(44, 44, 44, 0.06);
-  color: var(--charcoal);
-}
-
-.letter-tile--play {
-  background: rgba(255, 255, 255, 0.92);
-  color: var(--charcoal);
-}
-
 .progress-bar {
   background: rgba(122, 159, 181, 0.14);
 }
@@ -2459,17 +2565,20 @@ button:hover {
 }
 
 /* Premium arena polish: unify the UI around a darker game-forward look */
+/* Dark-era token names, repointed for a light ground.
+   `--accent-cyan` previously held #afac0a — an olive, despite the name.
+   It now resolves to the one interactive colour. */
 :root {
-  --surface-dark: rgba(11, 17, 33, 0.9);
-  --surface-dark-2: rgba(17, 24, 44, 0.94);
-  --surface-soft: rgba(255, 255, 255, 0.06);
-  --surface-line-strong: rgba(110, 139, 255, 0.16);
-  --text-high: #f8fbff;
-  --text-soft: #aab6d4;
-  --text-muted-2: #7f8db2;
-  --accent-cyan: #afac0a;
-  --accent-warm: #ffb347;
-  --accent-coral-deep: #ff9a8a;
+  --surface-dark: var(--surface);
+  --surface-dark-2: var(--surface-sunk);
+  --surface-soft: var(--surface-sunk);
+  --surface-line-strong: var(--rule-strong);
+  --text-high: var(--ink);
+  --text-soft: var(--ink-2);
+  --text-muted-2: var(--ink-muted);
+  --accent-cyan: var(--interactive);
+  --accent-warm: var(--nq-orange);
+  --accent-coral-deep: var(--nq-gold);
 }
 
 button {
@@ -2761,22 +2870,8 @@ button:hover {
   border-color: rgba(255, 179, 71, 0.24);
 }
 
-.letter-tile {
-  background: linear-gradient(180deg, rgba(26, 35, 62, 0.98), rgba(12, 17, 31, 0.98));
-  border: 1px solid rgba(130, 152, 235, 0.18);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.06),
-    0 12px 20px rgba(2, 6, 17, 0.24);
-  color: var(--text-high);
-  font-family: var(--font-display);
-  letter-spacing: 0.05em;
-}
-
-.letter-tile--selected {
-  background: linear-gradient(180deg, rgba(99, 244, 202, 0.24), rgba(50, 125, 106, 0.24));
-  border-color: rgba(99, 244, 202, 0.4);
-  box-shadow: 0 16px 28px rgba(99, 244, 202, 0.18);
-}
+/* Dark-era tile and selected-state overrides removed — the canonical
+   definition above governs both. */
 
 .word-preview {
   background: rgba(255, 255, 255, 0.04);
@@ -3166,9 +3261,12 @@ button:hover {
 }
 
 /* Premium minimal theme override */
+/* This block previously hardcoded `color:#f0f0f5; background:#0c0c10`,
+   which silently overrode the palette above — the source of the mixed
+   light/dark artefacts. It now defers to the tokens. */
 :root {
-  color: #f0f0f5;
-  background: #0c0c10;
+  color: var(--ink);
+  background: var(--ground);
 }
 
 html,
@@ -3438,23 +3536,15 @@ button:disabled,
   transform: none !important;
 }
 
-.letter-tile,
-.letter-tile--compact {
-  background: #1a1a24 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 8px !important;
-  box-shadow: none !important;
-  color: #f0f0f5 !important;
-  font-weight: 700 !important;
-}
-
-.letter-tile--selected,
+/* The `!important` tile overrides that used to sit here are gone —
+   they existed only to outrank duplicate definitions that no longer
+   exist. The primitive and its modifiers now govern unaided. */
 .practice-difficulty-toggle__option--active,
 .practice-difficulty-toggle .theme-toggle__option--active,
 .theme-toggle__option--active {
-  background: #c9920a !important;
-  border-color: #c9920a !important;
-  color: #0c0c10 !important;
+  background: var(--interactive);
+  border-color: var(--interactive);
+  color: var(--surface);
 }
 
 .live-score,
@@ -3610,13 +3700,13 @@ h3,
 .lobby-stat-card strong,
 .hero-logo__name,
 .timer-tone {
-  font-family: "Oxanium", "Rajdhani", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 800;
   letter-spacing: 0.02em;
 }
 
 button {
-  font-family: "Oxanium", "Rajdhani", sans-serif;
+  font-family: var(--font-sans);
   font-weight: 800;
   letter-spacing: 0.015em;
 }
@@ -3632,7 +3722,7 @@ small,
 .chat-feed,
 .player-row p,
 .room-panel__header p {
-  font-family: "Rajdhani", "Oxanium", sans-serif;
+  font-family: var(--font-sans);
 }
 
 .lede {
@@ -3644,7 +3734,7 @@ small,
 
 .lede--tagline {
   color: #c9920a !important;
-  font-family: "Oxanium", "Rajdhani", sans-serif;
+  font-family: var(--font-sans);
   font-size: 1.25rem !important;
   letter-spacing: 0.08em !important;
   margin-bottom: 1.5rem !important;
@@ -3833,19 +3923,30 @@ small,
   box-shadow: 0 2px 8px rgba(99, 244, 202, 0.08);
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   TILE MOTION — the deal-in and the select pop.
+
+   Both rotate on the X axis inside the same perspective(320px) context
+   the canonical .letter-tile establishes at :792, so the entrance, the
+   hover lift, the press and the selected rest all read as one physical
+   object. Nothing here uses !important: these are animations, the
+   canonical rules own the resting transforms, and the two never fight.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Tiles deal onto the board face-down-ish and rock flat — a rack being
+   laid out, not a list fading in. */
 .letter-tile--interactive {
-  animation: fadeInUp 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.2) both;
-  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease !important;
+  animation: tileDeal 380ms var(--ease-spring) both;
 }
 
-@keyframes fadeInUp {
+@keyframes tileDeal {
   from {
     opacity: 0;
-    transform: translateY(12px) scale(0.9);
+    transform: perspective(320px) rotateX(38deg) translateY(14px) scale(0.94);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: perspective(320px) rotateX(0deg) translateY(0) scale(1);
   }
 }
 
@@ -3862,29 +3963,29 @@ small,
 .letter-tile--interactive:nth-child(11) { animation-delay: 0.22s; }
 .letter-tile--interactive:nth-child(12) { animation-delay: 0.24s; }
 
-.letter-tile--interactive:hover {
-  transform: translateY(-4px) scale(1.08) !important;
-  box-shadow: 0 8px 20px rgba(201, 146, 10, 0.25) !important;
-  border-color: rgba(201, 146, 10, 0.5) !important;
-}
-
-.letter-tile--interactive:active {
-  transform: scale(0.92) !important;
-}
-
+/* Select overshoots then lands exactly on the resting transform the
+   canonical .letter-tile--selected declares, so no `forwards` is needed
+   and the handoff back to CSS is invisible. */
 .letter-tile--selected {
-  animation: tilePop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.3) forwards !important;
+  animation: tileSelectPop 220ms var(--ease-spring);
 }
 
-@keyframes tilePop {
+@keyframes tileSelectPop {
   0% {
-    transform: scale(1);
+    transform: perspective(320px) rotateX(0deg) translateY(0) scale(1);
   }
-  50% {
-    transform: scale(1.18);
+  55% {
+    transform: perspective(320px) rotateX(-6deg) translateY(-7px) scale(1.09);
   }
   100% {
-    transform: scale(1.06);
+    transform: perspective(320px) rotateX(0deg) translateY(-3px) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .letter-tile--interactive,
+  .letter-tile--selected {
+    animation: none;
   }
 }
 
