@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
-import { ReownProvider } from "./providers/reown-provider.jsx";
 import "./styles.css";
 
 class GlobalErrorBoundary extends Component {
@@ -41,9 +40,7 @@ class GlobalErrorBoundary extends Component {
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <GlobalErrorBoundary>
-      <ReownProvider>
-        <App />
-      </ReownProvider>
+      <App />
     </GlobalErrorBoundary>
   </React.StrictMode>,
 );

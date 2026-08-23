@@ -1,4 +1,0 @@
-export const EVM_CHAIN_IDS = {
-  NIM_MAINNET: 42220,
-  NIM_ALFAJORES: 44787,
-};
