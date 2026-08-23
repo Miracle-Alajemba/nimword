@@ -7,3 +7,6 @@ build/
 .DS_Store
 contracts/cache/
 contracts/artifacts/
+
+# Local reading copy of a built-in Claude Code skill - not project code
+.claude/skills/
