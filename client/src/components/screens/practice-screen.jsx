@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   evaluatePracticeSubmission,
+  generateClientPracticeRound,
   getWordScore,
   normalizeWord,
 } from "../../game.js";
@@ -134,9 +135,20 @@ export function PracticeScreen({
       setStreak(0);
       setFeedback(nextFeedback);
       setFeedbackTone("neutral");
-    } catch (error) {
-      setFeedback(error.message || "Unable to load practice round.");
-      setFeedbackTone("error");
+    } catch {
+      // Offline / fallback practice round
+      const fallback = generateClientPracticeRound(difficulty);
+      setRoundSeed(fallback);
+      setTimeLeft(roundSeconds);
+      setDraftWord("");
+      setSelectedIndexes([]);
+      setScore(0);
+      setClaimedWords([]);
+      setIsFinished(false);
+      setBestWord("");
+      setStreak(0);
+      setFeedback(nextFeedback);
+      setFeedbackTone("neutral");
     } finally {
       setLoadingRound(false);
     }

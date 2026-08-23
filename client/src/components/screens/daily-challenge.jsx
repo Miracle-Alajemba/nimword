@@ -1,5 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { normalizeWord } from "../../game.js";
+import {
+  normalizeWord,
+  generateClientDailyRound,
+  evaluatePracticeSubmission,
+  getWordScore,
+} from "../../game.js";
 import { GameLoader } from "../ui/index.js";
 import { isWalletAddress, isNimiqAddress, formatNimiqAddress } from "../../utils/nimiq-identicon.js";
 
@@ -160,11 +165,19 @@ export function DailyChallenge({
       setClaimedWords([]);
       setFeedback(nextFeedback);
       setFeedbackTone("neutral");
-    } catch (error) {
-      setFeedback(error.message || "Unable to load Daily Challenge.");
-      setFeedbackTone("error");
-      setPhase("idle");
-      setCurrentPlayStarted(false);
+    } catch {
+      // Graceful client fallback for offline/cold start
+      const fallbackRound = generateClientDailyRound(difficulty);
+      setRoundSeed(fallbackRound);
+      setPhase(nextPhase);
+      setTimeLeft(DAILY_ROUND_SECONDS);
+      setScore(0);
+      onScoreUpdate(0);
+      setDraftWord("");
+      setSelectedIndexes([]);
+      setClaimedWords([]);
+      setFeedback(nextFeedback);
+      setFeedbackTone("neutral");
     } finally {
       setLoadingRound(false);
     }
@@ -315,11 +328,38 @@ export function DailyChallenge({
         setScorePop(false);
         setWordPop(false);
       }, 350);
-    } catch (error) {
-      setFeedback(error.message || "Unable to claim this word.");
-      setFeedbackTone("error");
-      setInputShake(true);
-      setTimeout(() => setInputShake(false), 400);
+    } catch {
+      // Local fallback evaluation
+      const validation = evaluatePracticeSubmission({
+        input: normalized,
+        sourceWord: roundSeed.sourceWord,
+        validWords: roundSeed.validWords || [],
+        claimedWords: claimedSet,
+      });
+
+      if (validation.ok) {
+        const wordScore = validation.score || getWordScore(normalized);
+        const nextScore = score + wordScore;
+        setClaimedWords((current) => [
+          ...current,
+          { word: normalized, score: wordScore },
+        ]);
+        setScore(nextScore);
+        onScoreUpdate(nextScore);
+        setFeedback(validation.message || `Locked in ${normalized} for +${wordScore} points.`);
+        setFeedbackTone("success");
+        setScorePop(true);
+        setWordPop(true);
+        setTimeout(() => {
+          setScorePop(false);
+          setWordPop(false);
+        }, 350);
+      } else {
+        setFeedback(validation.message || "Unable to claim this word.");
+        setFeedbackTone("error");
+        setInputShake(true);
+        setTimeout(() => setInputShake(false), 400);
+      }
     } finally {
       wordSubmitBusyRef.current = false;
       setWordSubmitBusy(false);
