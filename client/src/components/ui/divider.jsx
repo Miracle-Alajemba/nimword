@@ -4,7 +4,7 @@ import React from "react";
  * Divider — Styled horizontal divider with optional centered label.
  * @param {{ label?: string, color?: string, className?: string }} props
  */
-export function Divider({ label = "", color = "rgba(255,255,255,0.08)", className = "" }) {
+export function Divider({ label = "", color = "var(--surface-sunk)", className = "" }) {
   if (!label) {
     return <hr className={`divider ${className}`.trim()} style={{ borderColor: color }} />;
   }

@@ -12,9 +12,9 @@ export function BadgeDisplay({ badge, className = "" }) {
         gap: "6px",
         padding: "4px 10px",
         borderRadius: "20px",
-        background: "rgba(56, 189, 248, 0.12)",
-        border: "1px solid rgba(56, 189, 248, 0.3)",
-        color: "#38bdf8",
+        background: "oklch(0.5849 0.1438 244.29 / 0.12)",
+        border: "1px solid oklch(0.5849 0.1438 244.29 / 0.35)",
+        color: "var(--interactive)",
         fontSize: "12px",
         fontWeight: "600",
       }}

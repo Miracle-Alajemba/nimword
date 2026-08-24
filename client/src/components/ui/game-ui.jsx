@@ -58,9 +58,9 @@ export function RoomPlayersStrip({ players = [], scoreboard = [], playerId }) {
     fontSize: "10px",
     fontWeight: "700",
     borderRadius: "4px",
-    background: "rgba(201,146,10,0.12)",
-    border: "1px solid rgba(201,146,10,0.3)",
-    color: "#c9920a",
+    background: "oklch(0.7924 0.1593 85.61 / 0.14)",
+    border: "1px solid var(--rule-strong)",
+    color: "var(--nq-gold)",
     marginRight: "6px",
   };
 

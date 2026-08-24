@@ -4,10 +4,10 @@
 .tab-bar {
   display: flex;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-sunk);
   padding: 0.35rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--rule);
 }
 
 .tab-item {
@@ -17,7 +17,7 @@
   border-radius: 999px;
   font-size: 0.8rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--ink-muted);
   display: flex;
   align-items: center;
   gap: 0.4rem;
@@ -27,14 +27,14 @@
 }
 
 .tab-item:hover {
-  color: #fff;
+  color: var(--ink);
   box-shadow: none;
   transform: none;
 }
 
 .tab-item--active {
-  background: linear-gradient(135deg, #ffad33 0%, #ff7a18 100%);
-  color: #111827;
+  background: var(--accent-gradient);
+  color: var(--ink);
 }
 
 /* StreakFire */
@@ -42,9 +42,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  background: rgba(255, 122, 24, 0.15);
-  border: 1px solid rgba(255, 122, 24, 0.3);
-  color: #ff7a18;
+  background: oklch(0.7387 0.179 56.67 / 0.16);
+  border: 1px solid oklch(0.7387 0.179 56.67 / 0.34);
+  color: var(--nq-orange);
   font-weight: 800;
   border-radius: 999px;
   padding: 0.2rem 0.6rem;
@@ -63,11 +63,11 @@
 .rating-stars {
   display: flex;
   gap: 0.2rem;
-  color: rgba(255, 255, 255, 0.2);
+  color: var(--rule-strong);
 }
 
 .star--filled {
-  color: #ffad33;
+  color: var(--nq-orange);
 }
 
 /* SearchInput */
@@ -88,16 +88,16 @@
 .search-input {
   width: 100%;
   padding: 0.6rem 2.2rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--surface-sunk);
+  border: 1px solid var(--rule);
   border-radius: 999px;
-  color: #fff;
+  color: var(--ink);
   font-size: 0.85rem;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #63f4ca;
+  border-color: var(--good);
 }
 
 .search-clear-btn {

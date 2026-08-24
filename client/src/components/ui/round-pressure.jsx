@@ -4,19 +4,19 @@ export function RoundPressure({ progress = 0, timeLeft = 60, totalTime = 60, cla
   const percent = Math.min(100, Math.max(0, Math.round(progress)));
 
   // Dynamic color state based on pressure intensity
-  let pressureColor = "#38bdf8"; // Cyan/Blue
-  let glowColor = "rgba(56, 189, 248, 0.35)";
+  let pressureColor = "var(--interactive)"; // Cyan/Blue
+  let glowColor = "oklch(0.5849 0.1438 244.29 / 0.35)";
   let statusText = "Pacing Well";
   let icon = "⚡";
 
   if (percent >= 80) {
-    pressureColor = "#ef4444"; // Urgent Red
-    glowColor = "rgba(239, 68, 68, 0.5)";
+    pressureColor = "var(--bad)"; // Urgent Red
+    glowColor = "oklch(0.598 0.1886 30.3 / 0.5)";
     statusText = "HIGH PRESSURE";
     icon = "🔥";
   } else if (percent >= 50) {
-    pressureColor = "#f59e0b"; // Warning Amber
-    glowColor = "rgba(245, 158, 11, 0.4)";
+    pressureColor = "var(--nq-gold)"; // Warning Amber
+    glowColor = "oklch(0.7924 0.1593 85.61 / 0.45)";
     statusText = "Heat Is On";
     icon = "⏱️";
   }
@@ -25,7 +25,7 @@ export function RoundPressure({ progress = 0, timeLeft = 60, totalTime = 60, cla
     <div
       className={`round-pressure-shell ${className}`}
       style={{
-        background: "linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(15, 23, 42, 0.95))",
+        background: "var(--surface)",
         border: `1px solid ${pressureColor}44`,
         borderRadius: "18px",
         padding: "1rem 1.25rem",
@@ -45,7 +45,7 @@ export function RoundPressure({ progress = 0, timeLeft = 60, totalTime = 60, cla
       >
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <span style={{ fontSize: "1.1rem" }}>{icon}</span>
-          <strong style={{ fontSize: "0.88rem", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.06em", color: "#f8fafc" }}>
+          <strong style={{ fontSize: "0.88rem", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--ink)" }}>
             Round Pressure
           </strong>
           <span
@@ -65,8 +65,8 @@ export function RoundPressure({ progress = 0, timeLeft = 60, totalTime = 60, cla
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
-          <span style={{ fontSize: "0.82rem", color: "#94a3b8" }}>
-            <strong style={{ color: "#f8fafc", fontFamily: "var(--font-mono)" }}>{timeLeft}s</strong> left
+          <span style={{ fontSize: "0.82rem", color: "var(--ink-muted)" }}>
+            <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)" }}>{timeLeft}s</strong> left
           </span>
           <strong
             style={{
@@ -85,12 +85,12 @@ export function RoundPressure({ progress = 0, timeLeft = 60, totalTime = 60, cla
       <div
         className="round-pressure-track"
         style={{
-          background: "rgba(255, 255, 255, 0.08)",
+          background: "var(--surface-sunk)",
           borderRadius: "999px",
           height: "10px",
           overflow: "hidden",
           position: "relative",
-          boxShadow: "inset 0 2px 4px rgba(0,0,0,0.3)",
+          boxShadow: "inset 0 2px 4px oklch(0.2737 0.068 276.29 / 0.1)",
         }}
       >
         <div
@@ -99,7 +99,7 @@ export function RoundPressure({ progress = 0, timeLeft = 60, totalTime = 60, cla
             width: `${percent}%`,
             height: "100%",
             borderRadius: "999px",
-            background: `linear-gradient(90deg, #38bdf8 0%, ${pressureColor} 100%)`,
+            background: `linear-gradient(90deg, var(--interactive) 0%, ${pressureColor} 100%)`,
             boxShadow: `0 0 12px ${pressureColor}`,
             transition: "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           }}

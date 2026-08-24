@@ -4,7 +4,7 @@ import React from "react";
  * ProgressBar — Animated horizontal progress bar with gradient fill.
  * @param {{ value: number, max?: number, color?: string, height?: number, label?: string, showPercent?: boolean }} props
  */
-export function ProgressBar({ value, max = 100, color = "#63f4ca", height = 8, label = "", showPercent = false }) {
+export function ProgressBar({ value, max = 100, color = "var(--good)", height = 8, label = "", showPercent = false }) {
   const pct = Math.min(100, Math.max(0, (value / max) * 100));
 
   return (

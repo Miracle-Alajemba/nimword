@@ -76,19 +76,14 @@ html,
 body,
 #root {
   min-height: 100vh;
+  /* dvh tracks the viewport as mobile browser chrome collapses, so the
+     board does not jump on first scroll. vh above is the fallback. */
+  min-height: 100dvh;
 }
 
+/* The ground. The washes and the graph paper are declared once, in the
+   surface layer further down; nothing is painted twice. */
 body {
-  background:
-    radial-gradient(circle at top, rgba(85, 126, 255, 0.1), transparent 34%),
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(180deg, rgba(6, 8, 17, 0.98) 0%, rgba(10, 15, 29, 0.98) 100%);
-  background-size:
-    auto,
-    32px 32px,
-    32px 32px,
-    auto;
   margin: 0;
   min-width: 320px;
   overflow-x: hidden;
@@ -100,78 +95,38 @@ body,
   font-family: var(--font-sans);
 }
 
-body::before,
-body::after {
-  content: "";
-  pointer-events: none;
-  position: fixed;
-  z-index: 0;
-}
-
-body::before {
-  background:
-    radial-gradient(circle, rgba(255, 255, 255, 0.12) 0 1px, transparent 1.5px);
-  background-size: 56px 56px;
-  inset: 0;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.65), transparent 88%);
-  opacity: 0.45;
-}
-
-body::after {
-  background:
-    radial-gradient(circle at 50% 50%, rgba(255, 178, 71, 0.22), transparent 50%),
-    radial-gradient(circle at 50% 50%, rgba(99, 244, 202, 0.08), transparent 70%);
-  border: 1px solid rgba(99, 244, 202, 0.12);
-  border-radius: 50%;
-  box-shadow:
-    0 0 0 120px rgba(86, 127, 255, 0.035),
-    0 0 0 240px rgba(86, 127, 255, 0.025),
-    0 0 0 360px rgba(86, 127, 255, 0.015);
-  height: min(78vw, 780px);
-  left: 50%;
-  opacity: 0.65;
-  top: 56%;
-  transform: translate(-50%, -50%);
-  width: min(78vw, 780px);
-}
-
 button,
 input {
   font: inherit;
 }
 
 button {
-  font-family: var(--font-sans);
-  background: linear-gradient(135deg, #ffad33 0%, #ff7a18 100%);
+  background: var(--interactive);
   border: 0;
-  border-radius: 999px;
-  box-shadow: 0 14px 30px rgba(255, 138, 51, 0.26);
-  color: #111827;
+  border-radius: 10px;
+  color: var(--surface);
   cursor: pointer;
+  font-family: var(--font-sans);
   font-weight: 800;
-  letter-spacing: 0.015em;
+  letter-spacing: 0;
+  min-height: 44px;
   padding: 0.9rem 1.3rem;
-  transition: transform 140ms ease, box-shadow 140ms ease;
-}
-
-button:hover {
-  box-shadow: 0 18px 34px rgba(255, 138, 51, 0.34);
-  transform: translateY(-1px);
+  transition: transform 140ms var(--ease-out), box-shadow 140ms var(--ease-out);
 }
 
 button:disabled {
   cursor: not-allowed;
-  filter: saturate(0.65);
-  opacity: 0.72;
+  filter: none;
+  opacity: 0.55;
   transform: none;
 }
 
 .button-secondary,
 .ghost-button {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(170, 190, 255, 0.18);
+  background: transparent;
+  border: 1px solid var(--rule-strong);
   box-shadow: none;
-  color: #eef2ff;
+  color: var(--ink-2);
 }
 
 /* Legacy token names, repointed at the tokens above.
@@ -200,30 +155,14 @@ button:disabled {
   position: relative;
 }
 
+/* The page-shell decorations are declared once, in the surface layer. */
 .page-shell::before,
 .page-shell::after {
   border-radius: 999px;
   content: "";
-  filter: blur(54px);
   pointer-events: none;
   position: fixed;
   z-index: 0;
-}
-
-.page-shell::before {
-  background: rgba(255, 146, 43, 0.2);
-  height: 320px;
-  left: -80px;
-  top: 96px;
-  width: 320px;
-}
-
-.page-shell::after {
-  background: rgba(0, 255, 183, 0.14);
-  height: 360px;
-  right: -100px;
-  top: 220px;
-  width: 360px;
 }
 
 .hero,
@@ -244,13 +183,9 @@ button:disabled {
 .panel,
 .play-hero,
 .results-sheet {
-  background:
-    linear-gradient(180deg, rgba(18, 24, 44, 0.96), rgba(12, 17, 33, 0.96));
-  border: 1px solid rgba(141, 163, 255, 0.14);
-  border-radius: 28px;
-  box-shadow:
-    0 24px 70px rgba(4, 7, 16, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
 }
 
 .hero-copy {
@@ -267,7 +202,7 @@ button:disabled {
 .eyebrow,
 .play-label,
 .hero-card__label {
-  color: #63f4ca;
+  color: var(--ink-muted);
   font-size: 0.85rem;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -275,22 +210,23 @@ button:disabled {
   text-transform: uppercase;
 }
 
+/* The wordmark is the one place per screen the Nimiq gold gradient is
+   spent. `color` is the real fallback, so if background-clip is
+   unsupported the title is still legible ink rather than transparent. */
 .hero-copy h1,
 .play-hero h1 {
-  font-family: var(--font-display);
-  letter-spacing: 0.06em;
-  line-height: 0.92;
-  margin: 0;
-  text-transform: uppercase;
-  font-weight: 700;
-  /* solid-color fallback for older browsers */
-  color: #ffffff;
-  /* premium gradient text effect */
-  background: linear-gradient(90deg, #ffffff 0%, #ffe599 40%, #ffcc66 100%);
+  color: var(--ink);
+  background: var(--accent-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  text-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+  font-family: var(--font-sans);
+  font-weight: 1000;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  margin: 0;
+  text-shadow: none;
+  text-transform: uppercase;
 }
 
 .hero-copy h1 {
@@ -300,10 +236,8 @@ button:disabled {
 @media (max-width: 420px) {
   .hero-copy h1,
   .play-hero h1 {
-    font-size: clamp(1.6rem, 10vw, 2.6rem);
-    letter-spacing: 0.04em;
-    font-weight: 600;
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    font-size: clamp(1.75rem, 11vw, 2.8rem);
+    letter-spacing: -0.025em;
   }
 }
 
@@ -312,7 +246,7 @@ button:disabled {
 }
 
 .lede {
-  color: #adb8d6;
+  color: var(--ink-2);
   font-size: 1.05rem;
   line-height: 1.75;
   margin-top: 1rem;
@@ -343,14 +277,14 @@ button:disabled {
 
 .brand-lockup__logo {
   aspect-ratio: 1;
-  border: 1px solid rgba(201, 146, 10, 0.28);
+  background: var(--surface);
+  border: 1px solid var(--rule);
   border-radius: 18px;
+  box-shadow: 0 2px 6px oklch(0.2737 0.068 276.29 / 0.08);
   display: block;
   height: clamp(64px, 9vw, 104px);
   object-fit: cover;
   width: clamp(64px, 9vw, 104px);
-  background: linear-gradient(180deg, rgba(255, 211, 115, 0.04), rgba(0,0,0,0));
-  box-shadow: 0 14px 36px rgba(0,0,0,0.42), inset 0 1px 0 rgba(255,255,255,0.02), 0 0 22px rgba(201,146,10,0.12);
 }
 
 .brand-lockup .eyebrow {
@@ -376,7 +310,7 @@ button:disabled {
 }
 
 .hero-logo__name {
-  color: #f0f0f5;
+  color: var(--ink);
   font-family: var(--font-sans);
   font-size: 2.6rem;
   font-weight: 700;
@@ -475,8 +409,8 @@ button:disabled {
 .practice-difficulty-toggle {
   background: linear-gradient(
     180deg,
-    rgba(22, 31, 58, 0.98),
-    rgba(10, 17, 34, 0.99)
+    var(--surface-sunk),
+    var(--surface-sunk)
   );
   border: 1px solid rgba(130, 152, 235, 0.32);
   box-shadow:
@@ -507,8 +441,8 @@ button:disabled {
 
 .practice-difficulty-toggle__option--active,
 .practice-difficulty-toggle .theme-toggle__option--active {
-  background: linear-gradient(135deg, #63f4ca 0%, #7bffcc 100%);
-  border-color: rgba(99, 244, 202, 0.5);
+  background: var(--interactive);
+  border-color: var(--interactive);
   box-shadow:
     0 10px 22px rgba(99, 244, 202, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.22);
@@ -581,7 +515,7 @@ button:disabled {
 }
 
 .wallet-status {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-sunk);
   border: 1px solid rgba(116, 139, 229, 0.16);
   border-radius: 16px;
   color: #d8def4;
@@ -597,7 +531,7 @@ button:disabled {
 }
 
 .feature-pill {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--surface-sunk);
   border: 1px solid rgba(116, 139, 229, 0.16);
   border-radius: 999px;
   color: #d8def4;
@@ -615,7 +549,7 @@ button:disabled {
 }
 
 .sample-scoring-footer {
-  background: rgba(15, 23, 42, 0.75);
+  background: var(--surface-sunk);
   border: 1px solid rgba(141, 163, 255, 0.2);
   border-radius: 16px;
   padding: 0.8rem 1rem;
@@ -639,7 +573,7 @@ button:disabled {
 }
 
 .scoring-pill {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-sunk);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   padding: 0.35rem 0.4rem;
@@ -677,7 +611,7 @@ button:disabled {
 }
 
 .hero-card__score-badge {
-  background: rgba(99, 244, 202, 0.12);
+  background: oklch(0.6932 0.1245 178.48 / 0.12);
   border: 1px solid rgba(99, 244, 202, 0.35);
   border-radius: 12px;
   padding: 0.4rem 0.75rem;
@@ -692,14 +626,14 @@ button:disabled {
 }
 
 .hero-card__score-badge strong {
-  color: #63f4ca;
+  color: var(--good);
   font-size: 1.1rem;
   font-weight: 800;
 }
 
 .sample-builder-box {
   align-items: center;
-  background: rgba(10, 15, 29, 0.85);
+  background: var(--surface-sunk);
   border: 1px dashed rgba(141, 163, 255, 0.35);
   border-radius: 14px;
   display: flex;
@@ -764,7 +698,7 @@ button:disabled {
 }
 
 .hero-card__grid span {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-sunk);
   border: 1px solid rgba(141, 163, 255, 0.14);
   border-radius: 16px;
   padding: 0.85rem 0.9rem;
@@ -1052,7 +986,7 @@ button:disabled {
 
 .score-badge {
   background:
-    linear-gradient(180deg, rgba(25, 34, 63, 0.95), rgba(17, 23, 43, 0.95));
+    var(--surface-sunk);
   border: 1px solid rgba(114, 138, 232, 0.18);
   border-radius: 22px;
   display: grid;
@@ -1098,9 +1032,9 @@ button:disabled {
 
 .submit-panel--sticky {
   align-items: center;
-  background: rgba(250, 250, 248, 0.94);
-  border: 1px solid var(--line-soft);
-  border-radius: 22px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 16px;
   bottom: 0;
   padding: 0.85rem;
   position: sticky;
@@ -1303,7 +1237,7 @@ button:disabled {
 }
 
 .metric-card {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-sunk);
   border: 1px solid rgba(122, 146, 240, 0.16);
   border-radius: 18px;
   display: grid;
@@ -1332,7 +1266,7 @@ button:disabled {
 }
 
 .rules-card {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-sunk);
   border: 1px solid rgba(122, 146, 240, 0.16);
   border-radius: 20px;
   margin-top: 1rem;
@@ -1731,7 +1665,7 @@ button:disabled {
 
 .invite-link-card {
   align-items: center;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--surface-sunk);
   border: 1px solid rgba(170, 190, 255, 0.16);
   border-radius: 18px;
   display: grid;
@@ -1742,7 +1676,7 @@ button:disabled {
 }
 
 .invite-link-card input {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--surface);
   border: 1px solid rgba(170, 190, 255, 0.16);
   border-radius: 999px;
   color: #f8fbff;
@@ -1789,7 +1723,7 @@ button:disabled {
 .word-chip {
   align-items: center;
   background:
-    linear-gradient(180deg, rgba(19, 27, 50, 0.96), rgba(14, 20, 38, 0.96));
+    var(--surface-sunk);
   border: 1px solid rgba(122, 146, 240, 0.18);
   border-radius: 18px;
   display: flex;
@@ -1800,18 +1734,18 @@ button:disabled {
 }
 
 .word-chip strong {
-  color: #fff;
+  color: var(--ink);
   text-transform: lowercase;
 }
 
 .word-chip span {
-  color: #63f4ca;
+  color: var(--good);
   font-size: 0.92rem;
   font-weight: 800;
 }
 
 .empty-card {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-sunk);
   border: 1px dashed rgba(122, 146, 240, 0.2);
   border-radius: 18px;
   color: #96a6cb;
@@ -2417,13 +2351,18 @@ button:hover {
   white-space: nowrap;
 }
 
+/* The canonical bottom nav. It was previously declared across ten rules
+   with conflicting geometry, and only one of them — inside a narrow media
+   query — accounted for the home-bar inset, so on most phone widths the
+   nav sat under the gesture area. The inset is now in the base rule, and
+   the breakpoints below vary nothing but geometry. */
 .bottom-nav {
   backdrop-filter: blur(18px);
-  background: rgba(250, 250, 248, 0.86);
-  border: 1px solid var(--line-soft);
-  border-radius: 24px;
-  bottom: 12px;
-  box-shadow: 0 16px 36px rgba(44, 44, 44, 0.1);
+  -webkit-backdrop-filter: blur(18px);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  bottom: calc(12px + env(safe-area-inset-bottom));
   display: flex;
   gap: 0.45rem;
   left: 50%;
@@ -2494,7 +2433,7 @@ button:hover {
 .app-dark-mode .bottom-nav__item:hover,
 .app-dark-mode .bottom-nav__item:focus-visible {
   background:
-    linear-gradient(180deg, rgba(18, 28, 53, 0.96), rgba(11, 18, 36, 0.98));
+    var(--surface-sunk);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     inset 0 0 0 1px rgba(76, 201, 240, 0.16),
@@ -2523,7 +2462,7 @@ button:hover {
 .app-dark-mode .bottom-nav__item--active:hover,
 .app-dark-mode .bottom-nav__item--active:focus-visible {
   background:
-    linear-gradient(180deg, rgba(27, 43, 67, 0.98), rgba(16, 27, 48, 0.98));
+    oklch(0.5849 0.1438 244.29 / 0.1);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     inset 0 0 0 1px rgba(99, 244, 202, 0.22),
@@ -2577,19 +2516,22 @@ button:hover {
   --text-soft: var(--ink-2);
   --text-muted-2: var(--ink-muted);
   --accent-cyan: var(--interactive);
+  /* Referenced 10+ times from JSX inline styles but never defined — which
+     is why active tabs rendered with no colour at all. */
+  --accent-mint: var(--interactive);
   --accent-warm: var(--nq-orange);
   --accent-coral-deep: var(--nq-gold);
 }
 
 button {
-  background: linear-gradient(180deg, rgba(186, 221, 205, 0.98), rgba(152, 191, 173, 0.98));
-  border: 1px solid rgba(168, 197, 168, 0.28);
-  box-shadow: 0 12px 24px rgba(12, 19, 34, 0.18);
-  color: #0f1726;
-  font-family: var(--font-display);
-  font-size: 0.82rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  background: var(--interactive);
+  border: 1px solid var(--interactive);
+  box-shadow: none;
+  color: var(--surface);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 button:hover {
@@ -2599,14 +2541,14 @@ button:hover {
 
 .button-secondary,
 .ghost-button {
-  background: rgba(15, 21, 39, 0.78);
+  background: transparent;
   border: 1px solid rgba(130, 152, 235, 0.18);
   box-shadow: none;
   color: var(--text-high);
 }
 
 .button-accent-blue {
-  background: linear-gradient(180deg, rgba(40, 58, 88, 0.98), rgba(26, 39, 64, 0.98));
+  background: var(--interactive);
   border: 1px solid rgba(122, 159, 181, 0.24);
   box-shadow: 0 10px 22px rgba(4, 9, 18, 0.18);
   color: var(--text-high);
@@ -2622,7 +2564,7 @@ button:hover {
 
 .submit-panel button:last-of-type,
 .submit-panel .button-secondary {
-  background: linear-gradient(180deg, rgba(21, 31, 50, 0.98), rgba(12, 18, 31, 0.98));
+  background: transparent;
   border: 1px solid rgba(122, 159, 181, 0.18);
   box-shadow: none;
   color: #dfe7f7;
@@ -2630,7 +2572,7 @@ button:hover {
 
 .submit-panel button:last-of-type:hover,
 .submit-panel .button-secondary:hover {
-  background: linear-gradient(180deg, rgba(27, 39, 61, 0.98), rgba(16, 23, 38, 0.98));
+  background: var(--surface-sunk);
   box-shadow: 0 10px 20px rgba(4, 9, 18, 0.14);
 }
 
@@ -2673,13 +2615,7 @@ button:hover {
 .empty-card,
 .word-chip,
 .system-message,
-.submit-panel--sticky {
-  background: linear-gradient(180deg, rgba(18, 25, 46, 0.94), rgba(9, 13, 25, 0.96));
-  border-color: var(--surface-line-strong);
-  box-shadow:
-    0 20px 50px rgba(2, 6, 17, 0.38),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-}
+/* .submit-panel--sticky skin is owned by the surface layer. */
 
 .eyebrow,
 .play-label,
@@ -2770,7 +2706,7 @@ button:hover {
 .claim-meta-chip,
 .validation-badge,
 .system-message__icon {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--surface-sunk);
   border-color: rgba(130, 152, 235, 0.18);
 }
 
@@ -2790,9 +2726,9 @@ button:hover {
 .validation-badge--ok,
 .self-pill,
 .timer-pill {
-  background: rgba(99, 244, 202, 0.12);
-  border-color: rgba(99, 244, 202, 0.24);
-  color: #d7fff4;
+  background: oklch(0.6932 0.1245 178.48 / 0.12);
+  border-color: oklch(0.6932 0.1245 178.48 / 0.3);
+  color: var(--nq-green-deep);
 }
 
 .wallet-chip--warn,
@@ -2845,7 +2781,7 @@ button:hover {
 }
 
 .room-topbar {
-  background: linear-gradient(180deg, rgba(14, 19, 35, 0.94), rgba(8, 12, 23, 0.98));
+  background: var(--surface);
 }
 
 .room-topbar__stats span,
@@ -2874,7 +2810,7 @@ button:hover {
    definition above governs both. */
 
 .word-preview {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-sunk);
   border-color: rgba(99, 244, 202, 0.18);
   color: var(--text-high);
   font-family: var(--font-display);
@@ -2882,7 +2818,7 @@ button:hover {
 }
 
 .submit-panel--sticky {
-  background: linear-gradient(180deg, rgba(12, 17, 31, 0.94), rgba(9, 13, 24, 0.98));
+  background: var(--surface);
 }
 
 .submit-panel--inline .submit-panel__locked {
@@ -2890,7 +2826,7 @@ button:hover {
 }
 
 .submit-panel input {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-sunk);
   border-color: rgba(130, 152, 235, 0.16);
   color: var(--text-high);
 }
@@ -2905,7 +2841,7 @@ button:hover {
 }
 
 .submit-panel__locked {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-sunk);
   border-color: rgba(130, 152, 235, 0.16);
 }
 
@@ -2922,28 +2858,33 @@ button:hover {
 }
 
 .chat-bubble {
-  background: linear-gradient(180deg, rgba(16, 22, 40, 0.96), rgba(9, 13, 25, 0.96));
-  border-color: rgba(130, 152, 235, 0.14);
+  background: var(--surface-sunk);
+  border-color: var(--rule);
 }
 
+/* These need !important to survive the surface layer's blanket
+   `.chat-bubble` rule — the whole point of a variant is that it differs. */
 .chat-bubble--self {
-  background: linear-gradient(180deg, rgba(21, 43, 39, 0.96), rgba(11, 25, 23, 0.96));
+  background: oklch(0.5849 0.1438 244.29 / 0.08) !important;
+  border-color: oklch(0.5849 0.1438 244.29 / 0.22) !important;
 }
 
 .chat-bubble--accepted {
-  border-color: rgba(99, 244, 202, 0.24);
+  border-color: oklch(0.6932 0.1245 178.48 / 0.34) !important;
+  border-left: 3px solid var(--good) !important;
 }
 
 .chat-bubble--rejected {
-  background: linear-gradient(180deg, rgba(44, 24, 27, 0.95), rgba(24, 11, 15, 0.96));
-  border-color: rgba(255, 154, 138, 0.22);
+  background: oklch(0.598 0.1886 30.3 / 0.07) !important;
+  border-color: oklch(0.598 0.1886 30.3 / 0.22) !important;
+  border-left: 3px solid var(--bad) !important;
 }
 
 .chat-bubble__word {
-  background: rgba(99, 244, 202, 0.12);
-  color: var(--text-high);
-  font-family: var(--font-display);
-  letter-spacing: 0.08em;
+  background: oklch(0.6932 0.1245 178.48 / 0.12);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  letter-spacing: 0;
 }
 
 .chat-bubble__word--muted,
@@ -2967,9 +2908,9 @@ button:hover {
 }
 
 .claim-card__status--ready {
-  background: rgba(99, 244, 202, 0.12);
-  border-color: rgba(99, 244, 202, 0.26);
-  color: #d7fff4;
+  background: oklch(0.6932 0.1245 178.48 / 0.12);
+  border-color: oklch(0.6932 0.1245 178.48 / 0.3);
+  color: var(--nq-green-deep);
 }
 
 .claim-card__status--success {
@@ -2978,11 +2919,7 @@ button:hover {
   color: #ffe2b2;
 }
 
-.bottom-nav {
-  background: rgba(9, 13, 24, 0.88);
-  border-color: rgba(130, 152, 235, 0.16);
-  box-shadow: 0 18px 44px rgba(2, 6, 17, 0.28);
-}
+/* .bottom-nav skin is owned by the surface layer. */
 
 .bottom-nav__item {
   color: var(--text-soft);
@@ -2996,7 +2933,7 @@ button:hover {
 }
 
 .bottom-nav__item--active {
-  background: rgba(99, 244, 202, 0.12);
+  background: oklch(0.6932 0.1245 178.48 / 0.12);
   color: var(--text-high);
 }
 
@@ -3102,7 +3039,7 @@ button:hover {
 }
 
 .bottom-nav {
-  bottom: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
   max-width: 780px;
 }
 
@@ -3237,7 +3174,7 @@ button:hover {
 @media (max-width: 480px) {
   .bottom-nav {
     border-radius: 20px;
-    bottom: 10px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
     gap: 0.2rem;
     padding: 0.38rem;
     width: calc(100% - 14px);
@@ -3272,16 +3209,19 @@ button:hover {
 html,
 body,
 #root {
-  background: #0c0c10;
+  background: var(--ground);
 }
 
+/* Two very low-alpha washes in the Nimiq blue and green, plus the flat
+   ground beneath. Enough to keep a full-bleed phone screen from reading
+   as dead paper; not enough to compete with a tile. */
 body {
   background:
-    radial-gradient(circle at 20% 16%, rgba(201, 146, 10, 0.13), transparent 30%),
-    radial-gradient(circle at 78% 18%, rgba(255, 255, 255, 0.055), transparent 28%),
-    radial-gradient(circle at 50% 110%, rgba(201, 146, 10, 0.08), transparent 34%),
-    linear-gradient(180deg, #0c0c10 0%, #09090d 100%);
-  color: #f0f0f5;
+    radial-gradient(circle at 18% 12%, oklch(0.5849 0.1438 244.29 / 0.07), transparent 34%),
+    radial-gradient(circle at 82% 8%, oklch(0.6932 0.1245 178.48 / 0.06), transparent 30%),
+    radial-gradient(circle at 50% 108%, oklch(0.5849 0.1438 244.29 / 0.05), transparent 36%),
+    var(--ground);
+  color: var(--ink);
 }
 
 body::before,
@@ -3295,10 +3235,12 @@ body::after {
   opacity: 1;
 }
 
+/* Faint graph paper — the board sits on a measured surface. Ink-on-light
+   now, where it used to be white-on-black and therefore invisible. */
 .page-shell::before {
   background:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    linear-gradient(oklch(0.2737 0.068 276.29 / 0.032) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(0.2737 0.068 276.29 / 0.032) 1px, transparent 1px);
   background-size: 42px 42px;
   filter: none;
   inset: 0;
@@ -3310,7 +3252,7 @@ body::after {
 }
 
 .page-shell::after {
-  background: radial-gradient(circle, rgba(201, 146, 10, 0.16), transparent 64%);
+  background: radial-gradient(circle, oklch(0.5849 0.1438 244.29 / 0.1), transparent 64%);
   filter: blur(70px);
   height: 420px;
   left: 50%;
@@ -3321,7 +3263,7 @@ body::after {
 }
 
 * {
-  scrollbar-color: #2a2a36 #0c0c10;
+  scrollbar-color: var(--rule-strong) var(--ground);
 }
 
 ::-webkit-scrollbar {
@@ -3330,24 +3272,38 @@ body::after {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0c0c10;
+  background: var(--ground);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2a2a36;
+  background: var(--rule-strong);
   border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3a3a48;
+  background: var(--ink-muted);
 }
 
 .app-dark-mode {
-  background: #0c0c10;
-  color: #f0f0f5;
+  background: var(--ground);
+  color: var(--ink);
   min-height: 100vh;
 }
 
+/* ═══════════════════════════════════════════════════════════════════
+   SURFACE LAYER — the one authoritative pass that assigns every card,
+   pill, button and input to a token role.
+
+   The `!important` here is deliberate and load-bearing: this layer must
+   outrank three earlier generations of hardcoded rules further up the
+   file. Rather than chase every one of those, this band is the single
+   place a surface decision gets made. Two roles only:
+
+     raised  → --surface on --ground, hairline --rule, soft lift
+     sunk    → --surface-sunk, hairline --rule, no shadow
+
+   Nothing else invents a background.
+   ═══════════════════════════════════════════════════════════════════ */
 .hero-copy,
 .hero-card,
 .panel,
@@ -3362,20 +3318,18 @@ body::after {
 .settings-row,
 .submit-panel--sticky,
 .bottom-nav {
-  background: #13131a !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 12px !important;
-  box-shadow:
-    0 18px 56px rgba(0, 0, 0, 0.72),
-    0 0 0 1px rgba(201, 146, 10, 0.035) !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--rule) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 1px 2px oklch(0.2737 0.068 276.29 / 0.04), 0 8px 24px oklch(0.2737 0.068 276.29 / 0.06) !important;
 }
 
+/* The hero is the one thing allowed to sit a little further off the page. */
 .hero-copy,
 .hero-card {
   box-shadow:
-    0 22px 70px rgba(0, 0, 0, 0.76),
-    0 0 34px rgba(201, 146, 10, 0.055),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+    0 1px 2px oklch(0.2737 0.068 276.29 / 0.05),
+    0 14px 40px oklch(0.2737 0.068 276.29 / 0.09) !important;
 }
 
 .lobby-readiness-card,
@@ -3400,12 +3354,14 @@ body::after {
 .feature-pill,
 .hero-card__grid span,
 .submit-panel__locked {
-  background: #1a1a24 !important;
-  border: 1px solid rgba(255, 255, 255, 0.06) !important;
-  border-radius: 8px !important;
+  background: var(--surface-sunk) !important;
+  border: 1px solid var(--rule) !important;
+  border-radius: 10px !important;
   box-shadow: none !important;
 }
 
+/* Three ink tiers, no more: --ink for anything you read to make a
+   decision, --ink-2 for supporting prose, --ink-muted for labels. */
 .hero-copy h1,
 .play-hero h1,
 .hero-card h2,
@@ -3427,9 +3383,9 @@ body::after {
 .system-message__body strong,
 .system-message__body span,
 .leaderboard-table__stats strong {
-  color: #f0f0f5 !important;
-  font-weight: 700 !important;
-  letter-spacing: 0 !important;
+  color: var(--ink) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em !important;
   text-shadow: none !important;
 }
 
@@ -3457,7 +3413,7 @@ body::after {
 .room-live-header__meta span,
 .room-live-header__score small,
 .typing-indicator {
-  color: #8888a0 !important;
+  color: var(--ink-2) !important;
   font-weight: 500 !important;
   text-shadow: none !important;
 }
@@ -3478,34 +3434,45 @@ body::after {
 .appearance-row__label,
 .wallet-panel__copy label,
 .leaderboard-table__rank {
-  color: #d4d4e2  !important;
+  color: var(--ink-muted) !important;
   font-weight: 700 !important;
 }
 
+/* One primary action shape, in the Nimiq blue. Buttons get the same 3D
+   press as a tile so the whole surface feels like one physical system. */
 button,
 .submit-panel button:first-of-type {
-  background: #c9920a !important;
-  border: 1px solid #c9920a !important;
-  border-radius: 8px !important;
-  box-shadow: none !important;
-  color: #0c0c10 !important;
-  font-weight: 700 !important;
+  background: var(--interactive) !important;
+  border: 1px solid var(--interactive) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 1px 0 var(--interactive-ink), 0 4px 12px oklch(0.5849 0.1438 244.29 / 0.24) !important;
+  color: var(--surface) !important;
+  font-weight: 800 !important;
   letter-spacing: 0 !important;
+  transition: transform 160ms var(--ease-out), box-shadow 160ms var(--ease-out), background 160ms var(--ease-out);
 }
 
 button:hover,
 .submit-panel button:first-of-type:hover {
-  background: #b07d08 !important;
-  border-color: #b07d08 !important;
-  box-shadow: none !important;
-  transform: none !important;
+  background: var(--interactive-ink) !important;
+  border-color: var(--interactive-ink) !important;
+  box-shadow: 0 1px 0 var(--interactive-ink), 0 6px 18px oklch(0.5849 0.1438 244.29 / 0.3) !important;
+  transform: translateY(-1px) !important;
+}
+
+button:active,
+.submit-panel button:first-of-type:active {
+  box-shadow: 0 1px 0 var(--interactive-ink) !important;
+  transform: perspective(320px) rotateX(7deg) translateY(1px) !important;
 }
 
 button:disabled,
 .button-secondary:disabled,
 .ghost-button:disabled {
-  color: #55556a !important;
-  opacity: 0.62;
+  box-shadow: none !important;
+  color: var(--ink-muted) !important;
+  opacity: 0.55;
+  transform: none !important;
 }
 
 .button-secondary,
@@ -3515,10 +3482,10 @@ button:disabled,
 .submit-panel button:last-of-type,
 .submit-panel .button-secondary {
   background: transparent !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 8px !important;
+  border: 1px solid var(--rule-strong) !important;
+  border-radius: 10px !important;
   box-shadow: none !important;
-  color: #8888a0 !important;
+  color: var(--ink-2) !important;
   font-weight: 700 !important;
 }
 
@@ -3529,11 +3496,25 @@ button:disabled,
 .theme-toggle__option:hover,
 .submit-panel button:last-of-type:hover,
 .submit-panel .button-secondary:hover {
-  background: transparent !important;
-  border-color: rgba(255, 255, 255, 0.2) !important;
+  background: var(--surface-sunk) !important;
+  border-color: var(--interactive) !important;
   box-shadow: none !important;
-  color: #f0f0f5 !important;
+  color: var(--ink) !important;
   transform: none !important;
+}
+
+/* Every interactive thing gets the same visible focus ring — one of the
+   published Design & UX sub-criteria, and free accessibility. */
+button:focus-visible,
+.button-secondary:focus-visible,
+.ghost-button:focus-visible,
+.bottom-nav__item:focus-visible,
+.theme-toggle__option:focus-visible,
+a:focus-visible,
+input:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--interactive-ink) !important;
+  outline-offset: 2px !important;
 }
 
 /* The `!important` tile overrides that used to sit here are gone —
@@ -3547,6 +3528,9 @@ button:disabled,
   color: var(--surface);
 }
 
+/* Live numbers are the one place the Nimiq gold gradient earns its keep —
+   a score is the reward signal, so it gets the brand's warm accent while
+   everything structural stays blue. */
 .live-score,
 .data-highlight,
 .score-badge strong,
@@ -3554,37 +3538,42 @@ button:disabled,
 .room-live-header__score strong,
 .lobby-readiness-card__count,
 .chat-bubble__points {
-  color: #c9920a !important;
-  font-weight: 800 !important;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent;
+  font-variant-numeric: tabular-nums;
+  font-weight: 900 !important;
   text-shadow: none !important;
 }
 
 .host-pill,
 .status-pill--live,
 .validation-badge--ok {
-  background: #c9920a !important;
-  border-color: #c9920a !important;
-  color: #0c0c10 !important;
+  background: var(--good) !important;
+  border-color: var(--good) !important;
+  color: var(--surface) !important;
 }
 
 .status-pill {
   align-items: center;
   border-radius: 999px;
   display: inline-flex;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
   font-size: 0.74rem;
   font-weight: 700;
   justify-content: center;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   min-height: 44px;
   padding: 0.45rem 0.8rem;
   text-transform: uppercase;
 }
 
 .status-pill--idle {
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  color: #8888a0 !important;
+  background: var(--surface-sunk) !important;
+  border: 1px solid var(--rule) !important;
+  color: var(--ink-muted) !important;
 }
 
 .wallet-status {
@@ -3596,9 +3585,9 @@ button:disabled,
 
 .wallet-status::before {
   animation: walletStatusPulse 1.4s ease-in-out infinite;
-  background: #c9920a;
+  background: var(--good);
   border-radius: 999px;
-  box-shadow: 0 0 0 0 rgba(201, 146, 10, 0.4);
+  box-shadow: 0 0 0 0 oklch(0.6932 0.1245 178.48 / 0.4);
   content: "";
   height: 0.55rem;
   width: 0.55rem;
@@ -3606,70 +3595,78 @@ button:disabled,
 
 @keyframes walletStatusPulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(201, 146, 10, 0.36);
+    box-shadow: 0 0 0 0 oklch(0.6932 0.1245 178.48 / 0.36);
     opacity: 0.72;
   }
   70% {
-    box-shadow: 0 0 0 8px rgba(201, 146, 10, 0);
+    box-shadow: 0 0 0 8px oklch(0.6932 0.1245 178.48 / 0);
     opacity: 1;
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(201, 146, 10, 0);
+    box-shadow: 0 0 0 0 oklch(0.6932 0.1245 178.48 / 0);
     opacity: 0.72;
   }
 }
 
+/* Notices carry meaning in the left rule AND the text, never colour
+   alone — colourblind players get the same information. */
 .notice-strip,
 .notice-strip--neutral,
 .notice-strip--success,
 .notice-strip--error {
-  background: rgba(255, 255, 255, 0.03) !important;
-  border: 1px solid rgba(255, 255, 255, 0.06) !important;
-  border-left: 3px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 8px !important;
+  background: var(--surface-sunk) !important;
+  border: 1px solid var(--rule) !important;
+  border-left: 3px solid var(--rule-strong) !important;
+  border-radius: 10px !important;
   box-shadow: none !important;
-  color: #8888a0 !important;
+  color: var(--ink-2) !important;
 }
 
 .notice-strip--success {
-  border-left-color: #c9920a !important;
+  border-left-color: var(--good) !important;
 }
 
 .notice-strip--error,
 .validation-badge--bad,
 .status-pill--warn {
-  border-left-color: #994444 !important;
-  color: #f0f0f5 !important;
+  border-left-color: var(--bad) !important;
+  color: var(--ink) !important;
 }
 
 .player-row--self,
 .room-player-card--self,
 .lobby-readiness-card--ready,
 .leaderboard-table__row--top {
-  background: rgba(201, 146, 10, 0.06) !important;
-  border-color: rgba(201, 146, 10, 0.25) !important;
-  border-left: 3px solid #c9920a !important;
+  background: oklch(0.5849 0.1438 244.29 / 0.06) !important;
+  border-color: oklch(0.5849 0.1438 244.29 / 0.22) !important;
+  border-left: 3px solid var(--interactive) !important;
 }
 
 .submit-panel input,
 .invite-link-card input {
-  background: #1a1a24 !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  border-radius: 8px !important;
+  background: var(--surface) !important;
+  border: 1px solid var(--rule-strong) !important;
+  border-radius: 10px !important;
   box-shadow: none !important;
-  color: #f0f0f5 !important;
+  color: var(--ink) !important;
+  font-size: 1rem !important;
+}
+
+.submit-panel input:focus,
+.invite-link-card input:focus {
+  border-color: var(--interactive) !important;
 }
 
 .submit-panel input::placeholder {
-  color: #55556a !important;
+  color: var(--ink-muted) !important;
 }
 
 .chat-feed,
 .chat-feed--lobby,
 .chat-feed--live {
   background: transparent !important;
-  border-color: rgba(255, 255, 255, 0.06) !important;
-  color: #f0f0f5 !important;
+  border-color: var(--rule) !important;
+  color: var(--ink) !important;
 }
 
 @media (min-width: 769px) {
@@ -3682,6 +3679,9 @@ button:disabled,
   }
 }
 
+/* Mulish at display weight wants negative tracking — it was set to
+   +0.02em from the wide-tracked Oxanium era, which made every heading
+   look loose. */
 h1,
 h2,
 h3,
@@ -3702,13 +3702,14 @@ h3,
 .timer-tone {
   font-family: var(--font-sans);
   font-weight: 800;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 button {
   font-family: var(--font-sans);
   font-weight: 800;
-  letter-spacing: 0.015em;
+  letter-spacing: 0;
 }
 
 p,
@@ -3726,17 +3727,18 @@ small,
 }
 
 .lede {
-  color: #9090a0 !important;
+  color: var(--ink-2) !important;
   font-size: 1rem !important;
   line-height: 1.6 !important;
   margin-bottom: 0.75rem !important;
 }
 
 .lede--tagline {
-  color: #c9920a !important;
+  color: var(--interactive-ink) !important;
   font-family: var(--font-sans);
   font-size: 1.25rem !important;
-  letter-spacing: 0.08em !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.01em !important;
   margin-bottom: 1.5rem !important;
 }
 
@@ -3914,7 +3916,7 @@ small,
 .difficulty-card:hover {
   transform: translateY(-3px) scale(1.01);
   box-shadow: 0 8px 24px rgba(99, 244, 202, 0.16);
-  background: rgba(255, 255, 255, 0.06) !important;
+  background: var(--surface-sunk) !important;
   border-color: rgba(99, 244, 202, 0.25) !important;
 }
 
@@ -4021,7 +4023,7 @@ button:active {
 /* Success bounce and pop for score upgrades */
 .score-badge--pop {
   animation: scorePop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.3) forwards !important;
-  border-color: #63f4ca !important;
+  border-color: var(--good) !important;
 }
 
 @keyframes scorePop {
@@ -4074,17 +4076,19 @@ button:active {
 @media (max-width: 768px) {
   .mobile-sticky-bottom-wrap {
     position: fixed;
-    bottom: 5.2rem; /* Float above the bottom tab navigation bar */
+    /* Clears the nav AND the home bar — the nav's own inset is already
+       inside its bottom, so this adds the same inset once more. */
+    bottom: calc(5.2rem + env(safe-area-inset-bottom));
     left: 0.9rem;
     right: 0.9rem;
     z-index: 100;
-    background: rgba(12, 12, 16, 0.95);
+    background: var(--surface);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     padding: 0.85rem;
     border-radius: 16px;
-    border: 1px solid rgba(130, 152, 235, 0.16);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--rule);
+    box-shadow: 0 -2px 24px oklch(0.2737 0.068 276.29 / 0.1);
   }
 
   .play-shell {
@@ -4114,8 +4118,8 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(180deg, #ffd787 0%, #c9920a 100%) !important;
-  color: #1a1202 !important;
+  background: var(--accent-gradient) !important;
+  color: var(--nq-darkblue) !important;
   font-weight: 900 !important;
   font-size: 1.5rem !important;
   box-shadow: 0 8px 20px rgba(201, 146, 10, 0.3), inset 0 2px 2px rgba(255, 255, 255, 0.4) !important;
@@ -4193,7 +4197,7 @@ button:active {
 }
 
 .dc-result-stat {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-sunk);
   border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 0.75rem;
@@ -4531,3 +4535,131 @@ button:active {
   flex-shrink: 0;
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════
+   MOBILE-NATIVE PASS
+
+   A Mini App runs inside a wallet on a phone held in one hand. This is
+   the last block in the file on purpose: it is the final word on touch
+   behaviour, thumb reach, and the safe areas the OS reserves.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* No 300ms tap delay, no grey flash, no accidental double-tap zoom.
+   Native apps do not do those things, so neither should this. */
+button,
+a,
+[role="button"],
+.letter-tile,
+.letter-tile--interactive,
+.bottom-nav__item,
+.theme-toggle__option,
+.difficulty-card,
+.word-chip {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Rubber-banding the whole page while dragging across a rack reads as
+   broken. Contain it to the scroller that was actually grabbed. */
+body,
+.chat-feed,
+.page-shell {
+  overscroll-behavior-y: contain;
+}
+
+/* Anything a thumb has to hit clears the 44px minimum, including the
+   ones that were previously sized by their text alone. */
+.bottom-nav__item,
+.theme-toggle__option,
+.button-secondary,
+.ghost-button,
+.copy-button,
+.tab-bar__item {
+  min-height: 44px;
+}
+
+@media (max-width: 640px) {
+  /* Left/right insets matter in landscape on a notched phone; the
+     bottom one is handled per-component above. */
+  .page-shell {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
+  }
+
+  /* The rack is the thing the thumb spends the round on, so it gets the
+     largest tiles the screen can hold and wraps rather than scrolls. */
+  .letter-rack,
+  .letter-rack--play {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .letter-tile--play {
+    font-size: 1.35rem;
+    height: 3.15rem;
+    min-width: 3.15rem;
+  }
+
+  /* Four tiles plus gaps fit inside 320px; five would not. */
+  @media (max-width: 360px) {
+    .letter-tile--play {
+      font-size: 1.2rem;
+      height: 2.85rem;
+      min-width: 2.85rem;
+    }
+  }
+
+  /* One primary action per screen, full width, in the thumb zone. */
+  .hero-actions > button:first-child,
+  .submit-panel button:first-of-type {
+    flex: 1 1 100%;
+    min-height: 52px;
+  }
+
+  /* Two columns of stats is one column on a phone. */
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* The OS keyboard cannot cover the board, because the board is not
+   behind an OS keyboard: word entry is tile taps. Where a text field
+   does exist (invite codes, username), 16px prevents iOS from zooming
+   the viewport on focus — the single most common mobile-web jank. */
+input,
+select,
+textarea {
+  font-size: max(16px, 1rem);
+}
+
+/* Landscape on a phone is short, not wide. Reclaim the vertical space
+   the hero would otherwise eat. */
+@media (max-height: 480px) and (orientation: landscape) {
+  .hero-copy {
+    padding: 1rem;
+  }
+
+  .hero-copy h1,
+  .play-hero h1 {
+    font-size: clamp(1.4rem, 5vh, 2rem);
+  }
+
+  .page-shell {
+    padding-top: 0.5rem;
+  }
+}
+
+/* Honour the OS accessibility setting across everything, not just the
+   tile. One rule, no exceptions to hunt down later. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
+}

@@ -55,13 +55,13 @@ export function LeaderboardScreen({ room, onQuickMatch, onBack, apiBaseUrl }) {
         <section className="profile-shell">
           <article className="panel profile-panel">
             {/* Tab Controls */}
-            <div style={{ display: "flex", gap: "12px", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "12px", marginBottom: "16px" }}>
+            <div style={{ display: "flex", gap: "12px", borderBottom: "1px solid var(--rule)", paddingBottom: "12px", marginBottom: "16px" }}>
               <button
                 type="button"
                 onClick={() => setActiveTab("arena")}
                 style={{
                   background: "transparent",
-                  color: activeTab === "arena" ? "var(--accent-mint)" : "rgba(255,255,255,0.6)",
+                  color: activeTab === "arena" ? "var(--accent-mint)" : "var(--ink-muted)",
                   border: "none",
                   borderBottom: activeTab === "arena" ? "2px solid var(--accent-mint)" : "none",
                   padding: "6px 12px",
@@ -76,7 +76,7 @@ export function LeaderboardScreen({ room, onQuickMatch, onBack, apiBaseUrl }) {
                 onClick={() => setActiveTab("daily")}
                 style={{
                   background: "transparent",
-                  color: activeTab === "daily" ? "var(--accent-mint)" : "rgba(255,255,255,0.6)",
+                  color: activeTab === "daily" ? "var(--accent-mint)" : "var(--ink-muted)",
                   border: "none",
                   borderBottom: activeTab === "daily" ? "2px solid var(--accent-mint)" : "none",
                   padding: "6px 12px",
@@ -211,10 +211,10 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
   const [testTileSelected, setTestTileSelected] = useState(false);
 
   const themeColors = {
-    mint: { name: "Emerald Mint", primary: "#34d399", glow: "rgba(52, 211, 153, 0.25)" },
-    gold: { name: "Cyber Gold", primary: "#fbbf24", glow: "rgba(251, 191, 36, 0.25)" },
-    purple: { name: "Neon Purple", primary: "#c084fc", glow: "rgba(192, 132, 252, 0.25)" },
-    cyan: { name: "Cosmic Cyan", primary: "#22d3ee", glow: "rgba(34, 211, 238, 0.25)" },
+    mint: { name: "Emerald Mint", primary: "var(--good)", glow: "oklch(0.6932 0.1245 178.48 / 0.28)" },
+    gold: { name: "Cyber Gold", primary: "var(--nq-gold)", glow: "oklch(0.7924 0.1593 85.61 / 0.28)" },
+    purple: { name: "Neon Purple", primary: "var(--interactive)", glow: "oklch(0.5849 0.1438 244.29 / 0.25)" },
+    cyan: { name: "Cosmic Cyan", primary: "var(--interactive)", glow: "oklch(0.5849 0.1438 244.29 / 0.25)" },
   };
 
   const currentTheme = themeColors[selectedTheme];
@@ -257,7 +257,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
 
         <section className="profile-shell">
           {/* Live Interactive UI Preview Stage */}
-          <article className="panel profile-panel" style={{ background: "linear-gradient(180deg, rgba(22, 31, 58, 0.95), rgba(10, 17, 34, 0.98))", border: `1px solid ${currentTheme.primary}44`, boxShadow: `0 12px 30px ${currentTheme.glow}` }}>
+          <article className="panel profile-panel" style={{ background: "var(--surface)", border: `1px solid ${currentTheme.primary}44`, boxShadow: `0 12px 30px ${currentTheme.glow}` }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
               <h3 style={{ margin: 0, fontSize: "1.1rem", color: currentTheme.primary }}>
                 🎛️ Live UI & Audio Preview Stage
@@ -267,13 +267,13 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
               </span>
             </div>
 
-            <p style={{ fontSize: "0.82rem", color: "#94a3b8", margin: "0 0 16px 0" }}>
+            <p style={{ fontSize: "0.82rem", color: "var(--ink-muted)", margin: "0 0 16px 0" }}>
               Tap the letter tiles below to test your audio, contrast, and theme settings in real-time.
             </p>
 
-            <div style={{ background: "rgba(15, 23, 42, 0.8)", border: "1px solid rgba(255, 255, 255, 0.1)", borderRadius: "14px", padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
+            <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "14px", padding: "16px", display: "flex", flexDirection: "column", gap: "12px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontSize: "0.8rem", color: "#cbd5e1", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: "700" }}>
+                <span style={{ fontSize: "0.8rem", color: "var(--ink-muted)", textTransform: "uppercase", letterSpacing: "0.05em", fontWeight: "700" }}>
                   Sample Round Word
                 </span>
                 <span style={{ fontSize: settings.largeText ? "1rem" : "0.85rem", fontWeight: "700", color: currentTheme.primary, fontFamily: "monospace" }}>
@@ -297,9 +297,9 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                         width: "38px",
                         height: "44px",
                         borderRadius: "8px",
-                        background: active ? currentTheme.primary : settings.highContrast ? "#1e293b" : "rgba(255, 255, 255, 0.07)",
-                        border: `2px solid ${active ? currentTheme.primary : settings.highContrast ? "#ffffff" : "rgba(255, 255, 255, 0.15)"}`,
-                        color: active ? "#0f172a" : "#f8fafc",
+                        background: active ? currentTheme.primary : settings.highContrast ? "var(--surface-sunk)" : "var(--surface-sunk)",
+                        border: `2px solid ${active ? currentTheme.primary : settings.highContrast ? "var(--ink)" : "var(--rule-strong)"}`,
+                        color: active ? "var(--surface)" : "var(--ink)",
                         fontWeight: "800",
                         fontSize: settings.largeText ? "1.2rem" : "1rem",
                         cursor: "pointer",
@@ -330,8 +330,8 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                       if (settings.sound) handleTestSound();
                     }}
                     style={{
-                      background: "rgba(255, 255, 255, 0.05)",
-                      border: `2px solid ${isSelected ? theme.primary : "rgba(255, 255, 255, 0.1)"}`,
+                      background: "var(--surface-sunk)",
+                      border: `2px solid ${isSelected ? theme.primary : "var(--surface-sunk)"}`,
                       borderRadius: "12px",
                       padding: "10px 6px",
                       display: "flex",
@@ -342,8 +342,8 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                       boxShadow: isSelected ? `0 0 14px ${theme.glow}` : "none",
                     }}
                   >
-                    <span style={{ width: "20px", height: "20px", borderRadius: "50%", background: theme.primary, border: "2px solid #ffffff" }} />
-                    <span style={{ fontSize: "0.72rem", color: isSelected ? "#ffffff" : "#94a3b8", fontWeight: isSelected ? "700" : "500" }}>
+                    <span style={{ width: "20px", height: "20px", borderRadius: "50%", background: theme.primary, border: "2px solid var(--surface)" }} />
+                    <span style={{ fontSize: "0.72rem", color: isSelected ? "var(--ink)" : "var(--ink-muted)", fontWeight: isSelected ? "700" : "500" }}>
                       {theme.name}
                     </span>
                   </button>
@@ -359,7 +359,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
               <div className="settings-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
                   <span style={{ display: "block" }}>Sound effects</span>
-                  <small style={{ color: "#94a3b8", fontSize: "0.75rem" }}>Synthesized Web Audio chimes for tile taps and word scores</small>
+                  <small style={{ color: "var(--ink-muted)", fontSize: "0.75rem" }}>Synthesized Web Audio chimes for tile taps and word scores</small>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                   {settings.sound && (
@@ -379,7 +379,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                       width: "48px",
                       height: "26px",
                       borderRadius: "13px",
-                      background: settings.sound ? currentTheme.primary : "rgba(255, 255, 255, 0.15)",
+                      background: settings.sound ? currentTheme.primary : "var(--rule-strong)",
                       border: "none",
                       position: "relative",
                       cursor: "pointer",
@@ -391,7 +391,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                         width: "20px",
                         height: "20px",
                         borderRadius: "50%",
-                        background: "#ffffff",
+                        background: "var(--ink)",
                         position: "absolute",
                         top: "3px",
                         left: settings.sound ? "25px" : "3px",
@@ -405,7 +405,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
               <div className="settings-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
                   <span style={{ display: "block" }}>Haptic feedback</span>
-                  <small style={{ color: "#94a3b8", fontSize: "0.75rem" }}>Tactile vibration on tile selection and submission</small>
+                  <small style={{ color: "var(--ink-muted)", fontSize: "0.75rem" }}>Tactile vibration on tile selection and submission</small>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                   {settings.haptics && (
@@ -425,7 +425,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                       width: "48px",
                       height: "26px",
                       borderRadius: "13px",
-                      background: settings.haptics ? currentTheme.primary : "rgba(255, 255, 255, 0.15)",
+                      background: settings.haptics ? currentTheme.primary : "var(--rule-strong)",
                       border: "none",
                       position: "relative",
                       cursor: "pointer",
@@ -437,7 +437,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                         width: "20px",
                         height: "20px",
                         borderRadius: "50%",
-                        background: "#ffffff",
+                        background: "var(--ink)",
                         position: "absolute",
                         top: "3px",
                         left: settings.haptics ? "25px" : "3px",
@@ -457,7 +457,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
               <div className="settings-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
                   <span style={{ display: "block" }}>High contrast mode</span>
-                  <small style={{ color: "#94a3b8", fontSize: "0.75rem" }}>Enhanced tile borders for outdoor visibility</small>
+                  <small style={{ color: "var(--ink-muted)", fontSize: "0.75rem" }}>Enhanced tile borders for outdoor visibility</small>
                 </div>
                 <button
                   type="button"
@@ -466,7 +466,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                     width: "48px",
                     height: "26px",
                     borderRadius: "13px",
-                    background: settings.highContrast ? currentTheme.primary : "rgba(255, 255, 255, 0.15)",
+                    background: settings.highContrast ? currentTheme.primary : "var(--rule-strong)",
                     border: "none",
                     position: "relative",
                     cursor: "pointer",
@@ -478,7 +478,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                       width: "20px",
                       height: "20px",
                       borderRadius: "50%",
-                      background: "#ffffff",
+                      background: "var(--ink)",
                       position: "absolute",
                       top: "3px",
                       left: settings.highContrast ? "25px" : "3px",
@@ -491,7 +491,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
               <div className="settings-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div>
                   <span style={{ display: "block" }}>Larger text</span>
-                  <small style={{ color: "#94a3b8", fontSize: "0.75rem" }}>Increase tile typography size</small>
+                  <small style={{ color: "var(--ink-muted)", fontSize: "0.75rem" }}>Increase tile typography size</small>
                 </div>
                 <button
                   type="button"
@@ -500,7 +500,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                     width: "48px",
                     height: "26px",
                     borderRadius: "13px",
-                    background: settings.largeText ? currentTheme.primary : "rgba(255, 255, 255, 0.15)",
+                    background: settings.largeText ? currentTheme.primary : "var(--rule-strong)",
                     border: "none",
                     position: "relative",
                     cursor: "pointer",
@@ -512,7 +512,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                       width: "20px",
                       height: "20px",
                       borderRadius: "50%",
-                      background: "#ffffff",
+                      background: "var(--ink)",
                       position: "absolute",
                       top: "3px",
                       left: settings.largeText ? "25px" : "3px",
@@ -537,7 +537,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                     width: "48px",
                     height: "26px",
                     borderRadius: "13px",
-                    background: settings.showEarnings ? currentTheme.primary : "rgba(255, 255, 255, 0.15)",
+                    background: settings.showEarnings ? currentTheme.primary : "var(--rule-strong)",
                     border: "none",
                     position: "relative",
                     cursor: "pointer",
@@ -549,7 +549,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                       width: "20px",
                       height: "20px",
                       borderRadius: "50%",
-                      background: "#ffffff",
+                      background: "var(--ink)",
                       position: "absolute",
                       top: "3px",
                       left: settings.showEarnings ? "25px" : "3px",
@@ -568,7 +568,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                     width: "48px",
                     height: "26px",
                     borderRadius: "13px",
-                    background: settings.showRank ? "var(--accent-mint, #38bdf8)" : "rgba(255, 255, 255, 0.15)",
+                    background: settings.showRank ? "var(--interactive)" : "var(--rule-strong)",
                     border: "none",
                     position: "relative",
                     cursor: "pointer",
@@ -580,7 +580,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
                       width: "20px",
                       height: "20px",
                       borderRadius: "50%",
-                      background: "#ffffff",
+                      background: "var(--ink)",
                       position: "absolute",
                       top: "3px",
                       left: settings.showRank ? "25px" : "3px",

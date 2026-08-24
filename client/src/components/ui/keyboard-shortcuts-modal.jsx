@@ -17,7 +17,7 @@ export function KeyboardShortcutsModal({ isOpen, onClose }) {
       style={{
         position: "fixed",
         inset: 0,
-        backgroundColor: "rgba(15, 23, 42, 0.8)",
+        backgroundColor: "var(--surface-sunk)",
         backdropFilter: "blur(8px)",
         display: "flex",
         alignItems: "center",
@@ -32,12 +32,12 @@ export function KeyboardShortcutsModal({ isOpen, onClose }) {
         style={{
           width: "100%",
           maxWidth: "440px",
-          background: "rgba(30, 41, 59, 0.95)",
-          border: "1px solid rgba(255, 255, 255, 0.15)",
+          background: "var(--surface)",
+          border: "1px solid var(--rule-strong)",
           borderRadius: "16px",
           padding: "1.5rem",
-          color: "#f8fafc",
-          boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5)",
+          color: "var(--ink)",
+          boxShadow: "0 12px 28px -8px oklch(0.2737 0.068 276.29 / 0.16)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
@@ -48,7 +48,7 @@ export function KeyboardShortcutsModal({ isOpen, onClose }) {
             style={{
               background: "transparent",
               border: "none",
-              color: "#94a3b8",
+              color: "var(--ink-muted)",
               fontSize: "1.5rem",
               cursor: "pointer",
               lineHeight: 1,
@@ -58,7 +58,7 @@ export function KeyboardShortcutsModal({ isOpen, onClose }) {
           </button>
         </div>
 
-        <p style={{ color: "#94a3b8", fontSize: "0.875rem", marginBottom: "1.25rem" }}>
+        <p style={{ color: "var(--ink-muted)", fontSize: "0.875rem", marginBottom: "1.25rem" }}>
           Speed up your gameplay on desktop by using direct keyboard controls.
         </p>
 
@@ -72,26 +72,26 @@ export function KeyboardShortcutsModal({ isOpen, onClose }) {
                 justifyContent: "space-between",
                 padding: "0.625rem 0.875rem",
                 borderRadius: "8px",
-                background: "rgba(255, 255, 255, 0.05)",
-                border: "1px solid rgba(255, 255, 255, 0.08)",
+                background: "var(--surface-sunk)",
+                border: "1px solid var(--rule)",
               }}
             >
               <kbd
                 style={{
-                  background: "#1e293b",
-                  border: "1px solid #334155",
+                  background: "var(--surface-sunk)",
+                  border: "1px solid var(--rule-strong)",
                   borderRadius: "6px",
                   padding: "4px 10px",
                   fontFamily: "monospace",
                   fontWeight: "700",
                   fontSize: "0.85rem",
-                  color: "#38bdf8",
-                  boxShadow: "0 2px 0 #0f172a",
+                  color: "var(--interactive)",
+                  boxShadow: "0 2px 0 var(--rule-strong)",
                 }}
               >
                 {sc.key}
               </kbd>
-              <span style={{ fontSize: "0.875rem", color: "#cbd5e1", textAlign: "right" }}>{sc.description}</span>
+              <span style={{ fontSize: "0.875rem", color: "var(--ink-muted)", textAlign: "right" }}>{sc.description}</span>
             </div>
           ))}
         </div>
@@ -104,8 +104,8 @@ export function KeyboardShortcutsModal({ isOpen, onClose }) {
             width: "100%",
             padding: "0.75rem",
             borderRadius: "10px",
-            background: "linear-gradient(135deg, #38bdf8, #3b82f6)",
-            color: "#fff",
+            background: "linear-gradient(135deg, var(--nq-blue), var(--nq-blue-deep))",
+            color: "var(--ink)",
             fontWeight: "600",
             border: "none",
             cursor: "pointer",

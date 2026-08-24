@@ -4,7 +4,7 @@ import React from "react";
  * Spinner — Animated loading spinner with configurable size and color.
  * @param {{ size?: number, color?: string, thickness?: number, label?: string }} props
  */
-export function Spinner({ size = 24, color = "#63f4ca", thickness = 3, label = "Loading" }) {
+export function Spinner({ size = 24, color = "var(--good)", thickness = 3, label = "Loading" }) {
   return (
     <span className="spinner" role="status" aria-label={label}>
       <svg
@@ -18,7 +18,7 @@ export function Spinner({ size = 24, color = "#63f4ca", thickness = 3, label = "
           cx="12"
           cy="12"
           r={10}
-          stroke="rgba(255,255,255,0.1)"
+          stroke="var(--surface-sunk)"
           strokeWidth={thickness}
         />
         <circle

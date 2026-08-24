@@ -6,7 +6,7 @@ export function CountdownRing({ secondsLeft, totalSeconds = 60, size = 54, strok
   const progress = Math.max(0, Math.min(1, secondsLeft / totalSeconds));
   const strokeDashoffset = circumference - progress * circumference;
 
-  const color = secondsLeft <= 10 ? "#ef4444" : secondsLeft <= 20 ? "#f59e0b" : "#10b981";
+  const color = secondsLeft <= 10 ? "var(--bad)" : secondsLeft <= 20 ? "var(--nq-gold)" : "var(--good)";
 
   return (
     <div
@@ -25,7 +25,7 @@ export function CountdownRing({ secondsLeft, totalSeconds = 60, size = 54, strok
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="rgba(255, 255, 255, 0.1)"
+          stroke="var(--surface-sunk)"
           strokeWidth={strokeWidth}
           fill="transparent"
         />
@@ -45,7 +45,7 @@ export function CountdownRing({ secondsLeft, totalSeconds = 60, size = 54, strok
       <span
         style={{
           position: "absolute",
-          color: "#f8fafc",
+          color: "var(--ink)",
           fontWeight: "700",
           fontSize: "13px",
           fontFamily: "monospace",

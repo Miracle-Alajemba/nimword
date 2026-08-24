@@ -36,13 +36,13 @@ export function RankBadge({ rank, size = "md" }) {
         height: dim,
         fontSize: dim * 0.42,
         borderRadius: "50%",
-        background: "rgba(255,255,255,0.06)",
-        border: "1px solid rgba(255,255,255,0.1)",
+        background: "var(--surface-sunk)",
+        border: "1px solid var(--rule)",
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",
         fontWeight: 800,
-        color: "rgba(255,255,255,0.5)",
+        color: "var(--ink-muted)",
       }}
       aria-label={`Rank ${rank}`}
     >

@@ -432,7 +432,7 @@ export function PracticeScreen({
                   borderRadius: "12px",
                   fontSize: "0.95rem",
                   background: "var(--accent-mint)",
-                  color: "#121212",
+                  color: "var(--surface)",
                   fontWeight: "bold"
                 }}>
                   Claim Word

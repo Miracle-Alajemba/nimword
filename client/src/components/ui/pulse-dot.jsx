@@ -4,7 +4,7 @@ import React from "react";
  * PulseDot — Animated live status indicator with configurable color.
  * @param {{ color?: string, size?: number, label?: string }} props
  */
-export function PulseDot({ color = "#63f4ca", size = 10, label = "Live" }) {
+export function PulseDot({ color = "var(--good)", size = 10, label = "Live" }) {
   const dotStyle = {
     width: size,
     height: size,
@@ -24,7 +24,7 @@ export function PulseDot({ color = "#63f4ca", size = 10, label = "Live" }) {
     >
       <span style={dotStyle} />
       {label && (
-        <span style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.6)", fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase" }}>
+        <span style={{ fontSize: "0.75rem", color: "var(--ink-muted)", fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase" }}>
           {label}
         </span>
       )}

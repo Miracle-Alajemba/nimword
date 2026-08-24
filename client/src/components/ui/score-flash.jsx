@@ -14,7 +14,7 @@ export function ScoreFlash({ score, x = 0, y = 0 }) {
 
   if (!visible) return null;
 
-  const color = score >= 12 ? "#63f4ca" : score >= 8 ? "#ffad33" : "#fff";
+  const color = score >= 12 ? "var(--good)" : score >= 8 ? "var(--nq-orange)" : "var(--ink)";
 
   return (
     <span

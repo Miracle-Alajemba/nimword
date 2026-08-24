@@ -1,6 +1,6 @@
 import React from "react";
 
-export function StatPill({ icon, label, value, color = "#38bdf8", className = "" }) {
+export function StatPill({ icon, label, value, color = "var(--interactive)", className = "" }) {
   return (
     <div
       className={`stat-pill ${className}`}
@@ -10,15 +10,15 @@ export function StatPill({ icon, label, value, color = "#38bdf8", className = ""
         gap: "6px",
         padding: "6px 12px",
         borderRadius: "12px",
-        background: "rgba(15, 23, 42, 0.6)",
-        border: "1px solid rgba(255, 255, 255, 0.08)",
-        color: "#f8fafc",
+        background: "var(--surface-sunk)",
+        border: "1px solid var(--rule)",
+        color: "var(--ink)",
         fontSize: "13px",
         fontWeight: "500",
       }}
     >
       {icon && <span style={{ fontSize: "14px" }}>{icon}</span>}
-      <span style={{ color: "#94a3b8", fontSize: "11px", textTransform: "uppercase" }}>{label}:</span>
+      <span style={{ color: "var(--ink-muted)", fontSize: "11px", textTransform: "uppercase" }}>{label}:</span>
       <span style={{ color, fontWeight: "700" }}>{value}</span>
     </div>
   );

@@ -149,10 +149,10 @@ export function HomeScreen({
 
           <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.6rem", width: "100%" }}>
             {/* Stake Selector */}
-            <div style={{ background: "rgba(15, 23, 42, 0.6)", border: "1px solid rgba(233, 178, 19, 0.25)", borderRadius: "12px", padding: "8px 12px", display: "flex", flexDirection: "column", gap: "6px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.82rem", color: "rgba(255,255,255,0.75)" }}>
+            <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "12px", padding: "8px 12px", display: "flex", flexDirection: "column", gap: "6px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.82rem", color: "var(--ink-2)" }}>
                 <span>Choose Stake Amount:</span>
-                <strong style={{ color: "#E9B213", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
+                <strong style={{ color: "var(--nq-gold)", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
                   {stakeAmount} NIM
                 </strong>
               </div>
@@ -166,9 +166,9 @@ export function HomeScreen({
                       padding: "6px 2px",
                       fontSize: "0.8rem",
                       fontWeight: 700,
-                      background: stakeAmount === amt ? "rgba(233, 178, 19, 0.3)" : "rgba(255,255,255,0.05)",
-                      border: stakeAmount === amt ? "1px solid #E9B213" : "1px solid rgba(255,255,255,0.12)",
-                      color: stakeAmount === amt ? "#E9B213" : "rgba(255,255,255,0.8)",
+                      background: stakeAmount === amt ? "oklch(0.7924 0.1593 85.61 / 0.3)" : "var(--surface-sunk)",
+                      border: stakeAmount === amt ? "1px solid var(--nq-gold)" : "1px solid var(--rule)",
+                      color: stakeAmount === amt ? "var(--nq-gold)" : "var(--ink-2)",
                       borderRadius: "6px",
                       cursor: "pointer",
                       transition: "all 0.15s ease",
@@ -219,8 +219,8 @@ export function HomeScreen({
               justifyContent: "space-between",
               gap: "0.75rem",
               padding: "0.75rem 1rem",
-              background: "linear-gradient(135deg, rgba(233, 178, 19, 0.12), rgba(5, 130, 202, 0.12))",
-              border: "1px solid rgba(233, 178, 19, 0.3)",
+              background: "linear-gradient(135deg, oklch(0.7924 0.1593 85.61 / 0.14), oklch(0.5849 0.1438 244.29 / 0.12))",
+              border: "1px solid var(--rule-strong)",
               borderRadius: "12px",
               cursor: "pointer",
               marginTop: "0.75rem",
@@ -230,15 +230,15 @@ export function HomeScreen({
             <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
               <span style={{ fontSize: "1.4rem" }}>🎁</span>
               <div>
-                <strong style={{ fontSize: "0.88rem", color: "#FFD700", display: "block" }}>
+                <strong style={{ fontSize: "0.88rem", color: "var(--nq-gold)", display: "block" }}>
                   Free Daily Challenge Available
                 </strong>
-                <span style={{ fontSize: "0.75rem", color: "#A0A5C2" }}>
+                <span style={{ fontSize: "0.75rem", color: "var(--ink-2)" }}>
                   Play 1 round today to claim 0.1 NIM
                 </span>
               </div>
             </div>
-            <span style={{ fontSize: "0.78rem", fontWeight: "700", color: "#00E5FF" }}>
+            <span style={{ fontSize: "0.78rem", fontWeight: "700", color: "var(--interactive)" }}>
               Play →
             </span>
           </div>
@@ -343,10 +343,10 @@ export function HomeScreen({
 
           <div className="sample-scoring-footer">
             <div className="sample-scoring-footer__header">
-              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", fontWeight: "700", color: "#00B4D8" }}>
+              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", fontWeight: "700", color: "var(--interactive)" }}>
                 ⚡ Word Scoring Matrix
               </span>
-              <span style={{ fontSize: "0.72rem", color: "#FFD700", fontWeight: "600" }}>
+              <span style={{ fontSize: "0.72rem", color: "var(--nq-gold)", fontWeight: "600" }}>
                 ✓ Nimiq Pay Verified
               </span>
             </div>
@@ -367,7 +367,7 @@ export function HomeScreen({
           style={{
             position: "fixed",
             inset: 0,
-            background: "rgba(0, 0, 0, 0.75)",
+            background: "oklch(0.2737 0.068 276.29 / 0.45)",
             backdropFilter: "blur(6px)",
             zIndex: 1000,
             display: "flex",
@@ -386,13 +386,13 @@ export function HomeScreen({
               overflowY: "auto",
               padding: "1.75rem",
               borderRadius: "16px",
-              background: "#13131a",
-              border: "1px solid rgba(255, 255, 255, 0.15)",
-              boxShadow: "0 20px 60px rgba(0,0,0,0.8)",
+              background: "var(--surface)",
+              border: "1px solid var(--rule-strong)",
+              boxShadow: "0 12px 40px oklch(0.2737 0.068 276.29 / 0.16)",
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-              <h2 style={{ fontSize: "1.5rem", margin: 0, color: "#f5f7ff" }}>📖 How to Play NimWord</h2>
+              <h2 style={{ fontSize: "1.5rem", margin: 0, color: "var(--ink)" }}>📖 How to Play NimWord</h2>
               <button
                 type="button"
                 className="button-secondary"
@@ -404,8 +404,8 @@ export function HomeScreen({
             </div>
 
             <article style={{ marginBottom: "1.25rem" }}>
-              <h3 style={{ fontSize: "1.1rem", color: "#00B4D8", marginBottom: "0.4rem" }}>🎮 Core Loop</h3>
-              <ol style={{ paddingLeft: "1.2rem", lineHeight: "1.6", color: "#a0a5c2", fontSize: "0.95rem" }}>
+              <h3 style={{ fontSize: "1.1rem", color: "var(--interactive)", marginBottom: "0.4rem" }}>🎮 Core Loop</h3>
+              <ol style={{ paddingLeft: "1.2rem", lineHeight: "1.6", color: "var(--ink-2)", fontSize: "0.95rem" }}>
                 <li>Join a NIMWORD match room or practice solo</li>
                 <li>Get a shared 7-letter source word</li>
                 <li>Submit valid English words before the 60s timer expires</li>
@@ -415,8 +415,8 @@ export function HomeScreen({
             </article>
 
             <article style={{ marginBottom: "1.25rem" }}>
-              <h3 style={{ fontSize: "1.1rem", color: "#63f4ca", marginBottom: "0.4rem" }}>📜 Game Rules</h3>
-              <ul style={{ paddingLeft: "1.2rem", lineHeight: "1.6", color: "#a0a5c2", fontSize: "0.95rem" }}>
+              <h3 style={{ fontSize: "1.1rem", color: "var(--good)", marginBottom: "0.4rem" }}>📜 Game Rules</h3>
+              <ul style={{ paddingLeft: "1.2rem", lineHeight: "1.6", color: "var(--ink-2)", fontSize: "0.95rem" }}>
                 <li>Words must be at least 3 letters long</li>
                 <li>Use each letter only as many times as it appears in the prompt</li>
                 <li>Duplicate word submissions in the same round do not score</li>
@@ -425,11 +425,11 @@ export function HomeScreen({
             </article>
 
             <article style={{ marginBottom: "1.5rem" }}>
-              <h3 style={{ fontSize: "1.1rem", color: "#FFD700", marginBottom: "0.4rem" }}>🪙 Prize Logic</h3>
-              <p style={{ color: "#a0a5c2", fontSize: "0.92rem", lineHeight: "1.5" }}>
+              <h3 style={{ fontSize: "1.1rem", color: "var(--nq-gold)", marginBottom: "0.4rem" }}>🪙 Prize Logic</h3>
+              <p style={{ color: "var(--ink-2)", fontSize: "0.92rem", lineHeight: "1.5" }}>
                 Every match room starts with a 1 NIM entry stake. NIMWORD takes a 10% treasury fee, and the remaining 90% is shared using:
                 <br />
-                <code style={{ display: "block", background: "rgba(0,0,0,0.4)", padding: "0.5rem", borderRadius: "6px", margin: "0.5rem 0", color: "#ffd700", fontFamily: "var(--font-mono)" }}>
+                <code style={{ display: "block", background: "var(--surface-sunk)", padding: "0.5rem", borderRadius: "6px", margin: "0.5rem 0", color: "var(--nq-gold)", fontFamily: "var(--font-mono)" }}>
                   (Your Score / Total Room Score) × Prize Pool
                 </code>
                 Payouts are transferred directly to your Nimiq address upon round completion.
@@ -545,7 +545,7 @@ export function LobbyScreen({
     <main className="page-shell">
       {room?.status === "expired" ? (
         <div style={{ textAlign: "center", padding: "2rem 1rem" }}>
-          <div className="notice-strip notice-strip--neutral" style={{ borderLeftColor: "#cc4444", marginBottom: "1.5rem" }}>
+          <div className="notice-strip notice-strip--neutral" style={{ borderLeftColor: "var(--bad)", marginBottom: "1.5rem" }}>
             This room expired before the game could start. Your entry fee has been noted. Go back home and create a new room.
           </div>
           <button type="button" onClick={onBack}>
@@ -591,15 +591,15 @@ export function LobbyScreen({
             </div>
 
             {myWallet && (
-              <div style={{ background: "rgba(15, 23, 42, 0.75)", border: "1px solid rgba(141, 163, 255, 0.25)", borderRadius: "14px", padding: "10px 14px", marginBottom: "14px", display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                <span style={{ fontSize: "0.8rem", color: "#38bdf8", fontWeight: "700", textTransform: "uppercase" }}>👤 Display Username:</span>
+              <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule-strong)", borderRadius: "14px", padding: "10px 14px", marginBottom: "14px", display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                <span style={{ fontSize: "0.8rem", color: "var(--interactive)", fontWeight: "700", textTransform: "uppercase" }}>👤 Display Username:</span>
                 <input
                   type="text"
                   value={handleInput}
                   onChange={(e) => setHandleInput(e.target.value)}
                   placeholder="Type your username..."
                   maxLength={16}
-                  style={{ flex: 1, minWidth: "130px", padding: "6px 12px", borderRadius: "8px", background: "rgba(255, 255, 255, 0.08)", border: "1px solid rgba(255, 255, 255, 0.15)", color: "#fff", fontSize: "0.85rem", outline: "none" }}
+                  style={{ flex: 1, minWidth: "130px", padding: "6px 12px", borderRadius: "8px", background: "var(--surface-sunk)", border: "1px solid var(--rule-strong)", color: "var(--ink)", fontSize: "0.85rem", outline: "none" }}
                 />
                 <button
                   type="button"
@@ -608,7 +608,7 @@ export function LobbyScreen({
                 >
                   Save Username
                 </button>
-                {handleNotice && <span style={{ color: "#4ade80", fontSize: "0.78rem" }}>{handleNotice}</span>}
+                {handleNotice && <span style={{ color: "var(--good)", fontSize: "0.78rem" }}>{handleNotice}</span>}
               </div>
             )}
 
@@ -696,8 +696,8 @@ export function LobbyScreen({
                   marginBottom: "1.5rem",
                   borderLeftColor:
                     roomTimeLeft === "Expired" || roomTimeLeft.startsWith("0:")
-                      ? "#cc4444"
-                      : "rgba(255,255,255,0.15)",
+                      ? "var(--bad)"
+                      : "var(--rule-strong)",
                 }}
               >
                 {roomTimeLeft === "Expired"

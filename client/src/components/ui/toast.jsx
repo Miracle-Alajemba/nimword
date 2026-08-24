@@ -4,10 +4,10 @@ export function Toast({ message, type = "info", onClose, className = "" }) {
   if (!message) return null;
 
   const bgColors = {
-    info: "#0284c7",
-    success: "#16a34a",
-    warning: "#d97706",
-    error: "#dc2626",
+    info: "var(--interactive-ink)",
+    success: "var(--good)",
+    warning: "var(--nq-orange)",
+    error: "var(--bad)",
   };
 
   return (
@@ -25,10 +25,10 @@ export function Toast({ message, type = "info", onClose, className = "" }) {
         padding: "10px 18px",
         borderRadius: "10px",
         background: bgColors[type] || bgColors.info,
-        color: "#ffffff",
+        color: "var(--ink)",
         fontWeight: "600",
         fontSize: "13px",
-        boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.4)",
+        boxShadow: "0 8px 20px -6px oklch(0.2737 0.068 276.29 / 0.14)",
         backdropFilter: "blur(8px)",
       }}
     >
@@ -40,7 +40,7 @@ export function Toast({ message, type = "info", onClose, className = "" }) {
           style={{
             background: "none",
             border: "none",
-            color: "#ffffff",
+            color: "var(--ink)",
             cursor: "pointer",
             fontWeight: "bold",
             fontSize: "14px",

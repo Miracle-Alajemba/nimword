@@ -29,13 +29,13 @@ export function ReferralBanner({ walletAddress, className = "" }) {
     <div
       className={`referral-banner ${className}`}
       style={{
-        background: "rgba(30, 41, 59, 0.75)",
+        background: "var(--surface-sunk)",
         backdropFilter: "blur(12px)",
-        border: "1px solid rgba(255, 255, 255, 0.12)",
+        border: "1px solid var(--rule)",
         borderRadius: "14px",
         padding: "16px 20px",
         margin: "16px 0",
-        color: "#f8fafc",
+        color: "var(--ink)",
         display: "flex",
         flexDirection: "column",
         gap: "12px",
@@ -43,24 +43,24 @@ export function ReferralBanner({ walletAddress, className = "" }) {
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
-          <h4 style={{ margin: 0, fontSize: "0.95rem", fontWeight: "700", color: "#38bdf8" }}>
+          <h4 style={{ margin: 0, fontSize: "0.95rem", fontWeight: "700", color: "var(--interactive)" }}>
             🤝 Referral & Affiliate Code
           </h4>
-          <p style={{ margin: "2px 0 0 0", fontSize: "0.78rem", color: "#94a3b8" }}>
+          <p style={{ margin: "2px 0 0 0", fontSize: "0.78rem", color: "var(--ink-muted)" }}>
             Earn 20% of treasury fees when friends join rooms using your code!
           </p>
         </div>
         <div
           style={{
-            background: "rgba(56, 189, 248, 0.15)",
-            border: "1px dashed rgba(56, 189, 248, 0.5)",
+            background: "oklch(0.5849 0.1438 244.29 / 0.15)",
+            border: "1px dashed oklch(0.5849 0.1438 244.29 / 0.5)",
             borderRadius: "8px",
             padding: "4px 10px",
             fontFamily: "monospace",
             fontWeight: "700",
             fontSize: "1.1rem",
             letterSpacing: "1px",
-            color: "#38bdf8",
+            color: "var(--interactive)",
           }}
         >
           {code}
@@ -77,8 +77,8 @@ export function ReferralBanner({ walletAddress, className = "" }) {
             gap: "6px",
             padding: "8px 14px",
             borderRadius: "8px",
-            background: copied ? "#22c55e" : "#0284c7",
-            color: "#fff",
+            background: copied ? "var(--good)" : "var(--interactive-ink)",
+            color: "var(--ink)",
             fontWeight: "600",
             fontSize: "12px",
             border: "none",
@@ -100,7 +100,7 @@ export function ReferralBanner({ walletAddress, className = "" }) {
             padding: "8px 14px",
             borderRadius: "8px",
             background: "#25D366",
-            color: "#fff",
+            color: "var(--ink)",
             fontWeight: "600",
             fontSize: "12px",
             textDecoration: "none",
@@ -120,7 +120,7 @@ export function ReferralBanner({ walletAddress, className = "" }) {
             padding: "8px 14px",
             borderRadius: "8px",
             background: "#0088cc",
-            color: "#fff",
+            color: "var(--ink)",
             fontWeight: "600",
             fontSize: "12px",
             textDecoration: "none",

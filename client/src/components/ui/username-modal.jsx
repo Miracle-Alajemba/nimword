@@ -37,7 +37,7 @@ export function UsernameModal({ walletAddress, isOpen, onClose, onSaveSuccess, c
         position: "fixed",
         inset: 0,
         zIndex: 9999,
-        background: "rgba(6, 8, 17, 0.82)",
+        background: "var(--surface)",
         backdropFilter: "blur(12px)",
         display: "flex",
         alignItems: "center",
@@ -47,30 +47,30 @@ export function UsernameModal({ walletAddress, isOpen, onClose, onSaveSuccess, c
     >
       <div
         style={{
-          background: "linear-gradient(180deg, rgba(22, 31, 58, 0.98), rgba(10, 17, 34, 0.99))",
-          border: "1px solid rgba(141, 163, 255, 0.22)",
+          background: "var(--surface)",
+          border: "1px solid var(--rule)",
           borderRadius: "20px",
           padding: "24px",
           maxWidth: "420px",
           width: "100%",
-          color: "#f8fafc",
-          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+          color: "var(--ink)",
+          boxShadow: "0 16px 40px -12px oklch(0.2737 0.068 276.29 / 0.18)",
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-          <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "700", color: "#38bdf8" }}>
+          <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "700", color: "var(--interactive)" }}>
             ✏️ Set Display Username
           </h3>
           <button
             type="button"
             onClick={onClose}
-            style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "16px", cursor: "pointer" }}
+            style={{ background: "none", border: "none", color: "var(--ink-muted)", fontSize: "16px", cursor: "pointer" }}
           >
             ✕
           </button>
         </div>
 
-        <p style={{ margin: "0 0 16px 0", fontSize: "0.85rem", color: "#94a3b8" }}>
+        <p style={{ margin: "0 0 16px 0", fontSize: "0.85rem", color: "var(--ink-muted)" }}>
           Choose a custom display handle for match lobbies and leaderboards (optional).
         </p>
 
@@ -84,16 +84,16 @@ export function UsernameModal({ walletAddress, isOpen, onClose, onSaveSuccess, c
             style={{
               padding: "10px 14px",
               borderRadius: "10px",
-              background: "rgba(255, 255, 255, 0.06)",
-              border: "1px solid rgba(255, 255, 255, 0.15)",
-              color: "#ffffff",
+              background: "var(--surface-sunk)",
+              border: "1px solid var(--rule-strong)",
+              color: "var(--ink)",
               fontSize: "0.95rem",
               outline: "none",
             }}
           />
 
-          {error && <span style={{ color: "#f87171", fontSize: "0.8rem" }}>{error}</span>}
-          {saved && <span style={{ color: "#4ade80", fontSize: "0.8rem" }}>✓ Username saved!</span>}
+          {error && <span style={{ color: "var(--bad)", fontSize: "0.8rem" }}>{error}</span>}
+          {saved && <span style={{ color: "var(--good)", fontSize: "0.8rem" }}>✓ Username saved!</span>}
 
           <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end", marginTop: "8px" }}>
             <button

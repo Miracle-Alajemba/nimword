@@ -8,7 +8,7 @@ export function LevelProgressBar({ currentXp, nextLevelXp, level }) {
         <span>Level {level}</span>
         <span>{currentXp} / {nextLevelXp} XP</span>
       </div>
-      <ProgressBar value={currentXp} max={nextLevelXp} color="#ff7a18" height={10} />
+      <ProgressBar value={currentXp} max={nextLevelXp} color="var(--nq-orange)" height={10} />
     </div>
   );
 }

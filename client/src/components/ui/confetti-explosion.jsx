@@ -5,7 +5,7 @@ import React from "react";
  * Renders colored particles that animate outward on mount, then auto-cleans up.
  * @param {{ count?: number, duration?: number, colors?: string[] }} props
  */
-export function ConfettiExplosion({ count = 30, duration = 1200, colors = ["#ffad33", "#63f4ca", "#ff7a18", "#567fff", "#e84cff"] }) {
+export function ConfettiExplosion({ count = 30, duration = 1200, colors = ["var(--nq-orange)", "var(--good)", "var(--nq-orange)", "var(--interactive)", "var(--interactive)"] }) {
   const [visible, setVisible] = React.useState(true);
 
   React.useEffect(() => {

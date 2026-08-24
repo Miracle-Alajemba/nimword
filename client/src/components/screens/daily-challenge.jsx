@@ -516,7 +516,7 @@ export function DailyChallenge({
               Come back when the timer expires to play again and try claiming another reward.
             </p>
 
-            <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.5rem", marginTop: "1rem", width: "100%" }}>
+            <div style={{ borderTop: "1px solid var(--rule)", paddingTop: "1.5rem", marginTop: "1rem", width: "100%" }}>
               <h4 style={{ color: "var(--accent-mint)" }}>Can't wait? ⚡</h4>
               <p style={{ fontSize: "0.85em", opacity: 0.8, marginBottom: "1.5rem" }}>
                 Skip the cooldown and play again immediately with a retry ticket.
@@ -526,7 +526,7 @@ export function DailyChallenge({
                 onClick={handleBuyRetryTicket}
                 disabled={isRetrying}
                 className="primary-button"
-                style={{ background: "var(--accent-mint)", color: "#121212", padding: "0.75rem 1.5rem", borderRadius: "8px", fontWeight: "bold" }}
+                style={{ background: "var(--accent-mint)", color: "var(--surface)", padding: "0.75rem 1.5rem", borderRadius: "8px", fontWeight: "bold" }}
               >
                 {isRetrying ? "Processing..." : "Buy Retry Ticket (0.1 NIM)"}
               </button>
@@ -672,7 +672,7 @@ export function DailyChallenge({
                       borderRadius: "12px",
                       fontSize: "0.95rem",
                       background: "var(--accent-mint)",
-                      color: "#121212",
+                      color: "var(--surface)",
                       fontWeight: "bold"
                     }}>
                       {wordSubmitBusy ? "Claiming..." : "Claim Word"}
@@ -725,21 +725,21 @@ export function DailyChallenge({
                   justifyContent: "space-between",
                   alignItems: "center",
                   padding: "0.75rem 1.2rem",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  border: "1px solid rgba(141, 163, 255, 0.12)",
-                  borderLeft: "4px solid #63f4ca",
+                  background: "var(--surface-sunk)",
+                  border: "1px solid var(--rule)",
+                  borderLeft: "4px solid var(--good)",
                   borderRadius: "12px",
                   textAlign: "left",
-                  color: "#f5f7ff",
+                  color: "var(--ink)",
                   cursor: "pointer",
                   width: "100%"
                 }}
               >
                 <div>
-                  <strong style={{ fontSize: "1rem", display: "block", color: "#ffffff", fontWeight: "700", marginBottom: "0.15rem" }}>🎮 Easy</strong>
-                  <span style={{ fontSize: "0.78rem", color: "#63f4ca", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 40 pts</span>
+                  <strong style={{ fontSize: "1rem", display: "block", color: "var(--ink)", fontWeight: "700", marginBottom: "0.15rem" }}>🎮 Easy</strong>
+                  <span style={{ fontSize: "0.78rem", color: "var(--good)", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 40 pts</span>
                 </div>
-                <strong style={{ color: "#ffffff", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>0.1 NIM</strong>
+                <strong style={{ color: "var(--ink)", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>0.1 NIM</strong>
               </button>
 
               <button
@@ -752,21 +752,21 @@ export function DailyChallenge({
                   justifyContent: "space-between",
                   alignItems: "center",
                   padding: "0.75rem 1.2rem",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  border: "1px solid rgba(141, 163, 255, 0.12)",
-                  borderLeft: "4px solid #63f4ca",
+                  background: "var(--surface-sunk)",
+                  border: "1px solid var(--rule)",
+                  borderLeft: "4px solid var(--good)",
                   borderRadius: "12px",
                   textAlign: "left",
-                  color: "#f5f7ff",
+                  color: "var(--ink)",
                   cursor: "pointer",
                   width: "100%"
                 }}
               >
                 <div>
-                  <strong style={{ fontSize: "1rem", display: "block", color: "#ffffff", fontWeight: "700", marginBottom: "0.15rem" }}>⚔️ Medium</strong>
-                  <span style={{ fontSize: "0.78rem", color: "#63f4ca", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 60 pts</span>
+                  <strong style={{ fontSize: "1rem", display: "block", color: "var(--ink)", fontWeight: "700", marginBottom: "0.15rem" }}>⚔️ Medium</strong>
+                  <span style={{ fontSize: "0.78rem", color: "var(--good)", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 60 pts</span>
                 </div>
-                <strong style={{ color: "#ffffff", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>1 NIM</strong>
+                <strong style={{ color: "var(--ink)", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>1 NIM</strong>
               </button>
 
               <button
@@ -779,21 +779,21 @@ export function DailyChallenge({
                   justifyContent: "space-between",
                   alignItems: "center",
                   padding: "0.75rem 1.2rem",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  border: "1px solid rgba(141, 163, 255, 0.12)",
-                  borderLeft: "4px solid #63f4ca",
+                  background: "var(--surface-sunk)",
+                  border: "1px solid var(--rule)",
+                  borderLeft: "4px solid var(--good)",
                   borderRadius: "12px",
                   textAlign: "left",
-                  color: "#f5f7ff",
+                  color: "var(--ink)",
                   cursor: "pointer",
                   width: "100%"
                 }}
               >
                 <div>
-                  <strong style={{ fontSize: "1rem", display: "block", color: "#ffffff", fontWeight: "700", marginBottom: "0.15rem" }}>👑 Hard</strong>
-                  <span style={{ fontSize: "0.78rem", color: "#63f4ca", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 80 pts</span>
+                  <strong style={{ fontSize: "1rem", display: "block", color: "var(--ink)", fontWeight: "700", marginBottom: "0.15rem" }}>👑 Hard</strong>
+                  <span style={{ fontSize: "0.78rem", color: "var(--good)", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 80 pts</span>
                 </div>
-                <strong style={{ color: "#ffffff", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>2 NIM</strong>
+                <strong style={{ color: "var(--ink)", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>2 NIM</strong>
               </button>
             </div>
           </div>
@@ -816,7 +816,7 @@ export function DailyChallenge({
                 </div>
                 <div className="dc-result-stat">
                   <span>Status</span>
-                  <strong style={{ color: score >= DAILY_TARGET_SCORE ? "#c9920a" : "#994444" }}>
+                  <strong style={{ color: score >= DAILY_TARGET_SCORE ? "var(--nq-gold)" : "var(--bad)" }}>
                     {score >= DAILY_TARGET_SCORE ? "Target Reached ✓" : "Target Missed"}
                   </strong>
                 </div>
