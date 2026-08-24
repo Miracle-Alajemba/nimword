@@ -247,7 +247,7 @@ button:disabled {
 /* The wordmark is the one place per screen the Nimiq gold gradient is
    spent. `color` is the real fallback, so if background-clip is
    unsupported the title is still legible ink rather than transparent. */
-.hero-copy h1:not(.hero-logo__name),
+.hero-copy h1,
 .play-hero h1 {
   color: var(--ink);
   background: var(--accent-gradient);
@@ -263,12 +263,13 @@ button:disabled {
   text-transform: uppercase;
 }
 
-.hero-copy h1:not(.hero-logo__name) {
+.hero-copy h1 {
   font-size: clamp(2.2rem, 6vw, 4.2rem);
 }
 
 @media (max-width: 420px) {
-  .hero-copy h1:not(.hero-logo__name),
+
+  .hero-copy h1,
   .play-hero h1 {
     font-size: clamp(1.75rem, 11vw, 2.8rem);
     letter-spacing: -0.025em;
@@ -332,34 +333,30 @@ button:disabled {
    between them. Square width+height keeps the aspect ratio honest. */
 .hero-logo {
   align-items: center;
-  display: inline-flex;
+  display: flex;
   flex-direction: row;
-  gap: 0.9rem;
-  margin-bottom: 1.1rem;
+  gap: 0.875rem;
+  margin-bottom: 1.2rem;
 }
 
 .hero-logo__img {
-  border-radius: 14px;
+  border-radius: 8px;
   display: block;
   flex-shrink: 0;
-  filter: drop-shadow(0 3px 10px oklch(0.7924 0.1593 85.61 / 0.35));
-  height: 64px;
+  filter: drop-shadow(0 2px 8px oklch(0.7924 0.1593 85.61 / 0.3));
+  height: 48px;
   object-fit: contain;
-  width: 64px;
+  width: 48px;
 }
 
 .hero-logo__name {
-  color: var(--ink) !important;
-  -webkit-text-fill-color: var(--ink) !important;
-  background: none !important;
+  color: var(--ink);
   font-family: var(--font-sans);
-  font-size: 1.75rem !important;
-  font-weight: 900 !important;
-  letter-spacing: -0.02em !important;
-  line-height: 1 !important;
-  margin: 0 !important;
-  display: inline-flex;
-  align-items: center;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin: 0;
 }
 
 .hero-actions--grid {
@@ -450,11 +447,9 @@ button:disabled {
 }
 
 .practice-difficulty-toggle {
-  background: linear-gradient(
-    180deg,
-    var(--surface-sunk),
-    var(--surface-sunk)
-  );
+  background: linear-gradient(180deg,
+      var(--surface-sunk),
+      var(--surface-sunk));
   border: 1px solid rgba(130, 152, 235, 0.32);
   box-shadow:
     0 14px 30px rgba(3, 8, 20, 0.38),
@@ -830,6 +825,7 @@ button:disabled {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .letter-tile,
   .letter-tile--interactive,
   .letter-tile--interactive:hover,
@@ -1147,7 +1143,7 @@ button:disabled {
   padding: 0.95rem 1rem;
 }
 
-.notice-strip + .notice-strip {
+.notice-strip+.notice-strip {
   margin-top: 0.7rem;
 }
 
@@ -1818,6 +1814,7 @@ button:disabled {
 }
 
 @media (max-width: 820px) {
+
   .hero,
   .content-grid,
   .play-hero,
@@ -2536,6 +2533,7 @@ body::after,
 }
 
 @media (max-width: 640px) {
+
   .featured-stats,
   .hero-card__actions {
     flex-direction: column;
@@ -3080,6 +3078,7 @@ body::after,
 }
 
 @media (max-width: 760px) {
+
   .room-topbar__stats,
   .room-live-header,
   .room-panel__header,
@@ -3648,10 +3647,12 @@ input:focus-visible,
     box-shadow: 0 0 0 0 oklch(0.6932 0.1245 178.48 / 0.36);
     opacity: 0.72;
   }
+
   70% {
     box-shadow: 0 0 0 8px oklch(0.6932 0.1245 178.48 / 0);
     opacity: 1;
   }
+
   100% {
     box-shadow: 0 0 0 0 oklch(0.6932 0.1245 178.48 / 0);
     opacity: 0.72;
@@ -3813,31 +3814,26 @@ small,
 
   .hero-logo {
     align-items: center;
-    display: inline-flex;
     flex-direction: row;
     gap: 0.75rem;
-    justify-content: flex-start;
-    margin-bottom: 0.85rem;
+    justify-content: center;
+    margin-bottom: 0.75rem;
   }
 
+  /* Same proportion as desktop, one step down. The old rule re-declared the
+     clamp height and the negative margin, which would have undone Fix 2. */
   .hero-logo__img {
-    border-radius: 12px;
+    border-radius: 8px;
     filter: drop-shadow(0 2px 8px oklch(0.7924 0.1593 85.61 / 0.28));
-    height: 56px;
+    height: 44px;
     margin-right: 0;
     object-fit: contain;
-    width: 56px;
+    width: 44px;
   }
 
   .hero-logo__name {
-    color: var(--ink) !important;
-    -webkit-text-fill-color: var(--ink) !important;
-    background: none !important;
-    font-size: 1.45rem !important;
-    letter-spacing: -0.02em !important;
-    line-height: 1 !important;
-    display: inline-flex;
-    align-items: center;
+    font-size: clamp(1.75rem, 7.5vw, 2rem);
+    letter-spacing: -0.02em;
   }
 
   .lede {
@@ -3932,13 +3928,14 @@ small,
     padding: 1rem !important;
   }
 
+  /* Height as well as width, or a square mark renders 44x38 and distorts. */
   .hero-logo__img {
-    height: 44px;
-    width: 44px;
+    height: 38px;
+    width: 38px;
   }
 
   .hero-logo__name {
-    font-size: 1.15rem;
+    font-size: 1.6rem;
   }
 
   .hero-actions--grid {
@@ -3961,6 +3958,7 @@ small,
     opacity: 0;
     transform: translateY(16px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -4004,24 +4002,60 @@ small,
     opacity: 0;
     transform: perspective(320px) rotateX(38deg) translateY(14px) scale(0.94);
   }
+
   to {
     opacity: 1;
     transform: perspective(320px) rotateX(0deg) translateY(0) scale(1);
   }
 }
 
-.letter-tile--interactive:nth-child(1) { animation-delay: 0.02s; }
-.letter-tile--interactive:nth-child(2) { animation-delay: 0.04s; }
-.letter-tile--interactive:nth-child(3) { animation-delay: 0.06s; }
-.letter-tile--interactive:nth-child(4) { animation-delay: 0.08s; }
-.letter-tile--interactive:nth-child(5) { animation-delay: 0.1s; }
-.letter-tile--interactive:nth-child(6) { animation-delay: 0.12s; }
-.letter-tile--interactive:nth-child(7) { animation-delay: 0.14s; }
-.letter-tile--interactive:nth-child(8) { animation-delay: 0.16s; }
-.letter-tile--interactive:nth-child(9) { animation-delay: 0.18s; }
-.letter-tile--interactive:nth-child(10) { animation-delay: 0.2s; }
-.letter-tile--interactive:nth-child(11) { animation-delay: 0.22s; }
-.letter-tile--interactive:nth-child(12) { animation-delay: 0.24s; }
+.letter-tile--interactive:nth-child(1) {
+  animation-delay: 0.02s;
+}
+
+.letter-tile--interactive:nth-child(2) {
+  animation-delay: 0.04s;
+}
+
+.letter-tile--interactive:nth-child(3) {
+  animation-delay: 0.06s;
+}
+
+.letter-tile--interactive:nth-child(4) {
+  animation-delay: 0.08s;
+}
+
+.letter-tile--interactive:nth-child(5) {
+  animation-delay: 0.1s;
+}
+
+.letter-tile--interactive:nth-child(6) {
+  animation-delay: 0.12s;
+}
+
+.letter-tile--interactive:nth-child(7) {
+  animation-delay: 0.14s;
+}
+
+.letter-tile--interactive:nth-child(8) {
+  animation-delay: 0.16s;
+}
+
+.letter-tile--interactive:nth-child(9) {
+  animation-delay: 0.18s;
+}
+
+.letter-tile--interactive:nth-child(10) {
+  animation-delay: 0.2s;
+}
+
+.letter-tile--interactive:nth-child(11) {
+  animation-delay: 0.22s;
+}
+
+.letter-tile--interactive:nth-child(12) {
+  animation-delay: 0.24s;
+}
 
 /* The select pop lives in JS now — animateTileTap() in lib/game-animations.js.
    A @keyframes rule and a GSAP tween both write the inline/computed transform
@@ -4031,6 +4065,7 @@ small,
    (interruptible, and it can be re-fired before the previous one lands). */
 
 @media (prefers-reduced-motion: reduce) {
+
   .letter-tile--interactive,
   .letter-tile--selected {
     animation: none;
@@ -4046,6 +4081,7 @@ small,
     opacity: 0;
     transform: translateY(-6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -4069,9 +4105,18 @@ small,
 }
 
 @keyframes scorePop {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.18) translateY(-4px); box-shadow: 0 0 15px rgba(99, 244, 202, 0.2); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.18) translateY(-4px);
+    box-shadow: 0 0 15px rgba(99, 244, 202, 0.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 /* Input Shake on reject / error */
@@ -4082,10 +4127,27 @@ small,
 }
 
 @keyframes inputShake {
-  10%, 90% { transform: translate3d(-1px, 0, 0); }
-  20%, 80% { transform: translate3d(2px, 0, 0); }
-  30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-  40%, 60% { transform: translate3d(4px, 0, 0); }
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 
 /* Red flashing pulse when timer is low */
@@ -4100,6 +4162,7 @@ small,
     transform: scale(1);
     box-shadow: 0 0 0 0 rgba(255, 94, 94, 0.25);
   }
+
   100% {
     transform: scale(1.05);
     box-shadow: 0 0 12px 2px rgba(255, 94, 94, 0.4);
@@ -4134,7 +4197,8 @@ small,
   }
 
   .play-shell {
-    padding-bottom: 12rem; /* Prevent fixed bottom panel from blocking final list items */
+    padding-bottom: 12rem;
+    /* Prevent fixed bottom panel from blocking final list items */
   }
 }
 
@@ -4153,7 +4217,8 @@ small,
   display: flex;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
-  perspective: 600px; /* enables 3D transforms */
+  perspective: 600px;
+  /* enables 3D transforms */
 }
 
 .game-loader-tile {
@@ -4356,18 +4421,22 @@ small,
     transform: translateY(0) scale(1) rotate(0deg);
     filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.4));
   }
+
   25% {
     transform: translateY(-6px) scale(1.08) rotate(-3deg);
     filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.75));
   }
+
   50% {
     transform: translateY(-10px) scale(1.12) rotate(0deg);
     filter: drop-shadow(0 0 22px rgba(251, 191, 36, 0.9));
   }
+
   75% {
     transform: translateY(-4px) scale(1.06) rotate(3deg);
     filter: drop-shadow(0 0 14px rgba(245, 158, 11, 0.7));
   }
+
   100% {
     transform: translateY(0) scale(1) rotate(0deg);
     filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.4));
@@ -4510,7 +4579,7 @@ small,
     gap: 0.5rem;
   }
 
-  .round-pressure-header > div:last-child {
+  .round-pressure-header>div:last-child {
     margin-left: auto;
   }
 }
@@ -4612,7 +4681,8 @@ body,
 /* Anything a thumb has to hit clears the 44px minimum, including the
    ones that were previously sized by their text alone. */
 .bottom-nav__item,
-.theme-toggle__option, /* segmented control */
+.theme-toggle__option,
+/* segmented control */
 .button-secondary,
 .ghost-button,
 .copy-btn,
@@ -4621,6 +4691,7 @@ body,
 }
 
 @media (max-width: 640px) {
+
   /* Left/right insets matter in landscape on a notched phone; the
      bottom one is handled per-component above. */
   .page-shell {
@@ -4654,7 +4725,7 @@ body,
   }
 
   /* One primary action per screen, full width, in the thumb zone. */
-  .hero-actions > button:first-child,
+  .hero-actions>button:first-child,
   .submit-panel button:first-of-type {
     flex: 1 1 100%;
     min-height: 52px;
@@ -4696,6 +4767,7 @@ textarea {
 /* Honour the OS accessibility setting across everything, not just the
    tile. One rule, no exceptions to hunt down later. */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -4727,6 +4799,7 @@ textarea {
    ═══════════════════════════════════════════════════════════════════ */
 
 @media (min-width: 769px) {
+
   html,
   body {
     height: 100%;
@@ -4809,8 +4882,8 @@ textarea {
 }
 
 /* A gap only earns its space when there is something on both sides of it. */
-.feature-strip > :empty,
-.hero-actions > :empty {
+.feature-strip> :empty,
+.hero-actions> :empty {
   display: none;
 }
 
@@ -4820,7 +4893,7 @@ textarea {
    child of the shell needs to sit in a layer above it. `position: relative`
    with no offsets changes nothing about layout and everything about paint
    order. */
-.page-shell > *:not(.floating-tiles-bg) {
+.page-shell>*:not(.floating-tiles-bg) {
   position: relative;
   z-index: 1;
 }
