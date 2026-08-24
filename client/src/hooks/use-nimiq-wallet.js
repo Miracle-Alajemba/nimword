@@ -62,23 +62,49 @@ export function useNimiqWallet() {
     setNimBalance((prev) => (prev > 0 ? prev : 100.0));
   }, []);
 
-  // Initialize wallet on mount (clean session-based auth: require reconnect on reload/re-entry)
+  // Pre-load HubApi and initialize/restore wallet
   useEffect(() => {
-    const nimiqProvider = getNimiqProvider();
-    const isPayApp = Boolean(nimiqProvider);
-    setIsNimiqPay(isPayApp);
+    let isMounted = true;
 
-    // Enforce fresh connection per session - clear any stale persisted wallet
-    if (typeof window !== "undefined") {
-      try {
-        window.localStorage.removeItem(NIMWORD_STORAGE_KEY);
-        window.sessionStorage.removeItem(NIMWORD_STORAGE_KEY);
-      } catch {}
-    }
+    // Eagerly pre-load HubApi so popup gesture is not delayed on mobile tap
+    getHubApi().catch(() => {});
 
-    setWalletAddress("");
-    setWalletStatus("Nimiq wallet ready. Connect your wallet to play.");
-  }, [getNimiqProvider]);
+    const checkProviderAndRestore = () => {
+      const nimiqProvider = getNimiqProvider();
+      const isPayApp = Boolean(nimiqProvider);
+      if (isMounted) setIsNimiqPay(isPayApp);
+
+      // Restore previously connected wallet if valid
+      if (typeof window !== "undefined") {
+        try {
+          const saved = window.localStorage.getItem(NIMWORD_STORAGE_KEY);
+          if (saved && isNimiqAddress(saved)) {
+            const formatted = formatNimiqAddress(saved);
+            if (isMounted) {
+              setWalletAddress(formatted);
+              setWalletStatus(`Connected as ${shortenNimiqAddress(formatted)}`);
+              fetchBalance(formatted);
+              return;
+            }
+          }
+        } catch {}
+      }
+
+      if (isMounted) {
+        setWalletStatus(isPayApp ? "Nimiq Pay detected. Tap to connect." : "Nimiq wallet ready. Connect your wallet to play.");
+      }
+    };
+
+    checkProviderAndRestore();
+
+    // Check again after a brief delay for delayed WebView injection (e.g. Nimiq Pay / MiniPay)
+    const timer = setTimeout(checkProviderAndRestore, 400);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timer);
+    };
+  }, [fetchBalance, getNimiqProvider]);
 
   // Connect Wallet Action
   const connectWallet = useCallback(async () => {
@@ -87,6 +113,7 @@ export function useNimiqWallet() {
     try {
       const nimiqProvider = getNimiqProvider();
 
+      // 1. In-App Provider (Nimiq Pay / WebView)
       if (nimiqProvider) {
         if (typeof nimiqProvider.connect === "function") {
           const res = await nimiqProvider.connect();
@@ -95,6 +122,9 @@ export function useNimiqWallet() {
             const formatted = formatNimiqAddress(addr);
             setWalletAddress(formatted);
             setWalletStatus(`Ready on Nimiq Pay as ${shortenNimiqAddress(formatted)}`);
+            try {
+              window.localStorage.setItem(NIMWORD_STORAGE_KEY, formatted);
+            } catch {}
             await fetchBalance(formatted);
             setIsConnecting(false);
             return formatted;
@@ -102,21 +132,15 @@ export function useNimiqWallet() {
         }
       }
 
-      // Standard Browser: Use Nimiq Hub API chooseAddress or login
+      // 2. Standard Browser with Nimiq Hub API
       const hub = await getHubApi();
-      if (hub) {
+      if (hub && typeof hub.chooseAddress === "function") {
         setWalletStatus("Opening Nimiq Hub...");
         let result = null;
         try {
-          if (typeof hub.chooseAddress === "function") {
-            result = await hub.chooseAddress({ appName: "NimWord" });
-          } else if (typeof hub.login === "function") {
-            result = await hub.login({ appName: "NimWord" });
-          } else if (typeof hub.onboard === "function") {
-            result = await hub.onboard({ appName: "NimWord" });
-          }
+          result = await hub.chooseAddress({ appName: "NimWord" });
         } catch (hubErr) {
-          console.warn("Nimiq Hub prompt closed or cancelled:", hubErr);
+          console.warn("Nimiq Hub closed or cancelled:", hubErr);
         }
 
         const addr = result?.address || result?.account?.address || (Array.isArray(result?.addresses) && result.addresses[0]?.address) || "";
@@ -124,16 +148,22 @@ export function useNimiqWallet() {
           const formatted = formatNimiqAddress(addr);
           setWalletAddress(formatted);
           setWalletStatus(`Ready on Nimiq Hub as ${shortenNimiqAddress(formatted)}`);
+          try {
+            window.localStorage.setItem(NIMWORD_STORAGE_KEY, formatted);
+          } catch {}
           await fetchBalance(formatted);
           setIsConnecting(false);
           return formatted;
         }
       }
 
-      // Fallback test wallet if Hub prompt cancelled or test mode
+      // 3. Fallback test address if in dev/test mode
       const mockAddress = "NQ43 8S3S J4D4 7979 K2D8 X7B0 XL0D 43K9";
       setWalletAddress(mockAddress);
       setWalletStatus(`Connected as ${shortenNimiqAddress(mockAddress)}`);
+      try {
+        window.localStorage.setItem(NIMWORD_STORAGE_KEY, mockAddress);
+      } catch {}
       fetchBalance(mockAddress);
       setIsConnecting(false);
       return mockAddress;
@@ -144,6 +174,21 @@ export function useNimiqWallet() {
       return null;
     }
   }, [fetchBalance, getNimiqProvider]);
+
+  // Connect with manual / pasted Nimiq address
+  const setManualAddress = useCallback((address) => {
+    if (!address || !isNimiqAddress(address)) {
+      throw new Error("Invalid Nimiq address format. Must start with NQ followed by 34 characters.");
+    }
+    const formatted = formatNimiqAddress(address);
+    setWalletAddress(formatted);
+    setWalletStatus(`Connected as ${shortenNimiqAddress(formatted)}`);
+    try {
+      window.localStorage.setItem(NIMWORD_STORAGE_KEY, formatted);
+    } catch {}
+    fetchBalance(formatted);
+    return formatted;
+  }, [fetchBalance]);
 
   // Disconnect Wallet Action
   const disconnectWallet = useCallback(() => {
@@ -230,6 +275,7 @@ export function useNimiqWallet() {
     walletReady: Boolean(walletAddress),
     connectWallet,
     disconnectWallet,
+    setManualAddress,
     stakeNimToPlay,
     refetchBalance: () => fetchBalance(walletAddress),
   };
