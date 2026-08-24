@@ -148,42 +148,48 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onBack }) {
   }, [walletAddress, connected]);
 
   return (
-    <main className="page-shell">
-      <section className="play-shell">
-        <div className="play-header">
+    <main className="page-shell profile-page-shell">
+      <section className="play-shell profile-container">
+        <div className="play-header" style={{ marginBottom: "0.5rem" }}>
           <button type="button" className="ghost-button" onClick={onBack}>Back</button>
-          <p className="eyebrow">Profile</p>
+          <p className="eyebrow" style={{ margin: 0, fontWeight: 700 }}>Profile</p>
         </div>
 
         <section className="profile-shell">
           <article className="panel profile-panel profile-panel--hero">
-            <div className="profile-head" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-              <AvatarCircle address={walletAddress} size={64} />
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                  <h1 className="profile-title" style={{ margin: 0, fontSize: "1.4rem" }}>{alias}</h1>
+            <div className="profile-head">
+              <AvatarCircle address={walletAddress} size={54} />
+              <div className="profile-head__info" style={{ flex: 1, minWidth: 0 }}>
+                <div className="profile-name-row" style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                  <h1 className="profile-title">{alias}</h1>
                   {connected && (
                     <button
                       type="button"
-                      className="button-secondary"
-                      style={{ padding: "4px 10px", fontSize: "0.75rem", minHeight: "auto", display: "inline-flex", alignItems: "center", gap: "4px" }}
+                      className="button-secondary edit-handle-btn"
+                      style={{ padding: "3px 8px", fontSize: "0.72rem", minHeight: "28px", display: "inline-flex", alignItems: "center", gap: "3px" }}
                       onClick={() => setModalOpen(true)}
                     >
-                      ✏️ Edit Handle
+                      ✏️ Edit
                     </button>
                   )}
                 </div>
-                <p className="profile-subtitle" style={{ fontFamily: "var(--font-mono)", fontSize: "0.85rem", marginTop: "4px" }}>
-                  {connected ? formatNimiqAddress(walletAddress) || shortenWalletAddress(walletAddress) : "Connect a Nimiq wallet to personalise your profile."}
+                <p className="profile-subtitle">
+                  {connected ? formatNimiqAddress(walletAddress) || shortenWalletAddress(walletAddress) : "Connect a Nimiq wallet to personalize your profile."}
                 </p>
-                <span className="rank-badge" style={{ marginTop: "6px", display: "inline-block" }}>Word Artist • Level 7</span>
+                <span className="rank-badge">Word Artist • Level 7</span>
               </div>
             </div>
-            {!connected ? <button type="button" onClick={onConnectWallet} style={{ marginTop: "12px" }}>Connect Nimiq Wallet</button> : null}
+            {!connected ? (
+              <button type="button" className="connect-btn" onClick={onConnectWallet} style={{ marginTop: "10px", width: "100%", minHeight: "40px", fontSize: "0.88rem" }}>
+                Connect Nimiq Wallet
+              </button>
+            ) : null}
           </article>
 
-          <article className="panel profile-panel">
-            <h3>Player Stats</h3>
+          <article className="panel profile-panel profile-panel--stats">
+            <h3 className="profile-section-title" style={{ fontSize: "0.95rem", fontWeight: 800, margin: "0 0 0.65rem", textTransform: "uppercase", letterSpacing: "0.04em", color: "var(--ink-2)" }}>
+              Player Stats
+            </h3>
             <div className="profile-stats-grid">
               <MetricCard label="Wins" value="18" hint="Lifetime arena wins" />
               <MetricCard label="Streak" value="4" hint="Current win streak" />
@@ -191,7 +197,6 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onBack }) {
               <MetricCard label="Earnings" value="24.6 NIM" hint="Total rewards earned" />
             </div>
           </article>
-
         </section>
       </section>
 
