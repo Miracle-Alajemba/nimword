@@ -154,42 +154,43 @@ export function HomeScreen({
             <h1 className="hero-logo__name">NimWord</h1>
           </div>
 
-          <p className="lede lede--tagline" style={{ fontSize: "0.95rem", marginBottom: "0.4rem" }}>
+          <p className="lede lede--tagline" style={{ fontSize: "1.05rem", marginBottom: "0.5rem" }}>
             Form words. Beat the clock. Win NIM.
           </p>
 
-          <div className="feature-strip" style={{ marginBottom: "0.55rem" }}>
+          <div className="feature-strip" style={{ marginBottom: "0.75rem", gap: "0.5rem" }}>
             <div className="feature-pill">⚡ 60s Rounds</div>
             <div className="feature-pill">🪙 {stakeAmount} NIM Stake</div>
             <div className="feature-pill">🏆 90% Win Pool</div>
           </div>
 
-          <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.45rem", width: "100%" }}>
+          <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.6rem", width: "100%" }}>
             {/* Stake Selector */}
-            <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "10px", padding: "6px 10px", display: "flex", flexDirection: "column", gap: "4px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.78rem", color: "var(--ink-2)" }}>
+            <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "12px", padding: "10px 14px", display: "flex", flexDirection: "column", gap: "6px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.84rem", color: "var(--ink-2)" }}>
                 <span><span aria-hidden="true">💰</span> Choose Stake Amount:</span>
-                <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.88rem" }}>
+                <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
                   {stakeAmount} NIM
                 </strong>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "4px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px" }}>
                 {STAKE_PRESETS.map((amt) => (
                   <button
                     key={amt}
                     type="button"
                     onClick={() => setStakeAmount(amt)}
                     style={{
-                      padding: "4px 2px",
-                      fontSize: "0.75rem",
-                      fontWeight: 700,
-                      background: stakeAmount === amt ? "var(--nq-gold)" : "var(--surface-sunk)",
+                      padding: "8px 2px",
+                      fontSize: "0.85rem",
+                      fontWeight: 800,
+                      background: stakeAmount === amt ? "var(--nq-gold)" : "var(--surface)",
                       border: stakeAmount === amt ? "1px solid oklch(0.72 0.16 85.61)" : "1px solid var(--rule)",
-                      color: stakeAmount === amt ? "#1A1200" : "var(--ink-2)",
-                      borderRadius: "5px",
+                      color: stakeAmount === amt ? "#1A1200" : "var(--ink)",
+                      borderRadius: "8px",
                       cursor: "pointer",
                       transition: "all 0.15s ease",
-                      minHeight: "26px",
+                      minHeight: "36px",
+                      boxShadow: stakeAmount === amt ? "0 2px 8px oklch(0.7924 0.1593 85.61 / 0.3)" : "none",
                     }}
                   >
                     {amt}
@@ -198,24 +199,24 @@ export function HomeScreen({
               </div>
             </div>
 
-            <button type="button" onClick={() => onQuickMatch(stakeAmount)} style={{ padding: "0.75rem 1.2rem", fontSize: "0.95rem", minHeight: "42px" }}>
+            <button type="button" onClick={() => onQuickMatch(stakeAmount)} style={{ padding: "0.85rem 1.4rem", fontSize: "1rem", minHeight: "46px" }}>
               {joinLabel}
             </button>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.45rem", width: "100%" }}>
-              <button type="button" className="button-secondary" onClick={onOpenDailyChallenge} style={{ minHeight: "36px", padding: "0.45rem 0.65rem", fontSize: "0.8rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%" }}>
+              <button type="button" className="button-secondary" onClick={onOpenDailyChallenge} style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.88rem" }}>
                 ⭐ Daily Challenge
               </button>
-              <button type="button" className="button-secondary" onClick={onStartPractice} style={{ minHeight: "36px", padding: "0.45rem 0.65rem", fontSize: "0.8rem" }}>
+              <button type="button" className="button-secondary" onClick={onStartPractice} style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.88rem" }}>
                 🎯 Practice Arena
               </button>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.45rem", width: "100%" }}>
-              <button type="button" className="button-secondary button-accent-blue" onClick={onOpenLeaderboard} style={{ minHeight: "36px", padding: "0.45rem 0.65rem", fontSize: "0.8rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%" }}>
+              <button type="button" className="button-secondary button-accent-blue" onClick={onOpenLeaderboard} style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.88rem" }}>
                 🏆 Leaderboard
               </button>
-              <button type="button" className="button-secondary" onClick={() => setShowRulesModal(true)} style={{ minHeight: "36px", padding: "0.45rem 0.65rem", fontSize: "0.8rem" }}>
+              <button type="button" className="button-secondary" onClick={() => setShowRulesModal(true)} style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.88rem" }}>
                 📖 How to Play
               </button>
             </div>
@@ -234,28 +235,28 @@ export function HomeScreen({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              gap: "0.6rem",
-              padding: "0.55rem 0.85rem",
+              gap: "0.75rem",
+              padding: "0.7rem 1rem",
               background: "linear-gradient(135deg, oklch(0.7924 0.1593 85.61 / 0.14), oklch(0.5849 0.1438 244.29 / 0.12))",
               border: "1px solid var(--rule-strong)",
-              borderRadius: "10px",
+              borderRadius: "12px",
               cursor: "pointer",
-              marginTop: "0.45rem",
+              marginTop: "0.6rem",
               transition: "transform 120ms ease, border-color 120ms ease",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <span style={{ fontSize: "1.2rem" }}>🎁</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
+              <span style={{ fontSize: "1.35rem" }}>🎁</span>
               <div>
-                <strong style={{ fontSize: "0.8rem", color: "var(--ink)", display: "block" }}>
+                <strong style={{ fontSize: "0.88rem", color: "var(--ink)", display: "block" }}>
                   Free Daily Challenge Available
                 </strong>
-                <span style={{ fontSize: "0.72rem", color: "var(--ink-2)" }}>
+                <span style={{ fontSize: "0.76rem", color: "var(--ink-2)" }}>
                   Play 1 round today to claim 0.1 NIM
                 </span>
               </div>
             </div>
-            <span style={{ fontSize: "0.75rem", fontWeight: "700", color: "var(--interactive-ink)" }}>
+            <span style={{ fontSize: "0.82rem", fontWeight: "800", color: "var(--interactive-ink)" }}>
               Play →
             </span>
           </div>
@@ -266,22 +267,22 @@ export function HomeScreen({
         <div className="hero-card hero-card--interactive">
           <div className="hero-card__top">
             <div>
-              <p className="hero-card__label" style={{ fontSize: "0.75rem", marginBottom: "0.2rem" }}>
+              <p className="hero-card__label" style={{ fontSize: "0.8rem", marginBottom: "0.25rem" }}>
                 <span aria-hidden="true">🎲</span> Interactive Sample Round
               </p>
-              <h2 style={{ fontSize: "1.45rem", margin: 0 }}>BLOCKCHAIN</h2>
+              <h2 style={{ fontSize: "1.65rem", margin: 0 }}>BLOCKCHAIN</h2>
             </div>
-            <div className="hero-card__score-badge" style={{ padding: "0.35rem 0.65rem" }}>
-              <span style={{ fontSize: "0.65rem" }}>Demo Score</span>
-              <strong style={{ fontSize: "0.95rem" }}>{sampleScore} pts</strong>
+            <div className="hero-card__score-badge" style={{ padding: "0.45rem 0.8rem" }}>
+              <span style={{ fontSize: "0.7rem" }}>Demo Score</span>
+              <strong style={{ fontSize: "1.05rem" }}>{sampleScore} pts</strong>
             </div>
           </div>
 
-          <div className="sample-rack-wrapper" style={{ marginBottom: "0.35rem" }}>
-            <p className="field-hint" style={{ fontSize: "0.74rem", marginBottom: "4px" }}>
+          <div className="sample-rack-wrapper" style={{ marginBottom: "0.6rem" }}>
+            <p className="field-hint" style={{ fontSize: "0.78rem", marginBottom: "6px" }}>
               <span aria-hidden="true">👆</span> Tap letter tiles below to build words:
             </p>
-            <div className="letter-rack" style={{ gap: "0.35rem" }}>
+            <div className="letter-rack" style={{ gap: "0.45rem" }}>
               {sampleLetters.map((letter, index) => {
                 const isSelected = sampleIndexes.includes(index);
                 return (
@@ -289,7 +290,7 @@ export function HomeScreen({
                     key={`${letter}-${index}`}
                     type="button"
                     className={`letter-tile letter-tile--interactive ${isSelected ? "letter-tile--selected" : ""}`}
-                    style={{ height: "2.4rem", width: "2.4rem", fontSize: "1.05rem" }}
+                    style={{ height: "2.75rem", width: "2.75rem", fontSize: "1.2rem" }}
                     onClick={(event) => {
                       animateTileTap(event.currentTarget);
                       handleToggleSampleTile(index);
@@ -302,17 +303,17 @@ export function HomeScreen({
             </div>
           </div>
 
-          <div className="sample-builder-box" style={{ padding: "0.35rem 0.65rem", minHeight: "36px", marginBottom: "0.45rem" }}>
+          <div className="sample-builder-box" style={{ padding: "0.5rem 0.85rem", minHeight: "44px", marginBottom: "0.6rem" }}>
             <div className="sample-builder-box__display">
-              <span className="sample-builder-box__placeholder" style={{ fontSize: "0.82rem" }}>
+              <span className="sample-builder-box__placeholder" style={{ fontSize: "0.92rem" }}>
                 {sampleCandidate || "TAP TILES ABOVE"}
               </span>
             </div>
-            <div className="sample-builder-box__actions">
+            <div className="sample-builder-box__actions" style={{ gap: "0.4rem" }}>
               <button
                 type="button"
                 className="button-secondary"
-                style={{ padding: "0.3rem 0.65rem", fontSize: "0.72rem", minHeight: "26px" }}
+                style={{ padding: "0.4rem 0.85rem", fontSize: "0.8rem", minHeight: "32px" }}
                 onClick={handleClearSample}
                 disabled={sampleIndexes.length === 0}
               >
@@ -320,7 +321,7 @@ export function HomeScreen({
               </button>
               <button
                 type="button"
-                style={{ padding: "0.3rem 0.75rem", fontSize: "0.72rem", minHeight: "26px" }}
+                style={{ padding: "0.4rem 1rem", fontSize: "0.8rem", minHeight: "32px" }}
                 onClick={handleTestSampleWord}
                 disabled={!sampleCandidate}
               >
@@ -330,17 +331,17 @@ export function HomeScreen({
           </div>
 
           {sampleFeedback ? (
-            <div className={`notice-strip notice-strip--${sampleFeedback.type}`} style={{ padding: "0.4rem 0.6rem", fontSize: "0.74rem", margin: "0.3rem 0" }}>
+            <div className={`notice-strip notice-strip--${sampleFeedback.type}`} style={{ padding: "0.5rem 0.8rem", fontSize: "0.8rem", margin: "0.4rem 0" }}>
               {sampleFeedback.text}
             </div>
           ) : null}
 
           {sampleWords.length > 0 ? (
-            <div className="sample-found-list" style={{ margin: "0.3rem 0" }}>
-              <span className="field-hint" style={{ fontSize: "0.72rem" }}>Words Found ({sampleWords.length}):</span>
-              <div className="sample-chips-row" style={{ gap: "0.3rem" }}>
+            <div className="sample-found-list" style={{ margin: "0.4rem 0" }}>
+              <span className="field-hint" style={{ fontSize: "0.76rem" }}>Words Found ({sampleWords.length}):</span>
+              <div className="sample-chips-row" style={{ gap: "0.4rem" }}>
                 {sampleWords.map((w, idx) => (
-                  <span key={idx} className="word-chip" style={{ padding: "0.2rem 0.45rem", fontSize: "0.72rem" }}>
+                  <span key={idx} className="word-chip" style={{ padding: "0.3rem 0.6rem", fontSize: "0.78rem" }}>
                     <strong>{w.word}</strong> <small>+{w.points}</small>
                   </span>
                 ))}
@@ -348,26 +349,26 @@ export function HomeScreen({
             </div>
           ) : null}
 
-          <div className="game-info-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.4rem", width: "100%", margin: "0.4rem 0" }}>
-            <div className="game-info-cell" style={{ padding: "0.4rem 0.6rem", fontSize: "0.74rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
-              <span style={{ color: "var(--ink-2)", fontWeight: 700 }}>TIMER: 60S</span>
+          <div className="game-info-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.55rem", width: "100%", margin: "0.6rem 0" }}>
+            <div className="game-info-cell" style={{ padding: "0.6rem 0.85rem", fontSize: "0.82rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
+              <span style={{ color: "var(--ink)", fontWeight: 800 }}>TIMER: 60S</span>
             </div>
-            <div className="game-info-cell" style={{ padding: "0.4rem 0.6rem", fontSize: "0.74rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
-              <span style={{ color: "var(--ink-2)", fontWeight: 700 }}>STAKE: 1 NIM</span>
+            <div className="game-info-cell" style={{ padding: "0.6rem 0.85rem", fontSize: "0.82rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
+              <span style={{ color: "var(--ink)", fontWeight: 800 }}>STAKE: 1 NIM</span>
             </div>
-            <div className="game-info-cell" style={{ padding: "0.4rem 0.6rem", fontSize: "0.74rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
-              <span style={{ color: "var(--ink-2)", fontWeight: 700 }}>PLAYERS: 2-5</span>
+            <div className="game-info-cell" style={{ padding: "0.6rem 0.85rem", fontSize: "0.82rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
+              <span style={{ color: "var(--ink)", fontWeight: 800 }}>PLAYERS: 2-5</span>
             </div>
-            <div className="game-info-cell" style={{ padding: "0.4rem 0.6rem", fontSize: "0.74rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
-              <span style={{ color: "var(--ink-2)", fontWeight: 700 }}>POOL: 90% SHARED</span>
+            <div className="game-info-cell" style={{ padding: "0.6rem 0.85rem", fontSize: "0.82rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
+              <span style={{ color: "var(--ink)", fontWeight: 800 }}>POOL: 90% SHARED</span>
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.4rem", width: "100%", marginBottom: "0.4rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%", marginBottom: "0.6rem" }}>
             <button
               type="button"
               className="button-secondary"
-              style={{ minHeight: "34px", padding: "0.35rem 0.6rem", fontSize: "0.78rem" }}
+              style={{ minHeight: "42px", padding: "0.55rem 0.85rem", fontSize: "0.88rem" }}
               onClick={onOpenProfile}
             >
               View Profile
@@ -375,7 +376,7 @@ export function HomeScreen({
             <button
               type="button"
               className="button-secondary"
-              style={{ minHeight: "34px", padding: "0.35rem 0.6rem", fontSize: "0.78rem" }}
+              style={{ minHeight: "42px", padding: "0.55rem 0.85rem", fontSize: "0.88rem" }}
               onClick={onOpenSettings}
             >
               Settings
@@ -387,31 +388,31 @@ export function HomeScreen({
             style={{
               background: "var(--surface-sunk)",
               border: "1px solid var(--rule)",
-              borderRadius: "10px",
-              padding: "0.45rem 0.75rem",
+              borderRadius: "12px",
+              padding: "0.65rem 0.95rem",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.3rem", fontSize: "0.72rem" }}>
-              <strong style={{ color: "var(--interactive-ink)", display: "flex", alignItems: "center", gap: "4px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem", fontSize: "0.78rem" }}>
+              <strong style={{ color: "var(--interactive-ink)", display: "flex", alignItems: "center", gap: "5px" }}>
                 ⚡ WORD SCORING MATRIX
               </strong>
-              <span style={{ color: "var(--good)", fontWeight: 700 }}>✓ NIMIQ PAY VERIFIED</span>
+              <span style={{ color: "var(--good)", fontWeight: 800 }}>✓ NIMIQ PAY VERIFIED</span>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.3rem", textAlign: "center", fontSize: "0.7rem" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.4rem", textAlign: "center", fontSize: "0.76rem" }}>
               <div>
-                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.64rem" }}>3 LTRS</span>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>3 LTRS</span>
                 <strong style={{ color: "var(--ink)" }}>3 PTS</strong>
               </div>
               <div>
-                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.64rem" }}>4 LTRS</span>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>4 LTRS</span>
                 <strong style={{ color: "var(--ink)" }}>5 PTS</strong>
               </div>
               <div>
-                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.64rem" }}>5 LTRS</span>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>5 LTRS</span>
                 <strong style={{ color: "var(--ink)" }}>8 PTS</strong>
               </div>
               <div>
-                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.64rem" }}>6+ LTRS</span>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>6+ LTRS</span>
                 <strong style={{ color: "var(--ink)" }}>12 PTS</strong>
               </div>
             </div>
