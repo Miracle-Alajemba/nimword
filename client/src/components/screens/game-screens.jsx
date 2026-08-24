@@ -154,22 +154,22 @@ export function HomeScreen({
             <h1 className="hero-logo__name">NimWord</h1>
           </div>
 
-          <p className="lede lede--tagline" style={{ fontSize: "1.15rem", marginBottom: "0.5rem" }}>
+          <p className="lede lede--tagline" style={{ fontSize: "0.95rem", marginBottom: "0.4rem" }}>
             Form words. Beat the clock. Win NIM.
           </p>
 
-          <div className="feature-strip" style={{ marginBottom: "0.8rem" }}>
+          <div className="feature-strip" style={{ marginBottom: "0.55rem" }}>
             <div className="feature-pill">⚡ 60s Rounds</div>
             <div className="feature-pill">🪙 {stakeAmount} NIM Stake</div>
             <div className="feature-pill">🏆 90% Win Pool</div>
           </div>
 
-          <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.6rem", width: "100%" }}>
+          <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.45rem", width: "100%" }}>
             {/* Stake Selector */}
-            <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "12px", padding: "8px 12px", display: "flex", flexDirection: "column", gap: "6px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.82rem", color: "var(--ink-2)" }}>
+            <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "10px", padding: "6px 10px", display: "flex", flexDirection: "column", gap: "4px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.78rem", color: "var(--ink-2)" }}>
                 <span><span aria-hidden="true">💰</span> Choose Stake Amount:</span>
-                <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
+                <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.88rem" }}>
                   {stakeAmount} NIM
                 </strong>
               </div>
@@ -180,16 +180,16 @@ export function HomeScreen({
                     type="button"
                     onClick={() => setStakeAmount(amt)}
                     style={{
-                      padding: "6px 2px",
-                      fontSize: "0.8rem",
+                      padding: "4px 2px",
+                      fontSize: "0.75rem",
                       fontWeight: 700,
                       background: stakeAmount === amt ? "var(--nq-gold)" : "var(--surface-sunk)",
                       border: stakeAmount === amt ? "1px solid oklch(0.72 0.16 85.61)" : "1px solid var(--rule)",
                       color: stakeAmount === amt ? "#1A1200" : "var(--ink-2)",
-                      borderRadius: "6px",
+                      borderRadius: "5px",
                       cursor: "pointer",
                       transition: "all 0.15s ease",
-                      minHeight: "auto",
+                      minHeight: "26px",
                     }}
                   >
                     {amt}
@@ -198,24 +198,24 @@ export function HomeScreen({
               </div>
             </div>
 
-            <button type="button" onClick={() => onQuickMatch(stakeAmount)} style={{ padding: "0.95rem 1.4rem", fontSize: "1.05rem" }}>
+            <button type="button" onClick={() => onQuickMatch(stakeAmount)} style={{ padding: "0.75rem 1.2rem", fontSize: "0.95rem", minHeight: "42px" }}>
               {joinLabel}
             </button>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%" }}>
-              <button type="button" className="button-secondary" onClick={onOpenDailyChallenge}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.45rem", width: "100%" }}>
+              <button type="button" className="button-secondary" onClick={onOpenDailyChallenge} style={{ minHeight: "36px", padding: "0.45rem 0.65rem", fontSize: "0.8rem" }}>
                 ⭐ Daily Challenge
               </button>
-              <button type="button" className="button-secondary" onClick={onStartPractice}>
+              <button type="button" className="button-secondary" onClick={onStartPractice} style={{ minHeight: "36px", padding: "0.45rem 0.65rem", fontSize: "0.8rem" }}>
                 🎯 Practice Arena
               </button>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%" }}>
-              <button type="button" className="button-secondary button-accent-blue" onClick={onOpenLeaderboard}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.45rem", width: "100%" }}>
+              <button type="button" className="button-secondary button-accent-blue" onClick={onOpenLeaderboard} style={{ minHeight: "36px", padding: "0.45rem 0.65rem", fontSize: "0.8rem" }}>
                 🏆 Leaderboard
               </button>
-              <button type="button" className="button-secondary" onClick={() => setShowRulesModal(true)}>
+              <button type="button" className="button-secondary" onClick={() => setShowRulesModal(true)} style={{ minHeight: "36px", padding: "0.45rem 0.65rem", fontSize: "0.8rem" }}>
                 📖 How to Play
               </button>
             </div>
@@ -234,28 +234,28 @@ export function HomeScreen({
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              gap: "0.75rem",
-              padding: "0.75rem 1rem",
+              gap: "0.6rem",
+              padding: "0.55rem 0.85rem",
               background: "linear-gradient(135deg, oklch(0.7924 0.1593 85.61 / 0.14), oklch(0.5849 0.1438 244.29 / 0.12))",
               border: "1px solid var(--rule-strong)",
-              borderRadius: "12px",
+              borderRadius: "10px",
               cursor: "pointer",
-              marginTop: "0.75rem",
+              marginTop: "0.45rem",
               transition: "transform 120ms ease, border-color 120ms ease",
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-              <span style={{ fontSize: "1.4rem" }}>🎁</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span style={{ fontSize: "1.2rem" }}>🎁</span>
               <div>
-                <strong style={{ fontSize: "0.88rem", color: "var(--ink)", display: "block" }}>
+                <strong style={{ fontSize: "0.8rem", color: "var(--ink)", display: "block" }}>
                   Free Daily Challenge Available
                 </strong>
-                <span style={{ fontSize: "0.75rem", color: "var(--ink-2)" }}>
+                <span style={{ fontSize: "0.72rem", color: "var(--ink-2)" }}>
                   Play 1 round today to claim 0.1 NIM
                 </span>
               </div>
             </div>
-            <span style={{ fontSize: "0.78rem", fontWeight: "700", color: "var(--interactive-ink)" }}>
+            <span style={{ fontSize: "0.75rem", fontWeight: "700", color: "var(--interactive-ink)" }}>
               Play →
             </span>
           </div>
@@ -266,22 +266,22 @@ export function HomeScreen({
         <div className="hero-card hero-card--interactive">
           <div className="hero-card__top">
             <div>
-              <p className="hero-card__label">
+              <p className="hero-card__label" style={{ fontSize: "0.75rem", marginBottom: "0.2rem" }}>
                 <span aria-hidden="true">🎲</span> Interactive Sample Round
               </p>
-              <h2 style={{ fontSize: "1.8rem", margin: 0 }}>BLOCKCHAIN</h2>
+              <h2 style={{ fontSize: "1.45rem", margin: 0 }}>BLOCKCHAIN</h2>
             </div>
-            <div className="hero-card__score-badge">
-              <span>Demo Score</span>
-              <strong>{sampleScore} pts</strong>
+            <div className="hero-card__score-badge" style={{ padding: "0.35rem 0.65rem" }}>
+              <span style={{ fontSize: "0.65rem" }}>Demo Score</span>
+              <strong style={{ fontSize: "0.95rem" }}>{sampleScore} pts</strong>
             </div>
           </div>
 
-          <div className="sample-rack-wrapper">
-            <p className="field-hint" style={{ fontSize: "0.78rem", marginBottom: "6px" }}>
+          <div className="sample-rack-wrapper" style={{ marginBottom: "0.35rem" }}>
+            <p className="field-hint" style={{ fontSize: "0.74rem", marginBottom: "4px" }}>
               <span aria-hidden="true">👆</span> Tap letter tiles below to build words:
             </p>
-            <div className="letter-rack">
+            <div className="letter-rack" style={{ gap: "0.35rem" }}>
               {sampleLetters.map((letter, index) => {
                 const isSelected = sampleIndexes.includes(index);
                 return (
@@ -289,6 +289,7 @@ export function HomeScreen({
                     key={`${letter}-${index}`}
                     type="button"
                     className={`letter-tile letter-tile--interactive ${isSelected ? "letter-tile--selected" : ""}`}
+                    style={{ height: "2.4rem", width: "2.4rem", fontSize: "1.05rem" }}
                     onClick={(event) => {
                       animateTileTap(event.currentTarget);
                       handleToggleSampleTile(index);
@@ -301,9 +302,9 @@ export function HomeScreen({
             </div>
           </div>
 
-          <div className="sample-builder-box">
+          <div className="sample-builder-box" style={{ padding: "0.35rem 0.65rem", minHeight: "36px", marginBottom: "0.45rem" }}>
             <div className="sample-builder-box__display">
-              <span className="sample-builder-box__placeholder">
+              <span className="sample-builder-box__placeholder" style={{ fontSize: "0.82rem" }}>
                 {sampleCandidate || "TAP TILES ABOVE"}
               </span>
             </div>
@@ -311,7 +312,7 @@ export function HomeScreen({
               <button
                 type="button"
                 className="button-secondary"
-                style={{ padding: "0.4rem 0.8rem", fontSize: "0.75rem" }}
+                style={{ padding: "0.3rem 0.65rem", fontSize: "0.72rem", minHeight: "26px" }}
                 onClick={handleClearSample}
                 disabled={sampleIndexes.length === 0}
               >
@@ -319,7 +320,7 @@ export function HomeScreen({
               </button>
               <button
                 type="button"
-                style={{ padding: "0.4rem 0.9rem", fontSize: "0.75rem" }}
+                style={{ padding: "0.3rem 0.75rem", fontSize: "0.72rem", minHeight: "26px" }}
                 onClick={handleTestSampleWord}
                 disabled={!sampleCandidate}
               >
@@ -329,17 +330,17 @@ export function HomeScreen({
           </div>
 
           {sampleFeedback ? (
-            <div className={`notice-strip notice-strip--${sampleFeedback.type}`}>
+            <div className={`notice-strip notice-strip--${sampleFeedback.type}`} style={{ padding: "0.4rem 0.6rem", fontSize: "0.74rem", margin: "0.3rem 0" }}>
               {sampleFeedback.text}
             </div>
           ) : null}
 
           {sampleWords.length > 0 ? (
-            <div className="sample-found-list">
-              <span className="field-hint">Words Found ({sampleWords.length}):</span>
-              <div className="sample-chips-row">
+            <div className="sample-found-list" style={{ margin: "0.3rem 0" }}>
+              <span className="field-hint" style={{ fontSize: "0.72rem" }}>Words Found ({sampleWords.length}):</span>
+              <div className="sample-chips-row" style={{ gap: "0.3rem" }}>
                 {sampleWords.map((w, idx) => (
-                  <span key={idx} className="word-chip">
+                  <span key={idx} className="word-chip" style={{ padding: "0.2rem 0.45rem", fontSize: "0.72rem" }}>
                     <strong>{w.word}</strong> <small>+{w.points}</small>
                   </span>
                 ))}
@@ -347,36 +348,72 @@ export function HomeScreen({
             </div>
           ) : null}
 
-          <div className="hero-card__grid">
-            <span>Timer: 60s</span>
-            <span>Stake: 1 NIM</span>
-            <span>Players: 2-5</span>
-            <span>Pool: 90% shared</span>
+          <div className="game-info-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.4rem", width: "100%", margin: "0.4rem 0" }}>
+            <div className="game-info-cell" style={{ padding: "0.4rem 0.6rem", fontSize: "0.74rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+              <span style={{ color: "var(--ink-2)", fontWeight: 700 }}>TIMER: 60S</span>
+            </div>
+            <div className="game-info-cell" style={{ padding: "0.4rem 0.6rem", fontSize: "0.74rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+              <span style={{ color: "var(--ink-2)", fontWeight: 700 }}>STAKE: 1 NIM</span>
+            </div>
+            <div className="game-info-cell" style={{ padding: "0.4rem 0.6rem", fontSize: "0.74rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+              <span style={{ color: "var(--ink-2)", fontWeight: 700 }}>PLAYERS: 2-5</span>
+            </div>
+            <div className="game-info-cell" style={{ padding: "0.4rem 0.6rem", fontSize: "0.74rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+              <span style={{ color: "var(--ink-2)", fontWeight: 700 }}>POOL: 90% SHARED</span>
+            </div>
           </div>
 
-          <div className="hero-card__footer">
-            <button type="button" className="button-secondary" onClick={onOpenProfile}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.4rem", width: "100%", marginBottom: "0.4rem" }}>
+            <button
+              type="button"
+              className="button-secondary"
+              style={{ minHeight: "34px", padding: "0.35rem 0.6rem", fontSize: "0.78rem" }}
+              onClick={onOpenProfile}
+            >
               View Profile
             </button>
-            <button type="button" className="button-secondary" onClick={onOpenSettings}>
+            <button
+              type="button"
+              className="button-secondary"
+              style={{ minHeight: "34px", padding: "0.35rem 0.6rem", fontSize: "0.78rem" }}
+              onClick={onOpenSettings}
+            >
               Settings
             </button>
           </div>
 
-          <div className="sample-scoring-footer">
-            <div className="sample-scoring-footer__header">
-              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", fontWeight: "700", color: "var(--interactive-ink)" }}>
-                ⚡ Word Scoring Matrix
-              </span>
-              <span style={{ fontSize: "0.72rem", color: "var(--nq-gold)", fontWeight: "600" }}>
-                ✓ Nimiq Pay Verified
-              </span>
+          <div
+            className="score-matrix-card"
+            style={{
+              background: "var(--surface-sunk)",
+              border: "1px solid var(--rule)",
+              borderRadius: "10px",
+              padding: "0.45rem 0.75rem",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.3rem", fontSize: "0.72rem" }}>
+              <strong style={{ color: "var(--interactive-ink)", display: "flex", alignItems: "center", gap: "4px" }}>
+                ⚡ WORD SCORING MATRIX
+              </strong>
+              <span style={{ color: "var(--good)", fontWeight: 700 }}>✓ NIMIQ PAY VERIFIED</span>
             </div>
-            <div className="sample-scoring-footer__matrix">
-              <div className="scoring-pill"><span>3 LTRS</span><strong>3 pts</strong></div>
-              <div className="scoring-pill"><span>4 LTRS</span><strong>5 pts</strong></div>
-              <div className="scoring-pill"><span>5 LTRS</span><strong>8 pts</strong></div>
-              <div className="scoring-pill"><span>6+ LTRS</span><strong>12 pts</strong></div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.3rem", textAlign: "center", fontSize: "0.7rem" }}>
+              <div>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.64rem" }}>3 LTRS</span>
+                <strong style={{ color: "var(--ink)" }}>3 PTS</strong>
+              </div>
+              <div>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.64rem" }}>4 LTRS</span>
+                <strong style={{ color: "var(--ink)" }}>5 PTS</strong>
+              </div>
+              <div>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.64rem" }}>5 LTRS</span>
+                <strong style={{ color: "var(--ink)" }}>8 PTS</strong>
+              </div>
+              <div>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.64rem" }}>6+ LTRS</span>
+                <strong style={{ color: "var(--ink)" }}>12 PTS</strong>
+              </div>
             </div>
           </div>
         </div>

@@ -11,6 +11,24 @@
    ═══════════════════════════════════════════════════════════════════ */
 :root {
   color-scheme: light;
+}
+
+/* Global scrollbar hiding for a clean, app-like finish */
+*,
+*::before,
+*::after {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+}
+
+:root {
 
   /* ── Nimiq brand ramp (nimiq-css) ───────────────────────────────── */
   --nq-darkblue: oklch(0.2737 0.068 276.29);
@@ -4812,50 +4830,32 @@ textarea {
   }
 
   .page-shell {
-    /* scrollbar-gutter keeps the reserved track always present, so the
-       layout does not shift sideways the moment content grows past a
-       viewport. */
-    /* Slack in a fixed frame used to collect in one lump under the last card —
-       155px of blank page at 1440x900. align-content splits it top and bottom
-       instead, so a short screen reads as composed rather than truncated. It
-       works on a block container, so nothing here becomes a flex item and no
-       margin that currently collapses starts taking up space.
-       `safe` is load-bearing: the same screens overflow at 1280 and below, and
-       unsafe centring would lift the first card above the scroll origin where
-       it could never be reached. */
     align-content: safe center;
     height: 100dvh;
     max-height: 100dvh;
-    /* Three decorations are `position: fixed` and centred on the viewport: the
-       tile canvas, the graph-paper ::before at min(100vw, 1440px), and the blur
-       ::after. The shell is only 1165px wide, so each one overhangs its content
-       box — and making the shell a scroll container above turned that overhang
-       into real sideways scroll: 260px of it at 1440, over empty background.
-       `hidden` and not `clip`, because `clip` is coerced to `hidden` anyway the
-       moment the other axis scrolls. Because the viewport (not the shell) is
-       the containing block for all three, they keep painting edge to edge
-       rather than being cut to 1165px. Measured at seven widths from 360 to
-       1920: no in-flow element crosses the shell's right edge, so nothing real
-       is being hidden — only unreachable empty background. */
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
-    /* NOT --nav-reserve here: .bottom-nav is display:none from 769px up, so
-       reserving 100px for it would be 100px of blank page under the last
-       card. This matches padding-top instead, so the frame is symmetric. */
-    padding-bottom: 1.35rem;
-    padding-top: 1.35rem;
-    scrollbar-gutter: stable;
+    padding-bottom: 0.85rem;
+    padding-top: 0.85rem;
+    scrollbar-width: none;
   }
 
-  /* 2.2rem all round is a lot of card on a screen this wide, and the
-     vertical half is what pushes the fold down. */
+  .hero {
+    gap: 0.85rem;
+  }
+
+  /* Compact card paddings so everything fits comfortably on desktop viewport */
   .hero-copy {
-    padding: 1.6rem 1.75rem;
+    padding: 1.15rem 1.35rem;
+  }
+
+  .hero-card {
+    padding: 1.15rem 1.35rem;
   }
 
   .hero-logo {
-    margin-bottom: 0.9rem;
+    margin-bottom: 0.75rem;
   }
 
   /* This section carried an inline 6rem bottom margin on top of the
