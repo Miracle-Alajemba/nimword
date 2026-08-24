@@ -35,70 +35,66 @@ export function TotalPayoutsBanner({ className = "" }) {
   return (
     <div
       style={{
-        marginTop: "1.25rem",
-        padding: "1rem 1.25rem",
-        borderRadius: "18px",
+        marginTop: "0.6rem",
+        padding: "0.6rem 0.9rem",
+        borderRadius: "12px",
         background: "var(--surface)",
-        border: "1px solid oklch(0.5849 0.1438 244.29 / 0.3)",
-        boxShadow: "0 8px 22px -8px oklch(0.2737 0.068 276.29 / 0.14)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
+        border: "1px solid oklch(0.5849 0.1438 244.29 / 0.28)",
+        boxShadow: "0 4px 14px -4px oklch(0.2737 0.068 276.29 / 0.08)",
       }}
       className={`total-payouts-banner ${className}`}
     >
-      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "12px" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
         {/* Metric Display */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
           <div
             style={{
-              width: "44px",
-              height: "44px",
-              borderRadius: "12px",
+              width: "36px",
+              height: "36px",
+              borderRadius: "10px",
               background: "linear-gradient(135deg, oklch(0.5849 0.1438 244.29 / 0.16) 0%, oklch(0.6932 0.1245 178.48 / 0.16) 100%)",
-              border: "1px solid oklch(0.5849 0.1438 244.29 / 0.4)",
+              border: "1px solid oklch(0.5849 0.1438 244.29 / 0.35)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: "1.3rem",
-              boxShadow: "0 4px 12px oklch(0.5849 0.1438 244.29 / 0.2)",
+              fontSize: "1.1rem",
+              flexShrink: 0,
+              boxShadow: "0 2px 8px oklch(0.5849 0.1438 244.29 / 0.15)",
             }}
           >
             🏆
           </div>
 
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "2px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "5px", marginBottom: "2px" }}>
               <span
                 style={{
-                  width: "8px",
-                  height: "8px",
+                  width: "7px",
+                  height: "7px",
                   borderRadius: "50%",
                   backgroundColor: "var(--interactive)",
-                  boxShadow: "0 0 8px oklch(0.5849 0.1438 244.29 / 0.55)",
-                  animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                  boxShadow: "0 0 6px oklch(0.5849 0.1438 244.29 / 0.6)",
+                  display: "inline-block",
                 }}
               />
-              <span style={{ fontSize: "0.68rem", fontWeight: "800", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--interactive-ink)" }}>
+              <span style={{ fontSize: "0.65rem", fontWeight: "800", textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--interactive-ink)" }}>
                 Verified Onchain Metric
               </span>
             </div>
 
-            <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
-              <span
+            <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
+              <strong
                 style={{
-                  fontSize: "1.6rem",
+                  fontSize: "1.25rem",
                   fontWeight: "900",
-                  fontFamily: "Space Mono, monospace",
-                  letterSpacing: "-0.03em",
-                  background: "linear-gradient(180deg, var(--surface) 0%, var(--surface-sunk) 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  lineHeight: "1.1",
+                  fontFamily: "var(--font-mono)",
+                  color: "var(--ink)",
+                  lineHeight: "1",
                 }}
               >
                 {stats.totalSettledMatches}
-              </span>
-              <span style={{ fontSize: "0.95rem", fontWeight: "800", color: "var(--ink)", textTransform: "uppercase", letterSpacing: "0.02em" }}>
+              </strong>
+              <span style={{ fontSize: "0.82rem", fontWeight: "800", color: "var(--ink)", textTransform: "uppercase", letterSpacing: "0.03em" }}>
                 Rooms Created
               </span>
             </div>
@@ -108,19 +104,20 @@ export function TotalPayoutsBanner({ className = "" }) {
         {/* Status Tag */}
         <div
           style={{
-            padding: "6px 14px",
-            borderRadius: "10px",
+            padding: "4px 10px",
+            borderRadius: "8px",
             background: "var(--surface-sunk)",
             border: "1px solid var(--rule)",
-            fontSize: "0.75rem",
+            fontSize: "0.72rem",
             fontWeight: "600",
-            color: "var(--ink-muted)",
+            color: "var(--ink-2)",
             display: "flex",
             alignItems: "center",
-            gap: "6px",
+            gap: "5px",
+            whiteSpace: "nowrap",
           }}
         >
-          <span style={{ color: "var(--good)" }}>⚡</span>
+          <span style={{ color: "var(--good)", fontSize: "0.8rem" }}>⚡</span>
           <span>Real-Time Onchain Smart Contract</span>
         </div>
       </div>
