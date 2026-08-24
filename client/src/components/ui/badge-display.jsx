@@ -14,7 +14,7 @@ export function BadgeDisplay({ badge, className = "" }) {
         borderRadius: "20px",
         background: "oklch(0.5849 0.1438 244.29 / 0.12)",
         border: "1px solid oklch(0.5849 0.1438 244.29 / 0.35)",
-        color: "var(--interactive)",
+        color: "var(--interactive-ink)",
         fontSize: "12px",
         fontWeight: "600",
       }}

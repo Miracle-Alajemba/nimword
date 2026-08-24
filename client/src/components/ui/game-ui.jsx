@@ -123,8 +123,15 @@ export function ChatMessage({ entry, isOwnMessage }) {
           <span className={`chat-bubble__points ${accepted ? "" : "chat-bubble__points--muted"}`}>
             {accepted ? `+${entry.score} pts` : entry.reason === "Already used" ? "Already used" : "0 pts"}
           </span>
-          <span className={`validation-badge ${accepted ? "validation-badge--ok" : "validation-badge--bad"}`}>
-            {accepted ? "✓" : "✕"}
+          {/* Emoji rather than the thin ✓/✕: at the 11px this badge renders at
+              they were nearly identical shapes, and the state was really being
+              carried by the badge's background colour alone. */}
+          <span
+            aria-label={accepted ? "Accepted" : "Rejected"}
+            className={`validation-badge ${accepted ? "validation-badge--ok" : "validation-badge--bad"}`}
+            role="img"
+          >
+            {accepted ? "✅" : "❌"}
           </span>
         </div>
       </div>

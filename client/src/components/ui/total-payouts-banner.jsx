@@ -78,7 +78,7 @@ export function TotalPayoutsBanner({ className = "" }) {
                   animation: "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
                 }}
               />
-              <span style={{ fontSize: "0.68rem", fontWeight: "800", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--interactive)" }}>
+              <span style={{ fontSize: "0.68rem", fontWeight: "800", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--interactive-ink)" }}>
                 Verified Onchain Metric
               </span>
             </div>

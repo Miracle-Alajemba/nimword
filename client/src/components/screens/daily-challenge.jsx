@@ -476,7 +476,7 @@ export function DailyChallenge({
           </div>
           <div className="results-sheet" style={{ textAlign: "center", padding: "3rem 1.5rem" }}>
             <div className="trophy-cup-animated" style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🏆</div>
-            <h2>Sign In to Play</h2>
+            <h2><span aria-hidden="true">🔑</span> Sign In to Play</h2>
             <p style={{ marginBottom: "1.5rem" }}>
               Connect your Nimiq wallet to play the Daily Challenge and claim your reward (up to 2 NIM) once per day.
             </p>
@@ -506,7 +506,7 @@ export function DailyChallenge({
           </div>
           <div className="results-sheet" style={{ textAlign: "center", padding: "3rem 1.5rem" }}>
             <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>⏳</div>
-            <h2>Next Play Available In</h2>
+            <h2><span aria-hidden="true">⏰</span> Next Play Available In</h2>
             <p style={{ marginBottom: "0.5rem" }}>
               {cooldownSeconds > 0
                 ? `${Math.floor(cooldownSeconds / 3600)}h ${Math.floor((cooldownSeconds % 3600) / 60)}m ${cooldownSeconds % 60}s`
@@ -517,7 +517,7 @@ export function DailyChallenge({
             </p>
 
             <div style={{ borderTop: "1px solid var(--rule)", paddingTop: "1.5rem", marginTop: "1rem", width: "100%" }}>
-              <h4 style={{ color: "var(--accent-mint)" }}>Can't wait? ⚡</h4>
+              <h4 style={{ color: "var(--nq-green-deep)" }}>Can't wait? ⚡</h4>
               <p style={{ fontSize: "0.85em", opacity: 0.8, marginBottom: "1.5rem" }}>
                 Skip the cooldown and play again immediately with a retry ticket.
               </p>
@@ -556,7 +556,9 @@ export function DailyChallenge({
           </div>
           <div className="dc-claimed-screen">
             <div className="dc-claimed-screen__icon trophy-cup-animated">🏆</div>
-            <h2 className="dc-claimed-screen__title">Reward Claimed</h2>
+            <h2 className="dc-claimed-screen__title">
+              <span aria-hidden="true">🎉</span> Reward Claimed
+            </h2>
             <p className="dc-claimed-screen__sub">You claimed your 0.1 NIM reward today.</p>
             <div className="dc-claimed-screen__amount">0.1 NIM</div>
             {dailyClaimTx ? (
@@ -585,7 +587,9 @@ export function DailyChallenge({
               Share & Invite Friends
             </button>
             <div className="dc-claimed-screen__divider" />
-            <p className="dc-claimed-screen__next">Come back tomorrow for your next reward.</p>
+            <p className="dc-claimed-screen__next">
+              <span aria-hidden="true">🌅</span> Come back tomorrow for your next reward.
+            </p>
             <button type="button" className="button-secondary" onClick={onBack}>
               Back to Home
             </button>
@@ -600,15 +604,19 @@ export function DailyChallenge({
       <section className="play-shell">
         <div className="play-header">
           <button type="button" className="ghost-button" onClick={onBack}>
-            Back
+            <span aria-hidden="true">←</span> Back
           </button>
-          <p className="eyebrow">Daily Challenge</p>
+          <p className="eyebrow">
+            <span aria-hidden="true">⭐</span> Daily Challenge
+          </p>
         </div>
 
         {!loadingRound && phase !== "idle" ? (
           <div className="play-hero">
             <div>
-              <p className="play-label">Today's Word</p>
+              <p className="play-label">
+                <span aria-hidden="true">📅</span> Today's Word
+              </p>
               <h1>{roundSeed?.sourceWord || "LOADING"}</h1>
               <p className="lede">
                 Score {roundSeed?.targetScore || 40} points in one free round to claim today's {roundSeed?.rewardDisplay || "0.1 NIM"} reward.
@@ -630,7 +638,7 @@ export function DailyChallenge({
               <div className="word-preview word-preview--practice">
                 {selectedWord
                   ? selectedWord.toUpperCase().split("").join(" - ")
-                  : "Tap letters to form a word"}
+                  : "👆 Tap letters to form a word"}
               </div>
 
               {phase === "playing" && (
@@ -807,17 +815,17 @@ export function DailyChallenge({
               </div>
               <div className="dc-result-card__stats">
                 <div className="dc-result-stat">
-                  <span>Words Found</span>
+                  <span><span aria-hidden="true">📖</span> Words Found</span>
                   <strong>{claimedWords.length}</strong>
                 </div>
                 <div className="dc-result-stat">
-                  <span>Target</span>
+                  <span><span aria-hidden="true">🎯</span> Target</span>
                   <strong>{DAILY_TARGET_SCORE} pts</strong>
                 </div>
                 <div className="dc-result-stat">
-                  <span>Status</span>
-                  <strong style={{ color: score >= DAILY_TARGET_SCORE ? "var(--nq-gold)" : "var(--bad)" }}>
-                    {score >= DAILY_TARGET_SCORE ? "Target Reached ✓" : "Target Missed"}
+                  <span><span aria-hidden="true">📊</span> Status</span>
+                  <strong style={{ color: score >= DAILY_TARGET_SCORE ? "var(--nq-gold-deep)" : "var(--bad)" }}>
+                    {score >= DAILY_TARGET_SCORE ? "✅ Target Reached" : "❌ Target Missed"}
                   </strong>
                 </div>
               </div>
@@ -830,7 +838,7 @@ export function DailyChallenge({
                     You scored <strong>{score} pts</strong> but need <strong>{DAILY_TARGET_SCORE} pts</strong> to claim today's reward. Try again tomorrow.
                   </p>
                   <button type="button" onClick={resetChallenge} className="dc-result-card__cta">
-                    Play Again
+                    <span aria-hidden="true">🔄</span> Play Again
                   </button>
                   <button
                     type="button"
@@ -845,7 +853,7 @@ export function DailyChallenge({
                       }
                     }}
                   >
-                    Share My Score
+                    <span aria-hidden="true">📣</span> Share My Score
                   </button>
                 </>
               ) : dailyClaimed ? (
@@ -879,10 +887,10 @@ export function DailyChallenge({
                       }
                     }}
                   >
-                    Share Result
+                    <span aria-hidden="true">📣</span> Share Result
                   </button>
                   <button type="button" className="button-secondary dc-result-card__cta" onClick={resetChallenge}>
-                    Play Again Tomorrow
+                    <span aria-hidden="true">🔄</span> Play Again Tomorrow
                   </button>
                 </>
               ) : (
@@ -898,11 +906,15 @@ export function DailyChallenge({
                   </p>
                   <button
                     type="button"
-                    className="dc-result-card__cta"
+                    className="dc-result-card__cta btn-gold"
                     onClick={handleClaim}
                     disabled={dailyClaimBusy}
                   >
-                    {dailyClaimBusy ? "Sending reward..." : walletConnected ? "Claim 0.1 NIM" : "Connect Nimiq Wallet to Claim"}
+                    {dailyClaimBusy
+                      ? "Sending reward..."
+                      : walletConnected
+                        ? "💸 Claim 0.1 NIM"
+                        : "⚡ Connect Nimiq Wallet to Claim"}
                   </button>
                   <button
                     type="button"
@@ -917,7 +929,7 @@ export function DailyChallenge({
                       }
                     }}
                   >
-                    Share My Score
+                    <span aria-hidden="true">📣</span> Share My Score
                   </button>
                 </>
               )}

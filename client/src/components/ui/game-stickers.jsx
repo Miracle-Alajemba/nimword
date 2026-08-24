@@ -1,5 +1,14 @@
 import React from "react";
 
+/*
+ * Every fill here carries text, so every fill has to clear 4.5:1 against it —
+ * these labels are 12px uppercase, which is small text under WCAG no matter
+ * how heavy the weight. The brand colours at their published lightness do not:
+ * --ink on --nq-red is 3.46:1, on --nq-blue 3.63:1, and white is worse on both
+ * (4.35 and 4.16). So each sticker keeps its hue and moves its lightness until
+ * the pair passes: gold and green are light enough to carry dark ink (7.79 and
+ * 5.83), red and blue are darkened one step to carry white (5.29 and 6.39).
+ */
 const STICKER_CONFIGS = {
   nimiqArena: {
     icon: "🏆",
@@ -13,8 +22,8 @@ const STICKER_CONFIGS = {
   hotStreak: {
     icon: "🔥",
     label: "HOT STREAK",
-    bg: "linear-gradient(135deg, var(--nq-red), var(--nq-red))",
-    color: "var(--ink)",
+    bg: "linear-gradient(135deg, oklch(0.55 0.175 30.3), oklch(0.48 0.175 30.3))",
+    color: "#FFFFFF",
     border: "oklch(0.598 0.1886 30.3 / 0.55)",
     glow: "oklch(0.598 0.1886 30.3 / 0.4)",
     rotate: "2deg",
@@ -22,8 +31,8 @@ const STICKER_CONFIGS = {
   wordMaster: {
     icon: "💎",
     label: "WORD MASTER",
-    bg: "linear-gradient(135deg, var(--nq-blue), var(--nq-blue-deep))",
-    color: "var(--ink)",
+    bg: "linear-gradient(135deg, var(--nq-blue-deep), oklch(0.42 0.105 243.72))",
+    color: "#FFFFFF",
     border: "oklch(0.5849 0.1438 244.29 / 0.55)",
     glow: "oklch(0.5849 0.1438 244.29 / 0.4)",
     rotate: "-2deg",
@@ -31,7 +40,7 @@ const STICKER_CONFIGS = {
   fastFingers: {
     icon: "🚀",
     label: "FAST FINGERS",
-    bg: "linear-gradient(135deg, var(--nq-green), var(--nq-green-deep))",
+    bg: "linear-gradient(135deg, var(--nq-green), var(--nq-green))",
     color: "var(--ink)",
     border: "oklch(0.6932 0.1245 178.48 / 0.55)",
     glow: "oklch(0.6932 0.1245 178.48 / 0.4)",
@@ -40,8 +49,8 @@ const STICKER_CONFIGS = {
   scoreBooster: {
     icon: "⚡",
     label: "SCORE BOOSTER",
-    bg: "linear-gradient(135deg, var(--nq-blue), var(--nq-blue-deep))",
-    color: "var(--ink)",
+    bg: "linear-gradient(135deg, oklch(0.52 0.13 244.29), var(--nq-blue-deep))",
+    color: "#FFFFFF",
     border: "oklch(0.5849 0.1438 244.29 / 0.55)",
     glow: "oklch(0.5849 0.1438 244.29 / 0.4)",
     rotate: "-1deg",

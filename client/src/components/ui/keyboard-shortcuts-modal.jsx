@@ -85,7 +85,7 @@ export function KeyboardShortcutsModal({ isOpen, onClose }) {
                   fontFamily: "monospace",
                   fontWeight: "700",
                   fontSize: "0.85rem",
-                  color: "var(--interactive)",
+                  color: "var(--interactive-ink)",
                   boxShadow: "0 2px 0 var(--rule-strong)",
                 }}
               >

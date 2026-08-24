@@ -43,7 +43,7 @@ export function ReferralBanner({ walletAddress, className = "" }) {
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div>
-          <h4 style={{ margin: 0, fontSize: "0.95rem", fontWeight: "700", color: "var(--interactive)" }}>
+          <h4 style={{ margin: 0, fontSize: "0.95rem", fontWeight: "700", color: "var(--interactive-ink)" }}>
             🤝 Referral & Affiliate Code
           </h4>
           <p style={{ margin: "2px 0 0 0", fontSize: "0.78rem", color: "var(--ink-muted)" }}>
@@ -60,7 +60,7 @@ export function ReferralBanner({ walletAddress, className = "" }) {
             fontWeight: "700",
             fontSize: "1.1rem",
             letterSpacing: "1px",
-            color: "var(--interactive)",
+            color: "var(--interactive-ink)",
           }}
         >
           {code}

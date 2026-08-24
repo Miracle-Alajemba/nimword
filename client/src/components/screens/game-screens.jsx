@@ -5,10 +5,19 @@ import {
   TimerTone,
   SocialShareBar,
   GameSticker,
-  GameStickerStrip,
   TotalPayoutsBanner,
   AvatarCircle,
+  FloatingTilesBg,
 } from "../ui/index.js";
+
+import {
+  animateScreenIn,
+  animateTileTap,
+  animateWordAccepted,
+  animateWordRejected,
+  startTimerUrgency,
+  stopTimerUrgency,
+} from "../../utils/game-animations.js";
 
 import {
   getPlayerAlias,
@@ -119,13 +128,21 @@ export function HomeScreen({
 
   const [stakeAmount, setStakeAmount] = useState(1);
   const STAKE_PRESETS = [1, 5, 10, 25, 50, 100];
+  const shellRef = useRef(null);
+
+  // Entrance runs once per mount. The screen is the thing that arrives, so the
+  // ref is on the shell rather than on each card.
+  useEffect(() => {
+    animateScreenIn(shellRef.current);
+  }, []);
 
   const joinLabel = walletAddress
     ? `🎮 Stake ${stakeAmount} NIM & Play`
     : "⚡ Connect Nimiq Wallet";
 
   return (
-    <main className="page-shell">
+    <main className="page-shell" ref={shellRef}>
+      <FloatingTilesBg />
       <section className="hero">
         <div className="hero-copy">
           <div className="hero-logo">
@@ -151,8 +168,8 @@ export function HomeScreen({
             {/* Stake Selector */}
             <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "12px", padding: "8px 12px", display: "flex", flexDirection: "column", gap: "6px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.82rem", color: "var(--ink-2)" }}>
-                <span>Choose Stake Amount:</span>
-                <strong style={{ color: "var(--nq-gold)", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
+                <span><span aria-hidden="true">💰</span> Choose Stake Amount:</span>
+                <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
                   {stakeAmount} NIM
                 </strong>
               </div>
@@ -166,9 +183,9 @@ export function HomeScreen({
                       padding: "6px 2px",
                       fontSize: "0.8rem",
                       fontWeight: 700,
-                      background: stakeAmount === amt ? "oklch(0.7924 0.1593 85.61 / 0.3)" : "var(--surface-sunk)",
-                      border: stakeAmount === amt ? "1px solid var(--nq-gold)" : "1px solid var(--rule)",
-                      color: stakeAmount === amt ? "var(--nq-gold)" : "var(--ink-2)",
+                      background: stakeAmount === amt ? "var(--nq-gold)" : "var(--surface-sunk)",
+                      border: stakeAmount === amt ? "1px solid oklch(0.72 0.16 85.61)" : "1px solid var(--rule)",
+                      color: stakeAmount === amt ? "#1A1200" : "var(--ink-2)",
                       borderRadius: "6px",
                       cursor: "pointer",
                       transition: "all 0.15s ease",
@@ -230,7 +247,7 @@ export function HomeScreen({
             <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
               <span style={{ fontSize: "1.4rem" }}>🎁</span>
               <div>
-                <strong style={{ fontSize: "0.88rem", color: "var(--nq-gold)", display: "block" }}>
+                <strong style={{ fontSize: "0.88rem", color: "var(--ink)", display: "block" }}>
                   Free Daily Challenge Available
                 </strong>
                 <span style={{ fontSize: "0.75rem", color: "var(--ink-2)" }}>
@@ -238,7 +255,7 @@ export function HomeScreen({
                 </span>
               </div>
             </div>
-            <span style={{ fontSize: "0.78rem", fontWeight: "700", color: "var(--interactive)" }}>
+            <span style={{ fontSize: "0.78rem", fontWeight: "700", color: "var(--interactive-ink)" }}>
               Play →
             </span>
           </div>
@@ -249,7 +266,9 @@ export function HomeScreen({
         <div className="hero-card hero-card--interactive">
           <div className="hero-card__top">
             <div>
-              <p className="hero-card__label">Interactive Sample Round</p>
+              <p className="hero-card__label">
+                <span aria-hidden="true">🎲</span> Interactive Sample Round
+              </p>
               <h2 style={{ fontSize: "1.8rem", margin: 0 }}>BLOCKCHAIN</h2>
             </div>
             <div className="hero-card__score-badge">
@@ -260,7 +279,7 @@ export function HomeScreen({
 
           <div className="sample-rack-wrapper">
             <p className="field-hint" style={{ fontSize: "0.78rem", marginBottom: "6px" }}>
-              Tap letter tiles below to build words:
+              <span aria-hidden="true">👆</span> Tap letter tiles below to build words:
             </p>
             <div className="letter-rack">
               {sampleLetters.map((letter, index) => {
@@ -270,7 +289,10 @@ export function HomeScreen({
                     key={`${letter}-${index}`}
                     type="button"
                     className={`letter-tile letter-tile--interactive ${isSelected ? "letter-tile--selected" : ""}`}
-                    onClick={() => handleToggleSampleTile(index)}
+                    onClick={(event) => {
+                      animateTileTap(event.currentTarget);
+                      handleToggleSampleTile(index);
+                    }}
                   >
                     {letter}
                   </button>
@@ -343,7 +365,7 @@ export function HomeScreen({
 
           <div className="sample-scoring-footer">
             <div className="sample-scoring-footer__header">
-              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", fontWeight: "700", color: "var(--interactive)" }}>
+              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", fontWeight: "700", color: "var(--interactive-ink)" }}>
                 ⚡ Word Scoring Matrix
               </span>
               <span style={{ fontSize: "0.72rem", color: "var(--nq-gold)", fontWeight: "600" }}>
@@ -404,7 +426,7 @@ export function HomeScreen({
             </div>
 
             <article style={{ marginBottom: "1.25rem" }}>
-              <h3 style={{ fontSize: "1.1rem", color: "var(--interactive)", marginBottom: "0.4rem" }}>🎮 Core Loop</h3>
+              <h3 style={{ fontSize: "1.1rem", color: "var(--interactive-ink)", marginBottom: "0.4rem" }}>🎮 Core Loop</h3>
               <ol style={{ paddingLeft: "1.2rem", lineHeight: "1.6", color: "var(--ink-2)", fontSize: "0.95rem" }}>
                 <li>Join a NIMWORD match room or practice solo</li>
                 <li>Get a shared 7-letter source word</li>
@@ -471,6 +493,11 @@ export function LobbyScreen({
   const myWallet = myPlayer?.walletAddress || "";
   const [handleInput, setHandleInput] = useState("");
   const [handleNotice, setHandleNotice] = useState("");
+  const shellRef = useRef(null);
+
+  useEffect(() => {
+    animateScreenIn(shellRef.current);
+  }, []);
 
   useEffect(() => {
     if (myWallet) {
@@ -542,7 +569,8 @@ export function LobbyScreen({
       : `Need ${Math.max(minPlayers - joinedCount, 0)} more player${Math.max(minPlayers - joinedCount, 0) === 1 ? "" : "s"} to start. The room can still fill up to ${room?.maxPlayers || 5} players.`;
 
   return (
-    <main className="page-shell">
+    <main className="page-shell" ref={shellRef}>
+      <FloatingTilesBg />
       {room?.status === "expired" ? (
         <div style={{ textAlign: "center", padding: "2rem 1rem" }}>
           <div className="notice-strip notice-strip--neutral" style={{ borderLeftColor: "var(--bad)", marginBottom: "1.5rem" }}>
@@ -556,7 +584,7 @@ export function LobbyScreen({
       <section className="play-shell">
         <div className="play-header">
           <button type="button" className="ghost-button" onClick={onBack}>
-            Back
+            <span aria-hidden="true">←</span> Back
           </button>
           <p className="eyebrow">Quick Match Lobby</p>
           {musicToggle}
@@ -564,7 +592,9 @@ export function LobbyScreen({
 
         <div className="room-topbar">
           <div>
-            <p className="play-label">NimWord Arena</p>
+            <p className="play-label">
+              <span aria-hidden="true">🏟️</span> NimWord Arena
+            </p>
             <h1>{room?.id || "LOADING"}</h1>
           </div>
           <div className="room-topbar__stats">
@@ -584,7 +614,7 @@ export function LobbyScreen({
           <article className="panel room-panel room-panel--feed">
             <div className="room-panel__header">
               <div>
-                <h3>Match Lobby</h3>
+                <h3><span aria-hidden="true">🚪</span> Match Lobby</h3>
                 <p>{lobbyTitle}</p>
               </div>
               <TimerTone seconds={0} />
@@ -592,7 +622,7 @@ export function LobbyScreen({
 
             {myWallet && (
               <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule-strong)", borderRadius: "14px", padding: "10px 14px", marginBottom: "14px", display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                <span style={{ fontSize: "0.8rem", color: "var(--interactive)", fontWeight: "700", textTransform: "uppercase" }}>👤 Display Username:</span>
+                <span style={{ fontSize: "0.8rem", color: "var(--interactive-ink)", fontWeight: "700", textTransform: "uppercase" }}>👤 Display Username:</span>
                 <input
                   type="text"
                   value={handleInput}
@@ -630,7 +660,9 @@ export function LobbyScreen({
             </div>
 
             <div className="invite-link-card">
-              <p className="invite-link-card__label">Invite friends to join this room</p>
+              <p className="invite-link-card__label">
+                <span aria-hidden="true">🔗</span> Invite friends to join this room
+              </p>
               <div className="invite-link-card__row">
                 <input
                   aria-label="Room invite link"
@@ -738,7 +770,7 @@ export function LobbyScreen({
           <article className="panel room-panel">
             <div className="room-panel__header">
               <div>
-                <h3>Room Feed</h3>
+                <h3><span aria-hidden="true">📡</span> Room Feed</h3>
                 <p>Entry confirmations and room activity appear here in real time.</p>
               </div>
             </div>
@@ -752,7 +784,9 @@ export function LobbyScreen({
                   />
                 ))
               ) : (
-                <div className="empty-card">Waiting for players...</div>
+                <div className="empty-card">
+                  <span aria-hidden="true">⏳</span> Waiting for players...
+                </div>
               )}
             </div>
           </article>
@@ -781,6 +815,11 @@ export function MatchRoomScreen({
   const [submitBusy, setSubmitBusy] = useState(false);
   const chatFeedRef = useRef(null);
   const submitBusyRef = useRef(false);
+  const shellRef = useRef(null);
+  const scoreRef = useRef(null);
+  const prevScoreRef = useRef(null);
+  const rejectedCountRef = useRef(null);
+  const urgencyRef = useRef(null);
   const isFinished = room?.status === "finished";
   const myScore =
     room?.scoreboard?.find((entry) => entry.playerId === playerId)?.score || 0;
@@ -826,6 +865,61 @@ export function MatchRoomScreen({
     setDraftWord("");
     setSelectedIndexes([]);
   }, [room?.sourceWord, room?.id]);
+
+  useEffect(() => {
+    animateScreenIn(shellRef.current);
+  }, []);
+
+  // A rising score is the only signal that a word was accepted that does not
+  // depend on feed ordering. The first run only records the baseline, so
+  // joining a room that already has points on the board stays quiet.
+  useEffect(() => {
+    if (prevScoreRef.current !== null && myScore > prevScoreRef.current) {
+      animateWordAccepted(scoreRef.current);
+    }
+    prevScoreRef.current = myScore;
+  }, [myScore]);
+
+  // Counting rather than reading the last entry, because the feed can arrive
+  // newest-first or oldest-first and a count is true either way.
+  useEffect(() => {
+    const rejected = feed.filter(
+      (entry) => entry.playerId === playerId && entry.status && entry.status !== "accepted",
+    ).length;
+
+    if (rejectedCountRef.current !== null && rejected > rejectedCountRef.current) {
+      animateWordRejected(shellRef.current);
+    }
+    rejectedCountRef.current = rejected;
+  }, [feed, playerId]);
+
+  // The pulse repeats forever, so it is started once on entering the last ten
+  // seconds and stopped once on leaving. Restarting it on every tick would
+  // reset the yoyo each second and read as a stutter instead of a pulse.
+  useEffect(() => {
+    const shouldPulse = timeLeft <= 10 && timeLeft > 0;
+
+    if (shouldPulse && !urgencyRef.current) {
+      const el = shellRef.current?.querySelector(".timer-pill");
+      if (el) urgencyRef.current = el;
+      if (el) startTimerUrgency(el);
+    } else if (!shouldPulse && urgencyRef.current) {
+      stopTimerUrgency(urgencyRef.current);
+      urgencyRef.current = null;
+    }
+  }, [timeLeft]);
+
+  // Unmount could land mid-pulse — leaving the round with the clock frozen
+  // large and red, and a tween still running against a detached node.
+  useEffect(
+    () => () => {
+      if (urgencyRef.current) {
+        stopTimerUrgency(urgencyRef.current);
+        urgencyRef.current = null;
+      }
+    },
+    [],
+  );
 
   useEffect(() => {
     const node = chatFeedRef.current;
@@ -938,13 +1032,16 @@ export function MatchRoomScreen({
   }, [isFinished, timeLeft, room?.sourceWord, selectedWord]);
 
   return (
-    <main className="page-shell">
+    <main className="page-shell" ref={shellRef}>
+      <FloatingTilesBg />
       <section className="play-shell">
         <div className="play-header">
           <button type="button" className="ghost-button" onClick={onBackHome}>
-            Back
+            <span aria-hidden="true">←</span> Back
           </button>
-          <p className="eyebrow">Live Room</p>
+          <p className="eyebrow">
+            <span aria-hidden="true">🔴</span> Live Room
+          </p>
         </div>
 
         <div className="room-topbar">
@@ -963,12 +1060,14 @@ export function MatchRoomScreen({
         <div className="room-live-header">
           <TimerTone seconds={timeLeft} />
           <div className="room-live-header__meta">
-            <strong>Source Word: {room?.sourceWord || "READY"}</strong>
+            <strong>
+              <span aria-hidden="true">🔤</span> Source Word: {room?.sourceWord || "READY"}
+            </strong>
             <span>{myPlayer ? `${getPlayerAlias(myPlayer.walletAddress)} • ${shortenWalletAddress(myPlayer.walletAddress)}` : "Connected player"}</span>
           </div>
           <div className="room-live-header__score">
-            <small>Your score</small>
-            <strong className="live-score">{myScore} pts</strong>
+            <small><span aria-hidden="true">⭐</span> Your score</small>
+            <strong className="live-score" ref={scoreRef}>{myScore} pts</strong>
           </div>
         </div>
 
@@ -981,7 +1080,7 @@ export function MatchRoomScreen({
           <>
             <div className="compact-board">
               <div className="compact-board__top">
-                <span>Source Word</span>
+                <span><span aria-hidden="true">🔤</span> Source Word</span>
                 <strong>{room?.sourceWord || "READY"}</strong>
               </div>
               <div className="letter-rack letter-rack--play letter-rack--compact">
@@ -990,7 +1089,10 @@ export function MatchRoomScreen({
                     key={`${letter}-${index}`}
                     type="button"
                     className={`letter-tile letter-tile--compact letter-tile--interactive ${selectedIndexes.includes(index) ? "letter-tile--selected" : ""}`}
-                    onClick={() => handleToggleTile(index)}
+                    onClick={(event) => {
+                      animateTileTap(event.currentTarget);
+                      handleToggleTile(index);
+                    }}
                     aria-label={`Select letter ${letter}`}
                   >
                     {letter}
@@ -1005,7 +1107,9 @@ export function MatchRoomScreen({
             <div className="mobile-sticky-bottom-wrap">
               <form className="submit-panel submit-panel--prominent" onSubmit={handleSubmit}>
                 <div className="submit-panel__locked" aria-live="polite">
-                  <span className="submit-panel__locked-label">Your Word</span>
+                  <span className="submit-panel__locked-label">
+                    <span aria-hidden="true">✍️</span> Your Word
+                  </span>
                   <strong>{selectedWord ? selectedWord.toUpperCase() : "Tap letters above to build"}</strong>
                 </div>
                 <div className="submit-panel__actions">
@@ -1026,11 +1130,11 @@ export function MatchRoomScreen({
 
             <RoomPlayersStrip players={room?.players} scoreboard={room?.scoreboard} playerId={playerId} />
 
-            <section className="chat-room-layout" style={{ marginBottom: "6rem" }}>
+            <section className="chat-room-layout">
               <article className="panel panel-chat panel-chat--primary">
                 <div className="room-panel__header">
                   <div>
-                    <h3>Live Chat Feed</h3>
+                    <h3><span aria-hidden="true">💬</span> Live Chat Feed</h3>
                     <p>Every word claim lands here for the whole room to see.</p>
                   </div>
                   {selectedIndexes.length ? <span className="typing-indicator">You are forming a word...</span> : null}
@@ -1049,7 +1153,9 @@ export function MatchRoomScreen({
                       />
                     ))
                   ) : (
-                    <div className="empty-card">Waiting for the first word claim...</div>
+                    <div className="empty-card">
+                    <span aria-hidden="true">⏳</span> Waiting for the first word claim...
+                  </div>
                   )}
                 </div>
               </article>
@@ -1057,7 +1163,7 @@ export function MatchRoomScreen({
               <article className="panel panel-scoreboard panel-scoreboard--live">
                 <div className="room-panel__header">
                   <div>
-                    <h3>Leaderboard</h3>
+                    <h3><span aria-hidden="true">🏆</span> Leaderboard</h3>
                     <p>Scores shift live as valid words land.</p>
                   </div>
                 </div>
@@ -1091,7 +1197,7 @@ export function MatchRoomScreen({
             <article className="panel panel-chat panel-chat--primary">
               <div className="room-panel__header">
                 <div>
-                  <h3>Game History</h3>
+                  <h3><span aria-hidden="true">📜</span> Game History</h3>
                   <p>Every word from the room stays visible after the round ends.</p>
                 </div>
               </div>
@@ -1109,7 +1215,7 @@ export function MatchRoomScreen({
             <article className="panel panel-scoreboard panel-scoreboard--live">
               <div className="room-panel__header">
                 <div>
-                  <h3>Game Over</h3>
+                  <h3><span aria-hidden="true">🎊</span> Game Over</h3>
                   <p>Final ranking and payout split for this arena.</p>
                 </div>
               </div>
@@ -1117,7 +1223,7 @@ export function MatchRoomScreen({
               <div className="claim-card">
                 <div className="claim-card__top">
                   <div>
-                    <span className="claim-card__label">Your reward</span>
+                    <span className="claim-card__label"><span aria-hidden="true">💰</span> Your reward</span>
                     <strong className="claim-card__amount">{payoutAmount.toFixed(4)} NIM</strong>
                   </div>
                   <span className={`claim-card__status ${claimRecorded ? "claim-card__status--success" : payoutAmount > 0 ? "claim-card__status--ready" : ""}`}>
@@ -1142,10 +1248,17 @@ export function MatchRoomScreen({
                 <div className="hero-actions">
                   <button
                     type="button"
+                    className="btn-gold"
                     onClick={onClaimReward}
                     disabled={!claimEnabled || claimBusy}
                   >
-                    {claimBusy ? "Claiming..." : claimRecorded ? "Claim Recorded" : payoutAmount > 0 ? "Claim Reward" : "No Reward"}
+                    {claimBusy
+                      ? "Claiming..."
+                      : claimRecorded
+                        ? "✓ Claim Recorded"
+                        : payoutAmount > 0
+                          ? "💸 Claim Reward"
+                          : "No Reward"}
                   </button>
                   <button type="button" className="button-secondary" onClick={onRefresh}>
                     Refresh Results
@@ -1166,7 +1279,7 @@ export function MatchRoomScreen({
                 ))}
               </div>
 
-              <div className="results-subtitle">Reward Distribution</div>
+              <div className="results-subtitle"><span aria-hidden="true">🪙</span> Reward Distribution</div>
               <div className="player-list">
                 {(room?.payouts || []).map((entry) => (
                   <div key={entry.walletAddress} className="player-row">

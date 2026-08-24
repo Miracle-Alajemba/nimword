@@ -58,7 +58,7 @@ export function UsernameModal({ walletAddress, isOpen, onClose, onSaveSuccess, c
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-          <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "700", color: "var(--interactive)" }}>
+          <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: "700", color: "var(--interactive-ink)" }}>
             ✏️ Set Display Username
           </h3>
           <button
@@ -92,7 +92,7 @@ export function UsernameModal({ walletAddress, isOpen, onClose, onSaveSuccess, c
             }}
           />
 
-          {error && <span style={{ color: "var(--bad)", fontSize: "0.8rem" }}>{error}</span>}
+          {error && <span style={{ color: "var(--bad-ink)", fontSize: "0.8rem" }}>{error}</span>}
           {saved && <span style={{ color: "var(--good)", fontSize: "0.8rem" }}>✓ Username saved!</span>}
 
           <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end", marginTop: "8px" }}>
