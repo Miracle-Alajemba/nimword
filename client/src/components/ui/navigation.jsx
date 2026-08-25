@@ -52,64 +52,58 @@ function Icon({ name }) {
   return <svg aria-hidden="true" {...common}>{paths[name] || paths.home}</svg>;
 }
 
-export function AppBottomNav({ screen, onNavigate, walletAddress, onWalletAction }) {
+export function AppBottomNav({ screen, onNavigate, walletAddress }) {
   const items = [
     { id: "home", label: "Home", icon: "home" },
     { id: "daily-challenge", label: "Daily", icon: "daily" },
     { id: "leaderboard", label: "Board", icon: "leaderboard" },
-    { id: "profile", label: "Profile", icon: "profile" },
+    { id: "profile", label: walletAddress ? "Profile" : "Profile", icon: "profile" },
   ];
-  const walletLabel = walletAddress ? "Wallet" : "Wallet";
-  const walletAriaLabel = walletAddress
-    ? `Connected wallet ${shortenWalletAddress(walletAddress)}`
-    : "Open wallet actions";
 
   return (
-    <nav className="bottom-nav" aria-label="Primary">
-      {items.map((item) => (
-        <button
-          key={item.id}
-          type="button"
-          className={`bottom-nav__item ${screen === item.id ? "bottom-nav__item--active" : ""}`}
-          onClick={() => onNavigate(item.id)}
-          style={{
-            flex: "1 1 0",
-            minWidth: 0,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "0.5rem 0.25rem",
-            fontSize: "0.65rem",
-            overflow: "hidden",
-          }}
-        >
-          <Icon name={item.icon} />
-          <span className="bottom-nav__label">{item.label}</span>
-        </button>
-      ))}
-
-      <button
-        type="button"
-        className="bottom-nav__item bottom-nav__item--wallet"
-        onClick={onWalletAction}
-        aria-label={walletAriaLabel}
-        title={walletAddress ? shortenWalletAddress(walletAddress) : "Wallet"}
-        style={{
-          flex: "1 1 0",
-          minWidth: 0,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "0.5rem 0.25rem",
-          fontSize: "0.65rem",
-          overflow: "hidden",
-        }}
-      >
-        <Icon name="wallet" />
-        <span className="bottom-nav__label">{walletLabel}</span>
-      </button>
+    <nav className="bottom-nav" aria-label="Primary" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
+      {items.map((item) => {
+        const isActive = screen === item.id;
+        const isProfile = item.id === "profile";
+        return (
+          <button
+            key={item.id}
+            type="button"
+            className={`bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`}
+            onClick={() => onNavigate(item.id)}
+            style={{
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "0.55rem 0.25rem",
+              fontSize: "0.72rem",
+              fontWeight: isActive ? 800 : 600,
+            }}
+          >
+            <div style={{ position: "relative" }}>
+              <Icon name={item.icon} />
+              {isProfile && walletAddress ? (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "-2px",
+                    right: "-3px",
+                    width: "7px",
+                    height: "7px",
+                    borderRadius: "50%",
+                    backgroundColor: "var(--good)",
+                    border: "1.5px solid var(--surface)",
+                  }}
+                  title="Wallet Connected"
+                />
+              ) : null}
+            </div>
+            <span className="bottom-nav__label" style={{ marginTop: "2px" }}>{item.label}</span>
+          </button>
+        );
+      })}
     </nav>
   );
 }
