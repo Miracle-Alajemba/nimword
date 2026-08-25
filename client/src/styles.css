@@ -184,8 +184,9 @@ button:disabled {
   --muted: var(--ink-muted);
   --line-soft: var(--rule);
   --font-ui: var(--font-sans);
-  --font-display: var(--font-sans);
-  --font-game: 'Oxanium', 'Rajdhani', var(--font-sans);
+  --font-display: 'Orbitron', var(--font-sans);
+  --font-game: 'Orbitron', 'Chakra Petch', 'Oxanium', var(--font-sans);
+  --font-tile: 'Chakra Petch', 'Orbitron', 'Oxanium', var(--font-sans);
   --font-mono: var(--font-mono-stack);
 
   /* A second legacy namespace, referenced 22 times from the daily-challenge
@@ -796,13 +797,13 @@ button:disabled {
   box-shadow: var(--tile-lift);
   color: var(--tile-ink);
   display: inline-flex;
-  font-family: var(--font-sans);
-  font-size: 1.15rem;
+  font-family: var(--font-tile);
+  font-size: 1.25rem;
   font-variant-numeric: tabular-nums;
-  font-weight: 900;
+  font-weight: 800;
   height: var(--tile-size);
   justify-content: center;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
   min-width: var(--tile-size);
   text-transform: uppercase;
   /* Establishes the 3D context the press rotates within. */
