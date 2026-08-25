@@ -26,7 +26,7 @@ import { useEffect, useRef } from "react";
  */
 
 const LETTERS = "NIMWORDABCEFGHKLPSTU";
-const TILE_COUNT = 44;
+const TILE_COUNT = 24;
 const MAX_DPR = 2;
 
 /**
@@ -91,12 +91,12 @@ export function FloatingTilesBg() {
         return {
           x: Math.random() * width,
           y: Math.random() * height,
-          size: 38 + depth * 46,
-          speed: 0.16 + depth * 0.32,
-          drift: (Math.random() - 0.5) * 0.18,
-          angle: (Math.random() - 0.5) * 0.5,
-          spin: (Math.random() - 0.5) * 0.004,
-          alpha: 0.15 + depth * 0.16,
+          size: 28 + depth * 32,
+          speed: 0.10 + depth * 0.20,
+          drift: (Math.random() - 0.5) * 0.14,
+          angle: (Math.random() - 0.5) * 0.4,
+          spin: (Math.random() - 0.5) * 0.003,
+          alpha: 0.06 + depth * 0.08,
           letter: LETTERS[Math.floor(Math.random() * LETTERS.length)],
         };
       });
@@ -120,14 +120,9 @@ export function FloatingTilesBg() {
       ctx.fillStyle = tileFill;
       ctx.fill();
 
-      // Soft crisp tile border
-      ctx.strokeStyle = "rgba(233, 178, 19, 0.5)";
-      ctx.lineWidth = 1.5;
-      ctx.stroke();
-
-      ctx.globalAlpha = Math.min(tile.alpha * 2.8, 0.9);
+      ctx.globalAlpha = tile.alpha * 1.7;
       ctx.fillStyle = tileInk;
-      ctx.font = `900 ${Math.round(tile.size * 0.56)}px 'Orbitron', 'Chakra Petch', Mulish, sans-serif`;
+      ctx.font = `800 ${Math.round(tile.size * 0.52)}px Mulish, system-ui, sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(tile.letter, 0, tile.size * 0.02);
