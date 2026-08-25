@@ -215,7 +215,7 @@ export function HomeScreen({
             Form words. Beat the clock. Win NIM.
           </p>
 
-          <div className="feature-strip" style={{ marginBottom: "0.85rem", gap: "0.55rem" }}>
+          <div className="feature-strip" style={{ marginBottom: "0.85rem" }}>
             <div className="feature-pill">60s Rounds</div>
             <div className="feature-pill">🪙 {stakeAmount} NIM Entry</div>
             <div className="feature-pill">90% Win Pool</div>
