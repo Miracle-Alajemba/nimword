@@ -26,7 +26,7 @@ import { useEffect, useRef } from "react";
  */
 
 const LETTERS = "NIMWORDABCEFGHKLPSTU";
-const TILE_COUNT = 14;
+const TILE_COUNT = 32;
 const MAX_DPR = 2;
 
 /**
