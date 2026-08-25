@@ -60,29 +60,36 @@ const SAMPLE_PRESETS = [
     targetWord: "NIMWORD",
     letters: ["N", "I", "M", "W", "O", "R", "D"],
     solutions: new Set([
-      "WORD", "WORM", "MIND", "IRON", "DROWN", "WIND", "DORM", "NORM", "DOWN",
-      "ROWN", "MOD", "ROW", "WIN", "ROD", "NIM", "WON", "NOW", "DIM", "RIM", "MID", "NIMWORD"
+      "NIMWORD", "DROWN", "MINOR", "INROW", "WORD", "WORM", "WIND", "MIND",
+      "IRON", "NORM", "DOWN", "DORM", "WINO", "NOIR", "MORN", "NIM", "WIN",
+      "ROW", "NOW", "WON", "ROD", "RID", "RIM", "MID", "DIM", "MOD", "NOD",
+      "DIN", "ION", "DON", "OWN", "MOW", "ROM", "DOR", "MOR", "NOM"
     ]),
   },
   {
     targetWord: "VICTORY",
     letters: ["V", "I", "C", "T", "O", "R", "Y"],
     solutions: new Set([
-      "TOY", "CITY", "RIOT", "TRIO", "VICTOR", "VICTORY", "ROT", "CRY", "TRY", "COY", "RIVET"
+      "VICTORY", "VICTOR", "RIVET", "IVORY", "CITY", "RIOT", "TRIO", "TROY",
+      "ROTI", "COTY", "OILY", "TORC", "TOY", "CRY", "TRY", "COY", "ROT",
+      "TIC", "TOR", "ICY", "ROC", "RIT", "ORT"
     ]),
   },
   {
     targetWord: "CRYPTO",
     letters: ["C", "R", "Y", "P", "T", "O"],
     solutions: new Set([
-      "CRYPTO", "CROP", "PORT", "ROPY", "TYPO", "COPY", "OPT", "PRO", "TOP", "ROT", "TOY", "COT"
+      "CRYPTO", "CROP", "PORT", "COPY", "TYPO", "ROPY", "TROP", "CRY", "OPT",
+      "PRO", "TOP", "ROT", "TOY", "COT", "POT", "TOR", "ROC", "COP", "PRY", "COR"
     ]),
   },
   {
     targetWord: "GENESIS",
     letters: ["G", "E", "N", "E", "S", "I", "S"],
     solutions: new Set([
-      "GENE", "SEEN", "SIGN", "SING", "SINE", "GENES", "SENSE", "SEINES", "GENESIS", "SEE", "SIN"
+      "GENESIS", "SIGNES", "SEINES", "SEEING", "GENES", "SENSE", "SIGNS",
+      "SINES", "SINGE", "SINGS", "GENE", "SEEN", "SIGN", "SING", "SINE",
+      "SEES", "SINS", "GEES", "SEE", "SIN", "GIN", "SIS", "GEN"
     ]),
   },
 ];
@@ -143,26 +150,32 @@ export function HomeScreen({
     if (!sampleCandidate) return;
     const upper = sampleCandidate.toUpperCase();
 
+    if (upper.length < 3) {
+      setSampleFeedback({ text: "Words must be at least 3 letters!", type: "error" });
+      return;
+    }
+
     if (sampleWords.some((w) => w.word === upper)) {
-      setSampleFeedback({ text: "Already found!", type: "warn" });
+      setSampleFeedback({ text: `"${upper}" was already claimed!`, type: "warn" });
+      return;
+    }
+
+    // Strict English dictionary solution checking
+    if (!currentPreset.solutions.has(upper)) {
+      setSampleFeedback({ text: `"${upper}" is not a recognized English word!`, type: "error" });
       return;
     }
 
     const len = upper.length;
-    let pts = 0;
+    let pts = 3;
     if (len >= 6) pts = 12;
     else if (len === 5) pts = 8;
     else if (len === 4) pts = 5;
-    else if (len === 3) pts = 3;
 
-    if (pts > 0 && (currentPreset.solutions.has(upper) || upper.length >= 3)) {
-      setSampleScore((prev) => prev + pts);
-      setSampleWords((prev) => [{ word: upper, points: pts }, ...prev]);
-      setSampleFeedback({ text: `+${pts} pts!`, type: "success" });
-      setSampleIndexes([]);
-    } else {
-      setSampleFeedback({ text: "Need 3+ letters!", type: "error" });
-    }
+    setSampleScore((prev) => prev + pts);
+    setSampleWords((prev) => [{ word: upper, points: pts }, ...prev]);
+    setSampleFeedback({ text: `✓ Valid word! +${pts} pts`, type: "success" });
+    setSampleIndexes([]);
   }
 
   function handleClearSample() {
