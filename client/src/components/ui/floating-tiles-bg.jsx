@@ -26,7 +26,7 @@ import { useEffect, useRef } from "react";
  */
 
 const LETTERS = "NIMWORDABCEFGHKLPSTU";
-const TILE_COUNT = 30;
+const TILE_COUNT = 36;
 const MAX_DPR = 2;
 
 /**
@@ -56,8 +56,9 @@ export function FloatingTilesBg() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    const tileFill = token("--nq-gold", "#E9B213");
-    const tileInk = token("--nq-blue-deep", "#04639A");
+    // Vivid, warm Nimiq gold & deep blue for rich visibility
+    const tileFill = "#FFC425";
+    const tileInk = "#044B7F";
 
     let width = 0;
     let height = 0;
@@ -91,12 +92,12 @@ export function FloatingTilesBg() {
         return {
           x: Math.random() * width,
           y: Math.random() * height,
-          size: 30 + depth * 36,
-          speed: 0.12 + depth * 0.22,
-          drift: (Math.random() - 0.5) * 0.14,
-          angle: (Math.random() - 0.5) * 0.4,
+          size: 34 + depth * 40,
+          speed: 0.14 + depth * 0.24,
+          drift: (Math.random() - 0.5) * 0.16,
+          angle: (Math.random() - 0.5) * 0.45,
           spin: (Math.random() - 0.5) * 0.003,
-          alpha: 0.09 + depth * 0.09,
+          alpha: 0.20 + depth * 0.22,
           letter: LETTERS[Math.floor(Math.random() * LETTERS.length)],
         };
       });
@@ -108,7 +109,7 @@ export function FloatingTilesBg() {
      */
     function drawTile(tile) {
       const half = tile.size / 2;
-      const radius = tile.size * 0.22;
+      const radius = tile.size * 0.24;
 
       ctx.save();
       ctx.translate(tile.x, tile.y);
@@ -120,9 +121,14 @@ export function FloatingTilesBg() {
       ctx.fillStyle = tileFill;
       ctx.fill();
 
-      ctx.globalAlpha = tile.alpha * 1.7;
+      // Soft warm outline
+      ctx.strokeStyle = "rgba(255, 170, 0, 0.45)";
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+
+      ctx.globalAlpha = Math.min(tile.alpha * 2.2, 0.95);
       ctx.fillStyle = tileInk;
-      ctx.font = `800 ${Math.round(tile.size * 0.52)}px Mulish, system-ui, sans-serif`;
+      ctx.font = `900 ${Math.round(tile.size * 0.54)}px 'Orbitron', 'Chakra Petch', Mulish, sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(tile.letter, 0, tile.size * 0.02);
