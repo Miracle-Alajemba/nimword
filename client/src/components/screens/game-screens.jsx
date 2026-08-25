@@ -312,35 +312,44 @@ export function HomeScreen({
           <TotalPayoutsBanner />
         </div>
 
-        <div className="hero-card hero-card--interactive">
-          <div className="hero-card__top" style={{ alignItems: "center", marginBottom: "0.4rem" }}>
+        <div className="hero-card hero-card--interactive" style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+          {/* Header HUD Bar */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingBottom: "0.4rem",
+              borderBottom: "1px solid var(--rule)",
+            }}
+          >
             <div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "0.25rem" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px" }}>
                 <span
                   style={{
                     width: "7px",
                     height: "7px",
                     borderRadius: "50%",
                     backgroundColor: "var(--interactive)",
-                    boxShadow: "0 0 6px var(--interactive)",
+                    boxShadow: "0 0 8px var(--interactive)",
                     display: "inline-block",
                   }}
                 />
-                <p className="hero-card__label" style={{ fontSize: "0.76rem", margin: 0, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
-                  Live Interactive Demo
-                </p>
+                <span style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--interactive-ink)" }}>
+                  Live Arena Preview
+                </span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <h2 style={{ fontSize: "1.75rem", margin: 0, fontFamily: "var(--font-game)", letterSpacing: "0.04em", color: "var(--ink)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <h2 style={{ fontSize: "1.85rem", margin: 0, fontFamily: "var(--font-game)", letterSpacing: "0.05em", color: "var(--ink)", lineHeight: 1.1 }}>
                   {currentPreset.targetWord}
                 </h2>
                 <button
                   type="button"
                   onClick={handleNextPreset}
-                  title="Try another word"
+                  title="Roll next word"
                   style={{
                     padding: "4px 8px",
-                    fontSize: "0.76rem",
+                    fontSize: "0.74rem",
                     minHeight: "26px",
                     display: "inline-flex",
                     alignItems: "center",
@@ -351,35 +360,56 @@ export function HomeScreen({
                     color: "var(--ink-2)",
                     fontWeight: 700,
                     cursor: "pointer",
+                    transition: "all 0.15s ease",
                   }}
                 >
                   🔄 Next Word
                 </button>
               </div>
             </div>
+
+            {/* Score HUD */}
             <div
-              className="hero-card__score-badge"
               style={{
-                padding: "0.45rem 0.85rem",
+                padding: "0.5rem 0.95rem",
                 background: "var(--surface-sunk)",
-                borderRadius: "12px",
+                borderRadius: "14px",
                 border: "1px solid var(--rule-strong)",
-                boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+                boxShadow: "0 4px 12px -4px oklch(0.2737 0.068 276.29 / 0.08)",
                 textAlign: "right",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-end",
               }}
             >
-              <span style={{ fontSize: "0.68rem", fontWeight: 800, color: "var(--ink-muted)", textTransform: "uppercase" }}>Demo Score</span>
-              <strong style={{ fontSize: "1.15rem", color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)" }}>
+              <span style={{ fontSize: "0.66rem", fontWeight: 800, color: "var(--ink-muted)", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                Demo Score
+              </span>
+              <strong style={{ fontSize: "1.2rem", color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", lineHeight: 1.1 }}>
                 🪙 {sampleScore} pts
               </strong>
             </div>
           </div>
 
-          <div className="sample-rack-wrapper" style={{ marginBottom: "0.75rem", marginTop: "0.5rem" }}>
-            <p className="field-hint" style={{ fontSize: "0.8rem", marginBottom: "8px", color: "var(--ink-2)" }}>
-              <span aria-hidden="true">👆</span> Tap letter tiles below to build words:
-            </p>
-            <div className="letter-rack" style={{ display: "flex", justifyContent: "center", gap: "0.45rem", flexWrap: "wrap" }}>
+          {/* Letter Rack Stage / Tray */}
+          <div
+            style={{
+              background: "var(--surface-sunk)",
+              border: "1px solid var(--rule)",
+              borderRadius: "16px",
+              padding: "0.85rem 0.9rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+              boxShadow: "inset 0 2px 6px rgba(0, 0, 0, 0.04)",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.76rem", color: "var(--ink-muted)", padding: "0 2px" }}>
+              <span><span aria-hidden="true">👆</span> Tap letter tiles to build:</span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem" }}>7 TILES AVAILABLE</span>
+            </div>
+
+            <div className="letter-rack" style={{ display: "flex", justifyContent: "center", gap: "0.5rem", flexWrap: "wrap" }}>
               {sampleLetters.map((letter, index) => {
                 const isSelected = sampleIndexes.includes(index);
                 const pointValue = LETTER_POINTS[letter] || 1;
@@ -390,9 +420,9 @@ export function HomeScreen({
                     className={`letter-tile letter-tile--interactive ${isSelected ? "letter-tile--selected" : ""}`}
                     style={{
                       position: "relative",
-                      height: "3.15rem",
-                      width: "3.15rem",
-                      fontSize: "1.3rem",
+                      height: "3.2rem",
+                      width: "3.2rem",
+                      fontSize: "1.35rem",
                       fontWeight: 900,
                       borderRadius: "12px",
                       display: "flex",
@@ -400,8 +430,8 @@ export function HomeScreen({
                       justifyContent: "center",
                       fontFamily: "var(--font-game, var(--font-sans))",
                       boxShadow: isSelected
-                        ? "0 0 12px var(--interactive), 0 4px 10px rgba(0,0,0,0.15)"
-                        : "0 3px 8px rgba(0,0,0,0.1)",
+                        ? "0 0 14px var(--interactive), 0 4px 10px rgba(0,0,0,0.15)"
+                        : "0 3px 8px rgba(0,0,0,0.12)",
                       border: isSelected
                         ? "2px solid var(--interactive)"
                         : "1px solid var(--rule-strong)",
@@ -423,9 +453,9 @@ export function HomeScreen({
                         position: "absolute",
                         bottom: "2px",
                         right: "4px",
-                        fontSize: "0.6rem",
+                        fontSize: "0.62rem",
                         fontWeight: 800,
-                        opacity: isSelected ? 0.9 : 0.65,
+                        opacity: isSelected ? 0.95 : 0.65,
                         color: isSelected ? "#ffffff" : "var(--nq-gold-deep, var(--ink-2))",
                         fontFamily: "var(--font-mono)",
                         lineHeight: 1,
@@ -439,15 +469,31 @@ export function HomeScreen({
             </div>
           </div>
 
-          <div className="sample-builder-box" style={{ padding: "0.75rem 1.1rem", minHeight: "52px", marginBottom: "0.8rem", borderRadius: "12px" }}>
-            <div className="sample-builder-box__display" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          {/* Spell Chamber / Word Construction Workbench */}
+          <div
+            className="sample-builder-box"
+            style={{
+              padding: "0.75rem 1.1rem",
+              minHeight: "54px",
+              borderRadius: "14px",
+              background: "var(--surface)",
+              border: sampleCandidate ? "1.5px solid var(--interactive)" : "1px solid var(--rule)",
+              boxShadow: sampleCandidate ? "0 0 14px -2px var(--interactive)" : "none",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: "0.75rem",
+              transition: "border 0.2s ease, box-shadow 0.2s ease",
+            }}
+          >
+            <div className="sample-builder-box__display" style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1, overflow: "hidden" }}>
               {sampleCandidate ? (
                 <>
-                  <span style={{ fontSize: "1.15rem", fontWeight: 900, letterSpacing: "0.06em", color: "var(--ink)", fontFamily: "var(--font-game)" }}>
+                  <span style={{ fontSize: "1.25rem", fontWeight: 900, letterSpacing: "0.08em", color: "var(--ink)", fontFamily: "var(--font-game)" }}>
                     {sampleCandidate}
                   </span>
                   {sampleCandidate.length >= 3 ? (
-                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "var(--good)", background: "rgba(34, 197, 94, 0.15)", padding: "2px 8px", borderRadius: "6px" }}>
+                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "var(--good)", background: "rgba(34, 197, 94, 0.15)", padding: "3px 8px", borderRadius: "6px" }}>
                       +{sampleCandidate.length >= 6 ? 12 : sampleCandidate.length === 5 ? 8 : sampleCandidate.length === 4 ? 5 : 3} pts
                     </span>
                   ) : (
@@ -457,16 +503,17 @@ export function HomeScreen({
                   )}
                 </>
               ) : (
-                <span className="sample-builder-box__placeholder" style={{ fontSize: "0.92rem", fontWeight: 800, letterSpacing: "0.04em" }}>
-                  TAP TILES ABOVE TO BUILD WORDS
+                <span className="sample-builder-box__placeholder" style={{ fontSize: "0.86rem", fontWeight: 700, letterSpacing: "0.02em", color: "var(--ink-muted)" }}>
+                  ✨ Tap tiles above to construct words...
                 </span>
               )}
             </div>
-            <div className="sample-builder-box__actions" style={{ gap: "0.5rem" }}>
+
+            <div className="sample-builder-box__actions" style={{ display: "flex", gap: "0.45rem", flexShrink: 0 }}>
               <button
                 type="button"
                 className="button-secondary"
-                style={{ padding: "0.45rem 0.95rem", fontSize: "0.84rem", minHeight: "36px", borderRadius: "8px" }}
+                style={{ padding: "0.45rem 0.85rem", fontSize: "0.82rem", minHeight: "36px", borderRadius: "8px" }}
                 onClick={handleClearSample}
                 disabled={sampleIndexes.length === 0}
               >
@@ -474,39 +521,44 @@ export function HomeScreen({
               </button>
               <button
                 type="button"
-                style={{ padding: "0.45rem 1.1rem", fontSize: "0.84rem", minHeight: "36px", borderRadius: "8px" }}
+                style={{ padding: "0.45rem 1.1rem", fontSize: "0.84rem", minHeight: "36px", borderRadius: "8px", fontWeight: 800 }}
                 onClick={handleTestSampleWord}
                 disabled={!sampleCandidate}
               >
-                Test Word
+                ⚡ Submit Word
               </button>
             </div>
           </div>
 
+          {/* Feedback Strip */}
           {sampleFeedback ? (
-            <div className={`notice-strip notice-strip--${sampleFeedback.type}`} style={{ padding: "0.55rem 0.9rem", fontSize: "0.84rem", margin: "0.5rem 0" }}>
+            <div className={`notice-strip notice-strip--${sampleFeedback.type}`} style={{ padding: "0.55rem 0.9rem", fontSize: "0.84rem", margin: 0, borderRadius: "10px" }}>
               {sampleFeedback.text}
             </div>
           ) : null}
 
+          {/* Discovered Words Showcase */}
           {sampleWords.length > 0 ? (
-            <div className="sample-found-list" style={{ margin: "0.5rem 0" }}>
-              <span className="field-hint" style={{ fontSize: "0.8rem" }}>Words Found ({sampleWords.length}):</span>
-              <div className="sample-chips-row" style={{ gap: "0.45rem" }}>
+            <div className="sample-found-list" style={{ margin: 0, padding: "0.5rem 0.8rem", background: "var(--surface-sunk)", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+              <span className="field-hint" style={{ fontSize: "0.76rem", fontWeight: 700, marginBottom: "4px", display: "block" }}>
+                Words Found ({sampleWords.length}):
+              </span>
+              <div className="sample-chips-row" style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem" }}>
                 {sampleWords.map((w, idx) => (
-                  <span key={idx} className="word-chip" style={{ padding: "0.35rem 0.7rem", fontSize: "0.82rem" }}>
-                    <strong>{w.word}</strong> <small>+{w.points}</small>
+                  <span key={idx} className="word-chip" style={{ padding: "0.3rem 0.65rem", fontSize: "0.8rem", background: "var(--surface)", border: "1px solid var(--rule)" }}>
+                    <strong>{w.word}</strong> <small style={{ color: "var(--good)", fontWeight: 800 }}>+{w.points}</small>
                   </span>
                 ))}
               </div>
             </div>
           ) : null}
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", width: "100%", marginTop: "0.6rem", marginBottom: "0.75rem" }}>
+          {/* Symmetrical Quick Navigation */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", width: "100%", marginTop: "0.2rem" }}>
             <button
               type="button"
               className="button-secondary"
-              style={{ minHeight: "44px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
+              style={{ minHeight: "46px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               onClick={onOpenProfile}
             >
               👤 View Profile
@@ -514,7 +566,7 @@ export function HomeScreen({
             <button
               type="button"
               className="button-secondary"
-              style={{ minHeight: "44px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
+              style={{ minHeight: "46px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               onClick={onOpenSettings}
             >
               ⚙️ Settings
@@ -539,21 +591,21 @@ export function HomeScreen({
               <span style={{ color: "var(--good)", fontWeight: 800, fontSize: "0.74rem" }}>✓ NIMIQ PAY VERIFIED</span>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.45rem", textAlign: "center" }}>
-              <div style={{ background: "var(--surface-sunk)", padding: "4px", borderRadius: "6px", border: "1px solid var(--rule)" }}>
+              <div style={{ background: "var(--surface-sunk)", padding: "5px 4px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
                 <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>3 LTRS</span>
-                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.84rem" }}>3 PTS</strong>
+                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.86rem" }}>3 PTS</strong>
               </div>
-              <div style={{ background: "var(--surface-sunk)", padding: "4px", borderRadius: "6px", border: "1px solid var(--rule)" }}>
+              <div style={{ background: "var(--surface-sunk)", padding: "5px 4px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
                 <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>4 LTRS</span>
-                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.84rem" }}>5 PTS</strong>
+                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.86rem" }}>5 PTS</strong>
               </div>
-              <div style={{ background: "var(--surface-sunk)", padding: "4px", borderRadius: "6px", border: "1px solid var(--rule)" }}>
+              <div style={{ background: "var(--surface-sunk)", padding: "5px 4px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
                 <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>5 LTRS</span>
-                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.84rem" }}>8 PTS</strong>
+                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.86rem" }}>8 PTS</strong>
               </div>
-              <div style={{ background: "var(--surface-sunk)", padding: "4px", borderRadius: "6px", border: "1px solid var(--rule)" }}>
+              <div style={{ background: "var(--surface-sunk)", padding: "5px 4px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
                 <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>6+ LTRS</span>
-                <strong style={{ color: "var(--interactive-ink)", fontFamily: "var(--font-mono)", fontSize: "0.84rem" }}>12 PTS</strong>
+                <strong style={{ color: "var(--interactive-ink)", fontFamily: "var(--font-mono)", fontSize: "0.86rem" }}>12 PTS</strong>
               </div>
             </div>
           </div>
