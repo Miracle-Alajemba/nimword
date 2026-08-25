@@ -47,8 +47,8 @@
 
   /* ── Surfaces & ink ─────────────────────────────────────────────── */
   --ground: oklch(0.9791 0 89.88);
-  --surface: oklch(1 0 90);
-  --surface-sunk: oklch(0.9677 0.0027 286.35);
+  --surface: oklch(1 0 90 / 0.88);
+  --surface-sunk: oklch(0.9677 0.0027 286.35 / 0.82);
   --ink: var(--nq-darkblue);
   --ink-2: oklch(0.4374 0.0495 279.71);
   /* L lowered 0.5889 -> 0.55: the old value was 4.15:1 on white, which
@@ -238,6 +238,8 @@ button:disabled {
 .play-hero,
 .results-sheet {
   background: var(--surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--rule);
   border-radius: 20px;
 }

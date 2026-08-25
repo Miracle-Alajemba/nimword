@@ -26,7 +26,7 @@ import { useEffect, useRef } from "react";
  */
 
 const LETTERS = "NIMWORDABCEFGHKLPSTU";
-const TILE_COUNT = 24;
+const TILE_COUNT = 30;
 const MAX_DPR = 2;
 
 /**
@@ -91,12 +91,12 @@ export function FloatingTilesBg() {
         return {
           x: Math.random() * width,
           y: Math.random() * height,
-          size: 28 + depth * 32,
-          speed: 0.10 + depth * 0.20,
+          size: 30 + depth * 36,
+          speed: 0.12 + depth * 0.22,
           drift: (Math.random() - 0.5) * 0.14,
           angle: (Math.random() - 0.5) * 0.4,
           spin: (Math.random() - 0.5) * 0.003,
-          alpha: 0.06 + depth * 0.08,
+          alpha: 0.09 + depth * 0.09,
           letter: LETTERS[Math.floor(Math.random() * LETTERS.length)],
         };
       });
