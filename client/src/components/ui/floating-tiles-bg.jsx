@@ -26,7 +26,7 @@ import { useEffect, useRef } from "react";
  */
 
 const LETTERS = "NIMWORDABCEFGHKLPSTU";
-const TILE_COUNT = 32;
+const TILE_COUNT = 44;
 const MAX_DPR = 2;
 
 /**
@@ -91,12 +91,12 @@ export function FloatingTilesBg() {
         return {
           x: Math.random() * width,
           y: Math.random() * height,
-          size: 26 + depth * 34,
-          speed: 0.12 + depth * 0.28,
+          size: 38 + depth * 46,
+          speed: 0.16 + depth * 0.32,
           drift: (Math.random() - 0.5) * 0.18,
           angle: (Math.random() - 0.5) * 0.5,
           spin: (Math.random() - 0.5) * 0.004,
-          alpha: 0.05 + depth * 0.07,
+          alpha: 0.15 + depth * 0.16,
           letter: LETTERS[Math.floor(Math.random() * LETTERS.length)],
         };
       });
@@ -120,9 +120,14 @@ export function FloatingTilesBg() {
       ctx.fillStyle = tileFill;
       ctx.fill();
 
-      ctx.globalAlpha = tile.alpha * 2.6;
+      // Soft crisp tile border
+      ctx.strokeStyle = "rgba(233, 178, 19, 0.5)";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.globalAlpha = Math.min(tile.alpha * 2.8, 0.9);
       ctx.fillStyle = tileInk;
-      ctx.font = `900 ${Math.round(tile.size * 0.52)}px Mulish, system-ui, sans-serif`;
+      ctx.font = `900 ${Math.round(tile.size * 0.56)}px 'Orbitron', 'Chakra Petch', Mulish, sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillText(tile.letter, 0, tile.size * 0.02);
