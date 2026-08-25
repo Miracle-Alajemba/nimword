@@ -359,18 +359,18 @@ button:disabled {
   align-items: center;
   display: inline-flex;
   flex-direction: row;
-  gap: 0.65rem;
-  margin-bottom: 0.85rem;
+  gap: 0.2rem;
+  margin-bottom: 0.75rem;
 }
 
 .hero-logo__img {
   border-radius: 20px;
   display: block;
   flex-shrink: 0;
-  filter: drop-shadow(0 4px 18px oklch(0.7924 0.1593 85.61 / 0.45));
-  height: 102px;
+  filter: drop-shadow(0 4px 20px oklch(0.7924 0.1593 85.61 / 0.5));
+  height: 116px;
   object-fit: contain;
-  width: 102px;
+  width: 116px;
 }
 
 .hero-logo__name {
@@ -380,7 +380,7 @@ button:disabled {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: var(--font-game);
-  font-size: 2.4rem !important;
+  font-size: 2.1rem !important;
   font-weight: 800 !important;
   letter-spacing: 0.03em !important;
   line-height: 1 !important;
@@ -3994,25 +3994,25 @@ small,
     align-items: center;
     display: flex !important;
     flex-direction: row;
-    gap: 0.45rem;
+    gap: 0.15rem;
     justify-content: center !important;
     width: 100% !important;
-    margin: 0 auto 0.75rem !important;
+    margin: 0 auto 0.65rem !important;
     text-align: center !important;
   }
 
   .hero-logo__img {
     border-radius: 18px;
-    filter: drop-shadow(0 3px 14px oklch(0.7924 0.1593 85.61 / 0.42));
-    height: 78px;
+    filter: drop-shadow(0 3px 14px oklch(0.7924 0.1593 85.61 / 0.45));
+    height: 88px;
     margin-right: 0;
     object-fit: contain;
-    width: 78px;
+    width: 88px;
   }
 
   .hero-logo__name {
     font-family: var(--font-game);
-    font-size: 1.95rem !important;
+    font-size: 1.7rem !important;
     letter-spacing: 0.03em !important;
     line-height: 1 !important;
     display: flex;
