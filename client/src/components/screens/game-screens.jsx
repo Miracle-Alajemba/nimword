@@ -413,17 +413,15 @@ export function HomeScreen({
             <div className="letter-rack" style={{ display: "flex", justifyContent: "center", gap: "0.5rem", flexWrap: "wrap" }}>
               {sampleLetters.map((letter, index) => {
                 const isSelected = sampleIndexes.includes(index);
-                const pointValue = LETTER_POINTS[letter] || 1;
                 return (
                   <button
                     key={`${currentPreset.targetWord}-${letter}-${index}`}
                     type="button"
                     className={`letter-tile letter-tile--interactive ${isSelected ? "letter-tile--selected" : ""}`}
                     style={{
-                      position: "relative",
                       height: "3.2rem",
                       width: "3.2rem",
-                      fontSize: "1.35rem",
+                      fontSize: "1.4rem",
                       fontWeight: 900,
                       borderRadius: "12px",
                       display: "flex",
@@ -449,21 +447,6 @@ export function HomeScreen({
                     }}
                   >
                     <span>{letter}</span>
-                    <span
-                      style={{
-                        position: "absolute",
-                        bottom: "3px",
-                        right: "5px",
-                        fontSize: "0.6rem",
-                        fontWeight: 800,
-                        opacity: isSelected ? 0.9 : 0.65,
-                        color: isSelected ? "#ffffff" : "var(--ink-2)",
-                        fontFamily: "var(--font-mono)",
-                        lineHeight: 1,
-                      }}
-                    >
-                      {pointValue}
-                    </span>
                   </button>
                 );
               })}
