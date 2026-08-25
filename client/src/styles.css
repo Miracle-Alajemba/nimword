@@ -265,7 +265,7 @@ button:disabled {
 /* The wordmark is the one place per screen the Nimiq gold gradient is
    spent. `color` is the real fallback, so if background-clip is
    unsupported the title is still legible ink rather than transparent. */
-.hero-copy h1,
+.hero-copy h1:not(.hero-logo__name),
 .play-hero h1 {
   color: var(--ink);
   background: var(--accent-gradient);
@@ -281,7 +281,7 @@ button:disabled {
   text-transform: uppercase;
 }
 
-.hero-copy h1 {
+.hero-copy h1:not(.hero-logo__name) {
   font-size: clamp(2.2rem, 6vw, 4.2rem);
 }
 
@@ -351,30 +351,36 @@ button:disabled {
    between them. Square width+height keeps the aspect ratio honest. */
 .hero-logo {
   align-items: center;
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
-  gap: 0.875rem;
-  margin-bottom: 1.2rem;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
 }
 
 .hero-logo__img {
-  border-radius: 8px;
+  border-radius: 12px;
   display: block;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 8px oklch(0.7924 0.1593 85.61 / 0.3));
-  height: 48px;
+  filter: drop-shadow(0 3px 10px oklch(0.7924 0.1593 85.61 / 0.35));
+  height: 54px;
   object-fit: contain;
-  width: 48px;
+  width: 54px;
 }
 
 .hero-logo__name {
   color: var(--ink);
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   font-family: var(--font-sans);
-  font-size: 2rem;
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  margin: 0;
+  font-size: 2.35rem !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  display: flex;
+  align-items: center;
 }
 
 .hero-actions--grid {
@@ -3832,26 +3838,28 @@ small,
 
   .hero-logo {
     align-items: center;
+    display: inline-flex;
     flex-direction: row;
-    gap: 0.75rem;
-    justify-content: center;
+    gap: 0.65rem;
+    justify-content: flex-start;
     margin-bottom: 0.75rem;
   }
 
-  /* Same proportion as desktop, one step down. The old rule re-declared the
-     clamp height and the negative margin, which would have undone Fix 2. */
   .hero-logo__img {
-    border-radius: 8px;
+    border-radius: 10px;
     filter: drop-shadow(0 2px 8px oklch(0.7924 0.1593 85.61 / 0.28));
-    height: 44px;
+    height: 46px;
     margin-right: 0;
     object-fit: contain;
-    width: 44px;
+    width: 46px;
   }
 
   .hero-logo__name {
-    font-size: clamp(1.75rem, 7.5vw, 2rem);
-    letter-spacing: -0.02em;
+    font-size: 1.95rem !important;
+    letter-spacing: -0.02em !important;
+    line-height: 1 !important;
+    display: flex;
+    align-items: center;
   }
 
   .lede {
