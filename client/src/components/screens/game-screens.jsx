@@ -298,7 +298,7 @@ export function HomeScreen({
                 onClick={() => setShowRulesModal(true)}
                 style={{ fontSize: "0.84rem", padding: "5px 14px", minHeight: "30px", color: "var(--ink-2)", display: "inline-flex", alignItems: "center", gap: "5px" }}
               >
-                How to Play & Rules
+                📖 How to Play & Rules
               </button>
             </div>
           </div>
@@ -561,7 +561,7 @@ export function HomeScreen({
               style={{ minHeight: "46px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               onClick={onOpenProfile}
             >
-              View Profile
+              👤 View Profile
             </button>
             <button
               type="button"
@@ -569,7 +569,7 @@ export function HomeScreen({
               style={{ minHeight: "46px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               onClick={onOpenSettings}
             >
-              Settings
+              ⚙️ Settings
             </button>
           </div>
 
