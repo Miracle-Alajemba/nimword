@@ -148,57 +148,154 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onBack }) {
   }, [walletAddress, connected]);
 
   return (
-    <main className="page-shell profile-page-shell">
-      <section className="play-shell profile-container">
-        <div className="play-header" style={{ marginBottom: "0.5rem" }}>
-          <button type="button" className="ghost-button" onClick={onBack}>Back</button>
-          <p className="eyebrow" style={{ margin: 0, fontWeight: 700 }}>Profile</p>
+    <main className="page-shell">
+      <div className="settings-container">
+        {/* Header */}
+        <div className="settings-header">
+          <button type="button" className="ghost-button settings-header__back" onClick={onBack}>
+            ← Back
+          </button>
+          <h2 className="settings-header__title">Player Profile</h2>
+          <p className="settings-header__subtitle">
+            Manage your onchain identity, alias, and lifetime word-play career.
+          </p>
         </div>
 
-        <section className="profile-shell">
-          <article className="panel profile-panel profile-panel--hero">
-            <div className="profile-head">
-              <AvatarCircle address={walletAddress} size={54} />
-              <div className="profile-head__info" style={{ flex: 1, minWidth: 0 }}>
-                <div className="profile-name-row" style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
-                  <h1 className="profile-title">{alias}</h1>
-                  {connected && (
-                    <button
-                      type="button"
-                      className="button-secondary edit-handle-btn"
-                      style={{ padding: "3px 8px", fontSize: "0.72rem", minHeight: "28px", display: "inline-flex", alignItems: "center", gap: "3px" }}
-                      onClick={() => setModalOpen(true)}
-                    >
-                      ✏️ Edit
-                    </button>
-                  )}
-                </div>
-                <p className="profile-subtitle">
-                  {connected ? formatNimiqAddress(walletAddress) || shortenWalletAddress(walletAddress) : "Connect a Nimiq wallet to personalize your profile."}
-                </p>
-                <span className="rank-badge">Word Artist • Level 7</span>
+        {/* Profile Hero Card */}
+        <section className="settings-card">
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
+            <AvatarCircle address={walletAddress} size={64} />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap" }}>
+                <h3 style={{ margin: 0, fontSize: "1.35rem", fontWeight: 900, color: "var(--ink)", letterSpacing: "-0.01em" }}>
+                  {alias}
+                </h3>
+                {connected && (
+                  <button
+                    type="button"
+                    className="button-secondary"
+                    style={{ padding: "3px 8px", fontSize: "0.74rem", minHeight: "26px", borderRadius: "8px" }}
+                    onClick={() => setModalOpen(true)}
+                  >
+                    ✏️ Edit Alias
+                  </button>
+                )}
+              </div>
+              <p style={{ margin: "0.25rem 0 0.5rem", fontSize: "0.82rem", color: "var(--ink-muted)", fontFamily: "var(--font-mono)", wordBreak: "break-all" }}>
+                {connected ? formatNimiqAddress(walletAddress) || shortenWalletAddress(walletAddress) : "Connect your Nimiq wallet to claim your stats."}
+              </p>
+              <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+                <span className="rank-badge" style={{ fontSize: "0.75rem", padding: "0.25rem 0.6rem", borderRadius: "8px" }}>
+                  Level 7 • Word Master
+                </span>
+                {connected && (
+                  <span style={{ fontSize: "0.72rem", background: "var(--surface-sunk)", padding: "0.25rem 0.5rem", borderRadius: "6px", color: "var(--ink-2)", border: "1px solid var(--rule)" }}>
+                    🟢 Mainnet Synced
+                  </span>
+                )}
               </div>
             </div>
-            {!connected ? (
-              <button type="button" className="connect-btn" onClick={onConnectWallet} style={{ marginTop: "10px", width: "100%", minHeight: "40px", fontSize: "0.88rem" }}>
-                Connect Nimiq Wallet
-              </button>
-            ) : null}
-          </article>
+          </div>
 
-          <article className="panel profile-panel profile-panel--stats">
-            <h3 className="profile-section-title" style={{ fontSize: "0.95rem", fontWeight: 800, margin: "0 0 0.65rem", textTransform: "uppercase", letterSpacing: "0.04em", color: "var(--ink-2)" }}>
-              Player Stats
-            </h3>
-            <div className="profile-stats-grid">
-              <MetricCard label="Wins" value="18" hint="Lifetime arena wins" />
-              <MetricCard label="Streak" value="4" hint="Current win streak" />
-              <MetricCard label="Level" value="7" hint="Progression level" />
-              <MetricCard label="Earnings" value="24.6 NIM" hint="Total rewards earned" />
-            </div>
-          </article>
+          {!connected ? (
+            <button
+              type="button"
+              onClick={onConnectWallet}
+              style={{ width: "100%", marginTop: "0.5rem", minHeight: "44px", fontSize: "0.92rem", fontWeight: 800 }}
+            >
+              Connect Nimiq Wallet
+            </button>
+          ) : null}
         </section>
-      </section>
+
+        {/* Player Lifetime Stats */}
+        <section className="settings-card">
+          <h3 className="settings-card__title">
+            <span>📊</span> Career Statistics
+          </h3>
+          <div className="profile-stats-grid">
+            <div style={{ background: "var(--surface-sunk)", padding: "0.9rem", borderRadius: "12px", border: "1px solid var(--rule)", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", color: "var(--ink-muted)", fontWeight: 700, letterSpacing: "0.04em" }}>
+                Total Wins
+              </span>
+              <strong style={{ fontSize: "1.35rem", color: "var(--ink)", fontWeight: 900, fontFamily: "var(--font-mono)" }}>
+                18
+              </strong>
+              <small style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>Lifetime arena</small>
+            </div>
+
+            <div style={{ background: "var(--surface-sunk)", padding: "0.9rem", borderRadius: "12px", border: "1px solid var(--rule)", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", color: "var(--ink-muted)", fontWeight: 700, letterSpacing: "0.04em" }}>
+                Win Streak
+              </span>
+              <strong style={{ fontSize: "1.35rem", color: "var(--interactive-ink)", fontWeight: 900, fontFamily: "var(--font-mono)" }}>
+                4 🔥
+              </strong>
+              <small style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>Current run</small>
+            </div>
+
+            <div style={{ background: "var(--surface-sunk)", padding: "0.9rem", borderRadius: "12px", border: "1px solid var(--rule)", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", color: "var(--ink-muted)", fontWeight: 700, letterSpacing: "0.04em" }}>
+                Progression
+              </span>
+              <strong style={{ fontSize: "1.35rem", color: "var(--good)", fontWeight: 900, fontFamily: "var(--font-mono)" }}>
+                Tier 7
+              </strong>
+              <small style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>Master rank</small>
+            </div>
+
+            <div style={{ background: "var(--surface-sunk)", padding: "0.9rem", borderRadius: "12px", border: "1px solid var(--rule)", display: "flex", flexDirection: "column", gap: "0.25rem" }}>
+              <span style={{ fontSize: "0.74rem", textTransform: "uppercase", color: "var(--ink-muted)", fontWeight: 700, letterSpacing: "0.04em" }}>
+                Total Earned
+              </span>
+              <strong style={{ fontSize: "1.35rem", color: "var(--nq-gold-deep, var(--ink))", fontWeight: 900, fontFamily: "var(--font-mono)" }}>
+                24.6 NIM
+              </strong>
+              <small style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>Onchain payouts</small>
+            </div>
+          </div>
+        </section>
+
+        {/* Player Achievements / Badges */}
+        <section className="settings-card">
+          <h3 className="settings-card__title">
+            <span>🏆</span> Milestones & Badges
+          </h3>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.65rem", padding: "0.75rem", background: "var(--surface-sunk)", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+              <span style={{ fontSize: "1.5rem" }}>⚡</span>
+              <div>
+                <span style={{ fontSize: "0.84rem", fontWeight: 800, color: "var(--ink)", display: "block" }}>Rapid Solver</span>
+                <span style={{ fontSize: "0.72rem", color: "var(--ink-muted)" }}>Submitted 10+ words in 60s</span>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "0.65rem", padding: "0.75rem", background: "var(--surface-sunk)", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+              <span style={{ fontSize: "1.5rem" }}>🎯</span>
+              <div>
+                <span style={{ fontSize: "0.84rem", fontWeight: 800, color: "var(--ink)", display: "block" }}>7-Letter Master</span>
+                <span style={{ fontSize: "0.72rem", color: "var(--ink-muted)" }}>Found the longest root word</span>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "0.65rem", padding: "0.75rem", background: "var(--surface-sunk)", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+              <span style={{ fontSize: "1.5rem" }}>🔥</span>
+              <div>
+                <span style={{ fontSize: "0.84rem", fontWeight: 800, color: "var(--ink)", display: "block" }}>Streak Veteran</span>
+                <span style={{ fontSize: "0.72rem", color: "var(--ink-muted)" }}>Maintained a 4+ win streak</span>
+              </div>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "0.65rem", padding: "0.75rem", background: "var(--surface-sunk)", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+              <span style={{ fontSize: "1.5rem" }}>🪙</span>
+              <div>
+                <span style={{ fontSize: "0.84rem", fontWeight: 800, color: "var(--ink)", display: "block" }}>NIM Champion</span>
+                <span style={{ fontSize: "0.72rem", color: "var(--ink-muted)" }}>Claimed arena victory pools</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
 
       <UsernameModal
         walletAddress={walletAddress}

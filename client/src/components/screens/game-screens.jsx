@@ -427,8 +427,9 @@ export function HomeScreen({
           style={{
             position: "fixed",
             inset: 0,
-            background: "oklch(0.2737 0.068 276.29 / 0.45)",
-            backdropFilter: "blur(6px)",
+            background: "oklch(0.2737 0.068 276.29 / 0.55)",
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
             zIndex: 1000,
             display: "flex",
             alignItems: "center",
@@ -437,71 +438,115 @@ export function HomeScreen({
           }}
         >
           <div
-            className="modal-content panel"
+            className="modal-content"
             onClick={(e) => e.stopPropagation()}
             style={{
-              maxWidth: "500px",
+              maxWidth: "480px",
               width: "100%",
-              maxHeight: "85vh",
+              maxHeight: "88vh",
               overflowY: "auto",
-              padding: "1.75rem",
-              borderRadius: "16px",
+              padding: "1.4rem 1.5rem",
+              borderRadius: "20px",
               background: "var(--surface)",
               border: "1px solid var(--rule-strong)",
-              boxShadow: "0 12px 40px oklch(0.2737 0.068 276.29 / 0.16)",
+              boxShadow: "0 16px 40px oklch(0.2737 0.068 276.29 / 0.2)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.1rem",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-              <h2 style={{ fontSize: "1.5rem", margin: 0, color: "var(--ink)" }}>📖 How to Play NimWord</h2>
+            {/* Modal Header */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+              <div>
+                <h2 style={{ fontSize: "1.3rem", margin: "0 0 0.2rem", color: "var(--ink)", fontWeight: 900, letterSpacing: "-0.01em" }}>
+                  How to Play NimWord
+                </h2>
+                <p style={{ margin: 0, fontSize: "0.82rem", color: "var(--ink-2)" }}>
+                  Speed word battles with instant onchain NIM payouts
+                </p>
+              </div>
               <button
                 type="button"
                 className="button-secondary"
                 onClick={() => setShowRulesModal(false)}
-                style={{ padding: "0.3rem 0.7rem", fontSize: "0.85rem" }}
+                style={{ padding: "4px 10px", fontSize: "0.82rem", minHeight: "30px", borderRadius: "8px" }}
+                aria-label="Close"
               >
                 ✕
               </button>
             </div>
 
-            <article style={{ marginBottom: "1.25rem" }}>
-              <h3 style={{ fontSize: "1.1rem", color: "var(--interactive-ink)", marginBottom: "0.4rem" }}>🎮 Core Loop</h3>
-              <ol style={{ paddingLeft: "1.2rem", lineHeight: "1.6", color: "var(--ink-2)", fontSize: "0.95rem" }}>
-                <li>Join a NIMWORD match room or practice solo</li>
-                <li>Get a shared 7-letter source word</li>
-                <li>Submit valid English words before the 60s timer expires</li>
-                <li>Score points based on word length and speed</li>
-                <li>90% NIM prize pool is shared by score rankings</li>
-              </ol>
-            </article>
+            {/* Step 1-2-3 Gameplay Guide */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.65rem" }}>
+              <div style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", padding: "0.75rem 0.85rem", background: "var(--surface-sunk)", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+                <span style={{ fontSize: "1.2rem", flexShrink: 0 }}>🎯</span>
+                <div>
+                  <strong style={{ display: "block", fontSize: "0.86rem", color: "var(--ink)", marginBottom: "0.15rem" }}>
+                    1. Get 7 Shared Letters
+                  </strong>
+                  <span style={{ fontSize: "0.78rem", color: "var(--ink-2)", lineHeight: "1.4", display: "block" }}>
+                    Stake your NIM or practice solo. All players receive the exact same 7 letter pool.
+                  </span>
+                </div>
+              </div>
 
-            <article style={{ marginBottom: "1.25rem" }}>
-              <h3 style={{ fontSize: "1.1rem", color: "var(--good)", marginBottom: "0.4rem" }}>📜 Game Rules</h3>
-              <ul style={{ paddingLeft: "1.2rem", lineHeight: "1.6", color: "var(--ink-2)", fontSize: "0.95rem" }}>
-                <li>Words must be at least 3 letters long</li>
-                <li>Use each letter only as many times as it appears in the prompt</li>
-                <li>Duplicate word submissions in the same round do not score</li>
-                <li>Every valid word scores based on length: 3L = 3pts, 4L = 5pts, 5L = 8pts, 6L+ = 12pts</li>
-              </ul>
-            </article>
+              <div style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", padding: "0.75rem 0.85rem", background: "var(--surface-sunk)", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+                <span style={{ fontSize: "1.2rem", flexShrink: 0 }}>⏱️</span>
+                <div>
+                  <strong style={{ display: "block", fontSize: "0.86rem", color: "var(--ink)", marginBottom: "0.15rem" }}>
+                    2. Build Valid Words in 60s
+                  </strong>
+                  <span style={{ fontSize: "0.78rem", color: "var(--ink-2)", lineHeight: "1.4", display: "block" }}>
+                    Tap or type 3+ letter words before time expires. Longer words award exponentially higher points.
+                  </span>
+                </div>
+              </div>
 
-            <article style={{ marginBottom: "1.5rem" }}>
-              <h3 style={{ fontSize: "1.1rem", color: "var(--nq-gold)", marginBottom: "0.4rem" }}>🪙 Prize Logic</h3>
-              <p style={{ color: "var(--ink-2)", fontSize: "0.92rem", lineHeight: "1.5" }}>
-                Every match room starts with a 1 NIM entry stake. NIMWORD takes a 10% treasury fee, and the remaining 90% is shared using:
-                <br />
-                <code style={{ display: "block", background: "var(--surface-sunk)", padding: "0.5rem", borderRadius: "6px", margin: "0.5rem 0", color: "var(--nq-gold)", fontFamily: "var(--font-mono)" }}>
-                  (Your Score / Total Room Score) × Prize Pool
-                </code>
-                Payouts are transferred directly to your Nimiq address upon round completion.
-              </p>
-            </article>
+              <div style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start", padding: "0.75rem 0.85rem", background: "var(--surface-sunk)", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+                <span style={{ fontSize: "1.2rem", flexShrink: 0 }}>🪙</span>
+                <div>
+                  <strong style={{ display: "block", fontSize: "0.86rem", color: "var(--ink)", marginBottom: "0.15rem" }}>
+                    3. Claim Onchain Prize Pool
+                  </strong>
+                  <span style={{ fontSize: "0.78rem", color: "var(--ink-2)", lineHeight: "1.4", display: "block" }}>
+                    90% of the entry stakes are automatically paid to winning wallets proportional to final scores.
+                  </span>
+                </div>
+              </div>
+            </div>
 
+            {/* Scoring Breakdown Pills */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+              <span style={{ fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.04em", color: "var(--ink-muted)", fontWeight: 800 }}>
+                Word Scoring Values
+              </span>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.45rem", textAlign: "center" }}>
+                <div style={{ padding: "0.5rem 0.25rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+                  <span style={{ display: "block", fontSize: "0.72rem", color: "var(--ink-muted)" }}>3 Letters</span>
+                  <strong style={{ fontSize: "0.92rem", color: "var(--ink)", fontFamily: "var(--font-mono)" }}>3 pts</strong>
+                </div>
+                <div style={{ padding: "0.5rem 0.25rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+                  <span style={{ display: "block", fontSize: "0.72rem", color: "var(--ink-muted)" }}>4 Letters</span>
+                  <strong style={{ fontSize: "0.92rem", color: "var(--ink)", fontFamily: "var(--font-mono)" }}>5 pts</strong>
+                </div>
+                <div style={{ padding: "0.5rem 0.25rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+                  <span style={{ display: "block", fontSize: "0.72rem", color: "var(--ink-muted)" }}>5 Letters</span>
+                  <strong style={{ fontSize: "0.92rem", color: "var(--ink)", fontFamily: "var(--font-mono)" }}>8 pts</strong>
+                </div>
+                <div style={{ padding: "0.5rem 0.25rem", background: "var(--surface-sunk)", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+                  <span style={{ display: "block", fontSize: "0.72rem", color: "var(--ink-muted)" }}>6+ Letters</span>
+                  <strong style={{ fontSize: "0.92rem", color: "var(--interactive-ink)", fontFamily: "var(--font-mono)" }}>12 pts</strong>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA Button */}
             <button
               type="button"
               onClick={() => setShowRulesModal(false)}
-              style={{ width: "100%", padding: "0.85rem", fontSize: "1rem" }}
+              style={{ width: "100%", padding: "0.8rem 1rem", fontSize: "0.92rem", fontWeight: 800, minHeight: "44px", borderRadius: "12px", marginTop: "0.2rem" }}
             >
-              Got it, Let's Play!
+              Got It, Let's Play!
             </button>
           </div>
         </div>
