@@ -711,18 +711,26 @@ export function DailyChallenge({
         ) : null}
 
         {loadingRound ? (
-          <div className="results-sheet" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <div className="results-sheet" style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "3rem 1.5rem" }}>
             <GameLoader label="Preparing today's challenge..." letters="DAILY" />
           </div>
         ) : phase === "idle" ? (
-          <div className="results-sheet" style={{ maxWidth: "500px", margin: "0 auto" }}>
-            <div className="trophy-cup-animated" style={{ fontSize: "2.5rem", marginBottom: "0.5rem", textAlign: "center" }}>🏆</div>
-            <p className="eyebrow">Ready</p>
-            <h2>Daily Challenge</h2>
-            <p style={{ marginBottom: "1rem" }}>
-              Select your difficulty level. Each level has a different score target and reward payout. You can play once per day.
-            </p>
-            <div className="difficulty-choices" style={{ display: "flex", flexDirection: "column", gap: "0.6rem", width: "100%", marginBottom: "1rem" }}>
+          <div className="results-sheet" style={{ maxWidth: "560px", margin: "0 auto", padding: "2rem 1.8rem" }}>
+            <div style={{ textAlign: "center", marginBottom: "1.25rem" }}>
+              <div className="trophy-cup-animated" style={{ fontSize: "2.8rem", marginBottom: "0.5rem", display: "inline-block" }}>🏆</div>
+              <p className="eyebrow" style={{ color: "var(--interactive-ink)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "0.25rem" }}>
+                Daily Reward Arena
+              </p>
+              <h2 style={{ fontSize: "1.85rem", fontFamily: "var(--font-game)", margin: "0 0 0.4rem", color: "var(--ink)" }}>
+                Choose Challenge Level
+              </h2>
+              <p style={{ fontSize: "0.88rem", color: "var(--ink-2)", margin: 0, lineHeight: 1.4 }}>
+                Hit the score target in 60s to unlock verified onchain NIM rewards. Free to play daily!
+              </p>
+            </div>
+
+            <div className="difficulty-choices" style={{ display: "flex", flexDirection: "column", gap: "0.75rem", width: "100%", marginBottom: "1.25rem" }}>
+              {/* Easy Tier */}
               <button
                 type="button"
                 className="difficulty-card"
@@ -732,24 +740,37 @@ export function DailyChallenge({
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  padding: "0.75rem 1.2rem",
+                  padding: "0.9rem 1.25rem",
                   background: "var(--surface-sunk)",
                   border: "1px solid var(--rule)",
-                  borderLeft: "4px solid var(--good)",
-                  borderRadius: "12px",
+                  borderLeft: "5px solid var(--good)",
+                  borderRadius: "14px",
                   textAlign: "left",
                   color: "var(--ink)",
                   cursor: "pointer",
-                  width: "100%"
+                  width: "100%",
+                  transition: "all 0.18s ease",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
                 }}
               >
                 <div>
-                  <strong style={{ fontSize: "1rem", display: "block", color: "var(--ink)", fontWeight: "700", marginBottom: "0.15rem" }}>🎮 Easy</strong>
-                  <span style={{ fontSize: "0.78rem", color: "var(--good)", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 40 pts</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "0.2rem" }}>
+                    <span style={{ fontSize: "1.1rem" }}>🎮</span>
+                    <strong style={{ fontSize: "1.05rem", color: "var(--ink)", fontWeight: 800, fontFamily: "var(--font-game)" }}>
+                      Warm Up (Easy)
+                    </strong>
+                  </div>
+                  <span style={{ fontSize: "0.76rem", color: "var(--good)", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                    Target: 40 pts • 60s Round
+                  </span>
                 </div>
-                <strong style={{ color: "var(--ink)", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>0.1 NIM</strong>
+                <div style={{ textAlign: "right", background: "var(--surface)", padding: "0.35rem 0.75rem", borderRadius: "10px", border: "1px solid var(--rule)" }}>
+                  <span style={{ display: "block", fontSize: "0.62rem", color: "var(--ink-muted)", textTransform: "uppercase", fontWeight: 800 }}>Reward</span>
+                  <strong style={{ color: "var(--good)", fontSize: "1.1rem", fontFamily: "var(--font-mono)", fontWeight: 900 }}>0.1 NIM</strong>
+                </div>
               </button>
 
+              {/* Medium Tier */}
               <button
                 type="button"
                 className="difficulty-card"
@@ -759,24 +780,37 @@ export function DailyChallenge({
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  padding: "0.75rem 1.2rem",
+                  padding: "0.9rem 1.25rem",
                   background: "var(--surface-sunk)",
                   border: "1px solid var(--rule)",
-                  borderLeft: "4px solid var(--good)",
-                  borderRadius: "12px",
+                  borderLeft: "5px solid var(--nq-gold)",
+                  borderRadius: "14px",
                   textAlign: "left",
                   color: "var(--ink)",
                   cursor: "pointer",
-                  width: "100%"
+                  width: "100%",
+                  transition: "all 0.18s ease",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
                 }}
               >
                 <div>
-                  <strong style={{ fontSize: "1rem", display: "block", color: "var(--ink)", fontWeight: "700", marginBottom: "0.15rem" }}>⚔️ Medium</strong>
-                  <span style={{ fontSize: "0.78rem", color: "var(--good)", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 60 pts</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "0.2rem" }}>
+                    <span style={{ fontSize: "1.1rem" }}>⚔️</span>
+                    <strong style={{ fontSize: "1.05rem", color: "var(--ink)", fontWeight: 800, fontFamily: "var(--font-game)" }}>
+                      Champion (Medium)
+                    </strong>
+                  </div>
+                  <span style={{ fontSize: "0.76rem", color: "var(--nq-gold-deep, var(--ink))", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                    Target: 60 pts • 60s Round
+                  </span>
                 </div>
-                <strong style={{ color: "var(--ink)", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>1 NIM</strong>
+                <div style={{ textAlign: "right", background: "var(--surface)", padding: "0.35rem 0.75rem", borderRadius: "10px", border: "1px solid var(--rule)" }}>
+                  <span style={{ display: "block", fontSize: "0.62rem", color: "var(--ink-muted)", textTransform: "uppercase", fontWeight: 800 }}>Reward</span>
+                  <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontSize: "1.1rem", fontFamily: "var(--font-mono)", fontWeight: 900 }}>1.0 NIM</strong>
+                </div>
               </button>
 
+              {/* Hard Tier */}
               <button
                 type="button"
                 className="difficulty-card"
@@ -786,22 +820,40 @@ export function DailyChallenge({
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  padding: "0.75rem 1.2rem",
+                  padding: "0.9rem 1.25rem",
                   background: "var(--surface-sunk)",
                   border: "1px solid var(--rule)",
-                  borderLeft: "4px solid var(--good)",
-                  borderRadius: "12px",
+                  borderLeft: "5px solid var(--interactive)",
+                  borderRadius: "14px",
                   textAlign: "left",
                   color: "var(--ink)",
                   cursor: "pointer",
-                  width: "100%"
+                  width: "100%",
+                  transition: "all 0.18s ease",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
                 }}
               >
                 <div>
-                  <strong style={{ fontSize: "1rem", display: "block", color: "var(--ink)", fontWeight: "700", marginBottom: "0.15rem" }}>👑 Hard</strong>
-                  <span style={{ fontSize: "0.78rem", color: "var(--good)", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase" }}>Target: 80 pts</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "0.2rem" }}>
+                    <span style={{ fontSize: "1.1rem" }}>👑</span>
+                    <strong style={{ fontSize: "1.05rem", color: "var(--ink)", fontWeight: 800, fontFamily: "var(--font-game)" }}>
+                      Grandmaster (Hard)
+                    </strong>
+                  </div>
+                  <span style={{ fontSize: "0.76rem", color: "var(--interactive-ink)", fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                    Target: 80 pts • 60s Round
+                  </span>
                 </div>
-                <strong style={{ color: "var(--ink)", fontSize: "1.05rem", fontFamily: "var(--font-mono)", fontWeight: "700" }}>2 NIM</strong>
+                <div style={{ textAlign: "right", background: "var(--surface)", padding: "0.35rem 0.75rem", borderRadius: "10px", border: "1px solid var(--rule)" }}>
+                  <span style={{ display: "block", fontSize: "0.62rem", color: "var(--ink-muted)", textTransform: "uppercase", fontWeight: 800 }}>Reward</span>
+                  <strong style={{ color: "var(--interactive-ink)", fontSize: "1.1rem", fontFamily: "var(--font-mono)", fontWeight: 900 }}>2.0 NIM</strong>
+                </div>
+              </button>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <button type="button" className="ghost-button" onClick={onBack} style={{ padding: "0.5rem 1.2rem", fontSize: "0.88rem" }}>
+                ← Return to Home
               </button>
             </div>
           </div>

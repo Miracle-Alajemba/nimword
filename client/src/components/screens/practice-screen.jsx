@@ -91,7 +91,7 @@ export function PracticeScreen({
   roundSeconds = 60,
 }) {
   const [roundSeed, setRoundSeed] = useState(null);
-  const difficulty = "medium";
+  const [difficulty, setDifficulty] = useState("medium");
   const [timeLeft, setTimeLeft] = useState(roundSeconds);
   const [draftWord, setDraftWord] = useState("");
   const [selectedIndexes, setSelectedIndexes] = useState([]);
@@ -109,14 +109,14 @@ export function PracticeScreen({
   const sourceLetters = String(roundSeed?.sourceWord || "").split("");
   const selectedWord = draftWord;
 
-  async function loadPracticeRound(nextFeedback = "New round loaded. Go fast and go clean.") {
+  async function loadPracticeRound(nextFeedback = "New round loaded. Go fast and go clean.", targetDifficulty = difficulty) {
     setLoadingRound(true);
     setFeedback("Loading a fresh round...");
     setFeedbackTone("neutral");
 
     try {
       const response = await fetch(
-        `${apiBaseUrl}/rounds/practice?difficulty=${encodeURIComponent(difficulty)}`,
+        `${apiBaseUrl}/rounds/practice?difficulty=${encodeURIComponent(targetDifficulty)}`,
       );
       const data = await response.json();
 
@@ -137,7 +137,7 @@ export function PracticeScreen({
       setFeedbackTone("neutral");
     } catch {
       // Offline / fallback practice round
-      const fallback = generateClientPracticeRound(difficulty);
+      const fallback = generateClientPracticeRound(targetDifficulty);
       setRoundSeed(fallback);
       setTimeLeft(roundSeconds);
       setDraftWord("");
@@ -155,7 +155,7 @@ export function PracticeScreen({
   }
 
   useEffect(() => {
-    loadPracticeRound("Build as many valid words as you can.");
+    loadPracticeRound("Build as many valid words as you can.", difficulty);
   }, []);
 
   useEffect(() => {
@@ -345,16 +345,75 @@ export function PracticeScreen({
           <p className="eyebrow">Practice Mode</p>
         </div>
 
-        {/* Difficulty level selector removed */}
+        {/* Interactive Game Level Selector */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "0.6rem",
+            marginBottom: "1.25rem",
+            background: "var(--surface-sunk)",
+            padding: "6px 8px",
+            borderRadius: "14px",
+            border: "1px solid var(--rule)",
+            maxWidth: "480px",
+            margin: "0 auto 1.25rem",
+          }}
+        >
+          {[
+            { id: "easy", label: "🎮 Warm Up", color: "var(--good)" },
+            { id: "medium", label: "⚔️ Standard", color: "var(--nq-gold-deep, var(--ink))" },
+            { id: "hard", label: "👑 Expert", color: "var(--interactive-ink)" },
+          ].map((lvl) => {
+            const isActive = difficulty === lvl.id;
+            return (
+              <button
+                key={lvl.id}
+                type="button"
+                onClick={() => {
+                  setDifficulty(lvl.id);
+                  loadPracticeRound(`Switched to ${lvl.label} round.`, lvl.id);
+                }}
+                style={{
+                  flex: 1,
+                  padding: "0.55rem 0.75rem",
+                  fontSize: "0.85rem",
+                  fontWeight: 800,
+                  borderRadius: "10px",
+                  border: isActive ? `1.5px solid ${lvl.color}` : "1px solid transparent",
+                  background: isActive ? "var(--surface)" : "transparent",
+                  color: isActive ? lvl.color : "var(--ink-2)",
+                  cursor: "pointer",
+                  transition: "all 0.15s ease",
+                  boxShadow: isActive ? "0 2px 8px rgba(0,0,0,0.08)" : "none",
+                  fontFamily: "var(--font-game)",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {lvl.label}
+              </button>
+            );
+          })}
+        </div>
 
         <div className="play-hero">
           <div>
-            <p className="play-label">Source word</p>
-            <h1>{roundSeed?.sourceWord || "LOADING"}</h1>
-            <p className="lede">
-              Make real words from these letters before the timer runs out.
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.25rem" }}>
+              <p className="play-label" style={{ margin: 0, fontSize: "0.76rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--interactive-ink)" }}>
+                Source Word
+              </p>
+              <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--ink-muted)", textTransform: "uppercase" }}>
+                Level: {getDifficultyLabel(difficulty)}
+              </span>
+            </div>
+            <h1 style={{ fontFamily: "var(--font-game)", letterSpacing: "0.04em", fontSize: "2rem" }}>
+              {roundSeed?.sourceWord || "LOADING"}
+            </h1>
+            <p className="lede" style={{ fontSize: "0.92rem", marginBottom: "0.85rem" }}>
+              Make real English words from these letters before the timer runs out.
             </p>
-            <div className="letter-rack letter-rack--play">
+            <div className="letter-rack letter-rack--play" style={{ gap: "0.5rem" }}>
               {sourceLetters.map((letter, index) => (
                 <button
                   key={`${letter}-${index}`}
@@ -362,12 +421,19 @@ export function PracticeScreen({
                   className={`letter-tile letter-tile--play letter-tile--interactive ${selectedIndexes.includes(index) ? "letter-tile--selected" : ""}`}
                   onClick={() => handleToggleTile(index)}
                   aria-label={`Select letter ${letter}`}
+                  style={{
+                    height: "3.2rem",
+                    width: "3.2rem",
+                    fontSize: "1.35rem",
+                    fontFamily: "var(--font-game)",
+                    borderRadius: "12px",
+                  }}
                 >
                   {letter}
                 </button>
               ))}
             </div>
-            <div className="word-preview word-preview--practice">
+            <div className="word-preview word-preview--practice" style={{ fontFamily: "var(--font-game)", fontSize: "1.15rem", letterSpacing: "0.06em", minHeight: "44px" }}>
               {selectedWord ? selectedWord.toUpperCase().split("").join(" - ") : "Tap letters to form a word"}
             </div>
           </div>
