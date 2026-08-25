@@ -154,43 +154,43 @@ export function HomeScreen({
             <h1 className="hero-logo__name">NimWord</h1>
           </div>
 
-          <p className="lede lede--tagline" style={{ fontSize: "1.05rem", marginBottom: "0.5rem" }}>
+          <p className="lede lede--tagline" style={{ fontSize: "1rem", margin: "0 0 0.5rem" }}>
             Form words. Beat the clock. Win NIM.
           </p>
 
-          <div className="feature-strip" style={{ marginBottom: "0.75rem", gap: "0.5rem" }}>
+          <div className="feature-strip" style={{ marginBottom: "0.65rem", gap: "0.4rem" }}>
             <div className="feature-pill">⚡ 60s Rounds</div>
-            <div className="feature-pill">🪙 {stakeAmount} NIM Stake</div>
+            <div className="feature-pill">🪙 {stakeAmount} NIM Entry</div>
             <div className="feature-pill">🏆 90% Win Pool</div>
           </div>
 
-          <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.6rem", width: "100%" }}>
+          <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.55rem", width: "100%", margin: 0 }}>
             {/* Stake Selector */}
-            <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "12px", padding: "10px 14px", display: "flex", flexDirection: "column", gap: "6px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.84rem", color: "var(--ink-2)" }}>
-                <span><span aria-hidden="true">💰</span> Choose Stake Amount:</span>
-                <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
+            <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "10px", padding: "8px 12px", display: "flex", flexDirection: "column", gap: "5px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.8rem", color: "var(--ink-2)" }}>
+                <span><span aria-hidden="true">💰</span> Entry Stake:</span>
+                <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.88rem" }}>
                   {stakeAmount} NIM
                 </strong>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "5px" }}>
                 {STAKE_PRESETS.map((amt) => (
                   <button
                     key={amt}
                     type="button"
                     onClick={() => setStakeAmount(amt)}
                     style={{
-                      padding: "8px 2px",
-                      fontSize: "0.85rem",
+                      padding: "6px 2px",
+                      fontSize: "0.82rem",
                       fontWeight: 800,
                       background: stakeAmount === amt ? "var(--nq-gold)" : "var(--surface)",
                       border: stakeAmount === amt ? "1px solid oklch(0.72 0.16 85.61)" : "1px solid var(--rule)",
                       color: stakeAmount === amt ? "#1A1200" : "var(--ink)",
-                      borderRadius: "8px",
+                      borderRadius: "6px",
                       cursor: "pointer",
                       transition: "all 0.15s ease",
-                      minHeight: "36px",
-                      boxShadow: stakeAmount === amt ? "0 2px 8px oklch(0.7924 0.1593 85.61 / 0.3)" : "none",
+                      minHeight: "32px",
+                      boxShadow: stakeAmount === amt ? "0 2px 6px oklch(0.7924 0.1593 85.61 / 0.25)" : "none",
                     }}
                   >
                     {amt}
@@ -199,25 +199,49 @@ export function HomeScreen({
               </div>
             </div>
 
-            <button type="button" onClick={() => onQuickMatch(stakeAmount)} style={{ padding: "0.85rem 1.4rem", fontSize: "1rem", minHeight: "46px" }}>
-              {joinLabel}
-            </button>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%" }}>
-              <button type="button" className="button-secondary" onClick={onOpenDailyChallenge} style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.88rem" }}>
+            {/* 2x2 Balanced Action Grid (Non-stretched) */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.55rem", width: "100%" }}>
+              <button
+                type="button"
+                onClick={() => onQuickMatch(stakeAmount)}
+                style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.9rem", fontWeight: 800 }}
+              >
+                ⚡ {joinLabel}
+              </button>
+              <button
+                type="button"
+                className="button-secondary"
+                onClick={onOpenDailyChallenge}
+                style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.86rem" }}
+              >
                 ⭐ Daily Challenge
               </button>
-              <button type="button" className="button-secondary" onClick={onStartPractice} style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.88rem" }}>
+              <button
+                type="button"
+                className="button-secondary"
+                onClick={onStartPractice}
+                style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.86rem" }}
+              >
                 🎯 Practice Arena
+              </button>
+              <button
+                type="button"
+                className="button-secondary button-accent-blue"
+                onClick={onOpenLeaderboard}
+                style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.86rem" }}
+              >
+                🏆 Leaderboard
               </button>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%" }}>
-              <button type="button" className="button-secondary button-accent-blue" onClick={onOpenLeaderboard} style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.88rem" }}>
-                🏆 Leaderboard
-              </button>
-              <button type="button" className="button-secondary" onClick={() => setShowRulesModal(true)} style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.88rem" }}>
-                📖 How to Play
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "0.2rem" }}>
+              <button
+                type="button"
+                className="ghost-button"
+                onClick={() => setShowRulesModal(true)}
+                style={{ fontSize: "0.8rem", padding: "4px 10px", minHeight: "28px", color: "var(--ink-2)" }}
+              >
+                📖 How to Play & Rules
               </button>
             </div>
           </div>
@@ -227,39 +251,6 @@ export function HomeScreen({
               {roomError}
             </div>
           ) : null}
-
-          <div
-            className="daily-reward-callout"
-            onClick={onOpenDailyChallenge}
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "0.75rem",
-              padding: "0.7rem 1rem",
-              background: "linear-gradient(135deg, oklch(0.7924 0.1593 85.61 / 0.14), oklch(0.5849 0.1438 244.29 / 0.12))",
-              border: "1px solid var(--rule-strong)",
-              borderRadius: "12px",
-              cursor: "pointer",
-              marginTop: "0.6rem",
-              transition: "transform 120ms ease, border-color 120ms ease",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "0.65rem" }}>
-              <span style={{ fontSize: "1.35rem" }}>🎁</span>
-              <div>
-                <strong style={{ fontSize: "0.88rem", color: "var(--ink)", display: "block" }}>
-                  Free Daily Challenge Available
-                </strong>
-                <span style={{ fontSize: "0.76rem", color: "var(--ink-2)" }}>
-                  Play 1 round today to claim 0.1 NIM
-                </span>
-              </div>
-            </div>
-            <span style={{ fontSize: "0.82rem", fontWeight: "800", color: "var(--interactive-ink)" }}>
-              Play →
-            </span>
-          </div>
 
           <TotalPayoutsBanner />
         </div>
