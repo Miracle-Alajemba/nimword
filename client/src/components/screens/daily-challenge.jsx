@@ -467,25 +467,108 @@ export function DailyChallenge({
   if (!walletConnected) {
     return (
       <main className="page-shell">
-        <section className="play-shell">
-          <div className="play-header">
+        <section className="play-shell" style={{ maxWidth: "580px", margin: "0 auto" }}>
+          <div className="play-header" style={{ marginBottom: "1rem" }}>
             <button type="button" className="ghost-button" onClick={onBack}>
-              Back
+              ← Back
             </button>
-            <p className="eyebrow">Daily Challenge</p>
-          </div>
-          <div className="results-sheet" style={{ textAlign: "center", padding: "3rem 1.5rem" }}>
-            <div className="trophy-cup-animated" style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>🏆</div>
-            <h2><span aria-hidden="true">🔑</span> Sign In to Play</h2>
-            <p style={{ marginBottom: "1.5rem" }}>
-              Connect your Nimiq wallet to play the Daily Challenge and claim your reward (up to 2 NIM) once per day.
+            <p className="eyebrow" style={{ color: "var(--interactive-ink)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+              Daily Challenge Pass
             </p>
-            <div className="hero-actions">
-              <button type="button" onClick={onConnectWallet}>
-                Connect Wallet
+          </div>
+          <div
+            className="results-sheet"
+            style={{
+              textAlign: "center",
+              padding: "2.5rem 1.75rem",
+              background: "var(--surface)",
+              border: "1px solid var(--rule-strong)",
+              borderRadius: "20px",
+              boxShadow: "0 12px 36px -8px oklch(0.2737 0.068 276.29 / 0.12)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "1.25rem",
+            }}
+          >
+            {/* Animated Trophy Icon */}
+            <div
+              style={{
+                width: "76px",
+                height: "76px",
+                borderRadius: "20px",
+                background: "linear-gradient(135deg, oklch(0.7924 0.1593 85.61 / 0.2) 0%, oklch(0.5849 0.1438 244.29 / 0.2) 100%)",
+                border: "1.5px solid var(--nq-gold)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "2.5rem",
+                boxShadow: "0 8px 24px oklch(0.7924 0.1593 85.61 / 0.25)",
+              }}
+            >
+              🏆
+            </div>
+
+            <div>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "var(--surface-sunk)", padding: "4px 12px", borderRadius: "20px", border: "1px solid var(--rule)", marginBottom: "0.6rem" }}>
+                <span style={{ width: "6px", height: "6px", borderRadius: "50%", backgroundColor: "var(--nq-gold)", display: "inline-block" }} />
+                <span style={{ fontSize: "0.74rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--ink-2)" }}>
+                  Web3 Wallet Sign-In Required
+                </span>
+              </div>
+              <h2 style={{ fontSize: "2rem", fontFamily: "var(--font-game)", margin: "0 0 0.4rem", color: "var(--ink)", letterSpacing: "0.03em" }}>
+                Unlock Daily Rewards
+              </h2>
+              <p style={{ fontSize: "0.92rem", color: "var(--ink-2)", margin: "0 auto", maxWidth: "440px", lineHeight: 1.5 }}>
+                Connect your Nimiq wallet to play today's word arena round and claim real NIM rewards directly onchain.
+              </p>
+            </div>
+
+            {/* 3 Perks Chips */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "0.6rem", width: "100%" }}>
+              <div style={{ background: "var(--surface-sunk)", padding: "0.75rem 0.5rem", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+                <span style={{ fontSize: "1.2rem", display: "block", marginBottom: "2px" }}>⚡</span>
+                <strong style={{ fontSize: "0.78rem", color: "var(--ink)", display: "block" }}>1 Free Play</strong>
+                <span style={{ fontSize: "0.68rem", color: "var(--ink-muted)" }}>Refreshes daily</span>
+              </div>
+              <div style={{ background: "var(--surface-sunk)", padding: "0.75rem 0.5rem", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+                <span style={{ fontSize: "1.2rem", display: "block", marginBottom: "2px" }}>🪙</span>
+                <strong style={{ fontSize: "0.78rem", color: "var(--good)", display: "block" }}>Up to 2 NIM</strong>
+                <span style={{ fontSize: "0.68rem", color: "var(--ink-muted)" }}>Instant reward</span>
+              </div>
+              <div style={{ background: "var(--surface-sunk)", padding: "0.75rem 0.5rem", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+                <span style={{ fontSize: "1.2rem", display: "block", marginBottom: "2px" }}>✓</span>
+                <strong style={{ fontSize: "0.78rem", color: "var(--interactive-ink)", display: "block" }}>Verified</strong>
+                <span style={{ fontSize: "0.68rem", color: "var(--ink-muted)" }}>Nimiq Mainnet</span>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem", width: "100%", maxWidth: "340px", marginTop: "0.35rem" }}>
+              <button
+                type="button"
+                onClick={onConnectWallet}
+                style={{
+                  minHeight: "48px",
+                  padding: "0.75rem 1.5rem",
+                  fontSize: "0.96rem",
+                  fontWeight: 800,
+                  borderRadius: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                }}
+              >
+                ⚡ Connect Nimiq Wallet
               </button>
-              <button type="button" className="button-secondary" onClick={onBack}>
-                Go Back
+              <button
+                type="button"
+                className="button-secondary"
+                onClick={onBack}
+                style={{ minHeight: "44px", borderRadius: "12px", fontSize: "0.88rem" }}
+              >
+                ← Return to Home
               </button>
             </div>
           </div>
@@ -497,36 +580,64 @@ export function DailyChallenge({
   if (dailyPlayed && !dailyClaimed && !currentPlayStarted) {
     return (
       <main className="page-shell">
-        <section className="play-shell">
-          <div className="play-header">
+        <section className="play-shell" style={{ maxWidth: "580px", margin: "0 auto" }}>
+          <div className="play-header" style={{ marginBottom: "1rem" }}>
             <button type="button" className="ghost-button" onClick={onBack}>
-              Back
+              ← Back
             </button>
-            <p className="eyebrow">Daily Challenge</p>
-          </div>
-          <div className="results-sheet" style={{ textAlign: "center", padding: "3rem 1.5rem" }}>
-            <div style={{ fontSize: "2.5rem", marginBottom: "1rem" }}>⏳</div>
-            <h2><span aria-hidden="true">⏰</span> Next Play Available In</h2>
-            <p style={{ marginBottom: "0.5rem" }}>
-              {cooldownSeconds > 0
-                ? `${Math.floor(cooldownSeconds / 3600)}h ${Math.floor((cooldownSeconds % 3600) / 60)}m ${cooldownSeconds % 60}s`
-                : "Less than a minute"}
+            <p className="eyebrow" style={{ color: "var(--interactive-ink)", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em" }}>
+              Daily Challenge Cooldown
             </p>
-            <p style={{ marginBottom: "1.5rem" }}>
-              Come back when the timer expires to play again and try claiming another reward.
+          </div>
+          <div
+            className="results-sheet"
+            style={{
+              textAlign: "center",
+              padding: "2.5rem 1.75rem",
+              background: "var(--surface)",
+              border: "1px solid var(--rule-strong)",
+              borderRadius: "20px",
+              boxShadow: "0 12px 36px -8px oklch(0.2737 0.068 276.29 / 0.12)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            <div style={{ fontSize: "2.8rem", marginBottom: "0.25rem" }}>⏳</div>
+            <h2 style={{ fontSize: "1.85rem", fontFamily: "var(--font-game)", margin: 0, color: "var(--ink)" }}>
+              Next Play Available In
+            </h2>
+            <div style={{ background: "var(--surface-sunk)", padding: "0.6rem 1.4rem", borderRadius: "12px", border: "1px solid var(--rule)" }}>
+              <strong style={{ fontSize: "1.5rem", fontFamily: "var(--font-mono)", color: "var(--interactive-ink)" }}>
+                {cooldownSeconds > 0
+                  ? `${Math.floor(cooldownSeconds / 3600)}h ${Math.floor((cooldownSeconds % 3600) / 60)}m ${cooldownSeconds % 60}s`
+                  : "Less than a minute"}
+              </strong>
+            </div>
+            <p style={{ fontSize: "0.9rem", color: "var(--ink-2)", margin: 0, maxWidth: "420px", lineHeight: 1.4 }}>
+              Come back when the cooldown timer expires to play again and claim your next daily reward.
             </p>
 
-            <div style={{ borderTop: "1px solid var(--rule)", paddingTop: "1.5rem", marginTop: "1rem", width: "100%" }}>
-              <h4 style={{ color: "var(--nq-green-deep)" }}>Can't wait? ⚡</h4>
-              <p style={{ fontSize: "0.85em", opacity: 0.8, marginBottom: "1.5rem" }}>
-                Skip the cooldown and play again immediately with a retry ticket.
+            <div style={{ borderTop: "1px solid var(--rule)", paddingTop: "1.25rem", marginTop: "0.5rem", width: "100%" }}>
+              <h4 style={{ color: "var(--nq-gold-deep, var(--ink))", margin: "0 0 0.25rem", fontSize: "1rem", fontWeight: 800 }}>
+                Can't wait? ⚡
+              </h4>
+              <p style={{ fontSize: "0.82rem", color: "var(--ink-muted)", marginBottom: "1rem" }}>
+                Skip the cooldown and play again immediately with an instant retry ticket.
               </p>
               <button
                 type="button"
                 onClick={handleBuyRetryTicket}
                 disabled={isRetrying}
-                className="primary-button"
-                style={{ background: "var(--accent-mint)", color: "var(--surface)", padding: "0.75rem 1.5rem", borderRadius: "8px", fontWeight: "bold" }}
+                style={{
+                  minHeight: "44px",
+                  padding: "0.65rem 1.4rem",
+                  fontSize: "0.9rem",
+                  borderRadius: "10px",
+                  fontWeight: 800,
+                  margin: "0 auto",
+                }}
               >
                 {isRetrying ? "Processing..." : "Buy Retry Ticket (0.1 NIM)"}
               </button>
@@ -535,9 +646,9 @@ export function DailyChallenge({
               ) : null}
             </div>
 
-            <div className="hero-actions" style={{ justifyContent: "center", marginTop: "2rem" }}>
-              <button type="button" className="button-secondary" onClick={onBack}>
-                Back to Home
+            <div style={{ marginTop: "0.5rem" }}>
+              <button type="button" className="button-secondary" onClick={onBack} style={{ minHeight: "40px", borderRadius: "10px", fontSize: "0.86rem" }}>
+                ← Back to Home
               </button>
             </div>
           </div>
