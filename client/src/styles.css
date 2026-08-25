@@ -185,6 +185,7 @@ button:disabled {
   --line-soft: var(--rule);
   --font-ui: var(--font-sans);
   --font-display: var(--font-sans);
+  --font-game: 'Oxanium', 'Rajdhani', var(--font-sans);
   --font-mono: var(--font-mono-stack);
 
   /* A second legacy namespace, referenced 22 times from the daily-challenge
@@ -373,14 +374,15 @@ button:disabled {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-family: var(--font-sans);
+  font-family: var(--font-game);
   font-size: 2.85rem !important;
-  font-weight: 900 !important;
-  letter-spacing: -0.02em !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.03em !important;
   line-height: 1 !important;
   margin: 0 !important;
   display: flex;
   align-items: center;
+  text-transform: uppercase;
 }
 
 .hero-actions--grid {
@@ -3855,11 +3857,13 @@ small,
   }
 
   .hero-logo__name {
+    font-family: var(--font-game);
     font-size: 2.25rem !important;
-    letter-spacing: -0.02em !important;
+    letter-spacing: 0.03em !important;
     line-height: 1 !important;
     display: flex;
     align-items: center;
+    text-transform: uppercase;
   }
 
   .lede {
