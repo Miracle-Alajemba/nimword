@@ -368,9 +368,9 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
 
   return (
     <main className="page-shell">
-      <div className="settings-container">
+      <div className="profile-dashboard">
         {/* Header */}
-        <div className="settings-header">
+        <div className="settings-header" style={{ marginBottom: "0.25rem" }}>
           <button type="button" className="ghost-button settings-header__back" onClick={onBack}>
             ← Back
           </button>
@@ -380,193 +380,202 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
           </p>
         </div>
 
-        {/* Audio & Haptics */}
-        <section className="settings-card">
-          <h3 className="settings-card__title">
-            <span>🔊</span> Audio & Feedback
-          </h3>
+        {/* Horizontal 2-Column Grid */}
+        <div className="profile-dashboard__grid">
+          {/* Left Column: Audio & Visuals */}
+          <div className="profile-dashboard__column">
+            {/* Audio & Haptics */}
+            <section className="settings-card">
+              <h3 className="settings-card__title">
+                <span>🔊</span> Audio & Feedback
+              </h3>
 
-          <div className="settings-item">
-            <div className="settings-item__info">
-              <span className="settings-item__label">Sound Effects</span>
-              <span className="settings-item__desc">
-                Synthesized audio feedback for tile taps, word submissions, and timer cues.
-              </span>
-            </div>
-            <div className="settings-item__control">
-              {settings.sound ? (
-                <button
-                  type="button"
-                  className="button-secondary"
-                  style={{ padding: "4px 10px", fontSize: "0.74rem", minHeight: "28px" }}
-                  onClick={handleTestSound}
-                >
-                  Test Chime
-                </button>
-              ) : null}
-              <button
-                type="button"
-                className={`ui-switch ${settings.sound ? "ui-switch--active" : ""}`}
-                onClick={() => onToggle("sound")}
-                aria-label="Toggle Sound Effects"
-              >
-                <span className="ui-switch__thumb" />
-              </button>
-            </div>
+              <div className="settings-item">
+                <div className="settings-item__info">
+                  <span className="settings-item__label">Sound Effects</span>
+                  <span className="settings-item__desc">
+                    Synthesized audio feedback for tile taps, word submissions, and timer cues.
+                  </span>
+                </div>
+                <div className="settings-item__control">
+                  {settings.sound ? (
+                    <button
+                      type="button"
+                      className="button-secondary"
+                      style={{ padding: "4px 10px", fontSize: "0.74rem", minHeight: "28px" }}
+                      onClick={handleTestSound}
+                    >
+                      Test Chime
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    className={`ui-switch ${settings.sound ? "ui-switch--active" : ""}`}
+                    onClick={() => onToggle("sound")}
+                    aria-label="Toggle Sound Effects"
+                  >
+                    <span className="ui-switch__thumb" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="settings-item">
+                <div className="settings-item__info">
+                  <span className="settings-item__label">Haptic Feedback</span>
+                  <span className="settings-item__desc">
+                    Tactile device vibrations when selecting tiles and solving words.
+                  </span>
+                </div>
+                <div className="settings-item__control">
+                  {settings.haptics ? (
+                    <button
+                      type="button"
+                      className="button-secondary"
+                      style={{ padding: "4px 10px", fontSize: "0.74rem", minHeight: "28px" }}
+                      onClick={handleTestHaptics}
+                    >
+                      Test Vibration
+                    </button>
+                  ) : null}
+                  <button
+                    type="button"
+                    className={`ui-switch ${settings.haptics ? "ui-switch--active" : ""}`}
+                    onClick={() => onToggle("haptics")}
+                    aria-label="Toggle Haptic Feedback"
+                  >
+                    <span className="ui-switch__thumb" />
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            {/* Accessibility & Visuals */}
+            <section className="settings-card">
+              <h3 className="settings-card__title">
+                <span>👁️</span> Accessibility & Display
+              </h3>
+
+              <div className="settings-item">
+                <div className="settings-item__info">
+                  <span className="settings-item__label">High Contrast Mode</span>
+                  <span className="settings-item__desc">
+                    Enhance tile borders and contrast for outdoor visibility.
+                  </span>
+                </div>
+                <div className="settings-item__control">
+                  <button
+                    type="button"
+                    className={`ui-switch ${settings.highContrast ? "ui-switch--active" : ""}`}
+                    onClick={() => onToggle("highContrast")}
+                    aria-label="Toggle High Contrast Mode"
+                  >
+                    <span className="ui-switch__thumb" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="settings-item">
+                <div className="settings-item__info">
+                  <span className="settings-item__label">Larger Tile Text</span>
+                  <span className="settings-item__desc">
+                    Scale up letter tile typography for easier reading.
+                  </span>
+                </div>
+                <div className="settings-item__control">
+                  <button
+                    type="button"
+                    className={`ui-switch ${settings.largeText ? "ui-switch--active" : ""}`}
+                    onClick={() => onToggle("largeText")}
+                    aria-label="Toggle Large Text"
+                  >
+                    <span className="ui-switch__thumb" />
+                  </button>
+                </div>
+              </div>
+            </section>
           </div>
 
-          <div className="settings-item">
-            <div className="settings-item__info">
-              <span className="settings-item__label">Haptic Feedback</span>
-              <span className="settings-item__desc">
-                Tactile device vibrations when selecting tiles and solving words.
-              </span>
-            </div>
-            <div className="settings-item__control">
-              {settings.haptics ? (
-                <button
-                  type="button"
-                  className="button-secondary"
-                  style={{ padding: "4px 10px", fontSize: "0.74rem", minHeight: "28px" }}
-                  onClick={handleTestHaptics}
-                >
-                  Test Vibration
-                </button>
-              ) : null}
-              <button
-                type="button"
-                className={`ui-switch ${settings.haptics ? "ui-switch--active" : ""}`}
-                onClick={() => onToggle("haptics")}
-                aria-label="Toggle Haptic Feedback"
-              >
-                <span className="ui-switch__thumb" />
-              </button>
-            </div>
+          {/* Right Column: Privacy & Network */}
+          <div className="profile-dashboard__column">
+            {/* Privacy & Profile */}
+            <section className="settings-card">
+              <h3 className="settings-card__title">
+                <span>🔒</span> Privacy & Profile
+              </h3>
+
+              <div className="settings-item">
+                <div className="settings-item__info">
+                  <span className="settings-item__label">Show Earnings Publicly</span>
+                  <span className="settings-item__desc">
+                    Allow other players to view your total NIM rewards on the leaderboard.
+                  </span>
+                </div>
+                <div className="settings-item__control">
+                  <button
+                    type="button"
+                    className={`ui-switch ${settings.showEarnings ? "ui-switch--active" : ""}`}
+                    onClick={() => onToggle("showEarnings")}
+                    aria-label="Toggle Public Earnings"
+                  >
+                    <span className="ui-switch__thumb" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="settings-item">
+                <div className="settings-item__info">
+                  <span className="settings-item__label">Show Rank Publicly</span>
+                  <span className="settings-item__desc">
+                    Display your competitive rank badge next to your player alias.
+                  </span>
+                </div>
+                <div className="settings-item__control">
+                  <button
+                    type="button"
+                    className={`ui-switch ${settings.showRank ? "ui-switch--active" : ""}`}
+                    onClick={() => onToggle("showRank")}
+                    aria-label="Toggle Public Rank"
+                  >
+                    <span className="ui-switch__thumb" />
+                  </button>
+                </div>
+              </div>
+            </section>
+
+            {/* Network & Info */}
+            <section className="settings-card" style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)" }}>
+              <h3 className="settings-card__title">
+                <span>⚡</span> Protocol & Network Info
+              </h3>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", fontSize: "0.82rem" }}>
+                <div>
+                  <span style={{ color: "var(--ink-muted)", display: "block", fontSize: "0.72rem", textTransform: "uppercase", fontWeight: 700 }}>
+                    Network
+                  </span>
+                  <strong style={{ color: "var(--ink)" }}>Nimiq Mainnet (PoS)</strong>
+                </div>
+                <div>
+                  <span style={{ color: "var(--ink-muted)", display: "block", fontSize: "0.72rem", textTransform: "uppercase", fontWeight: 700 }}>
+                    Version
+                  </span>
+                  <strong style={{ color: "var(--ink)" }}>NimWord v1.0.0</strong>
+                </div>
+                <div>
+                  <span style={{ color: "var(--ink-muted)", display: "block", fontSize: "0.72rem", textTransform: "uppercase", fontWeight: 700 }}>
+                    Settlement
+                  </span>
+                  <strong style={{ color: "var(--good)" }}>Verified Onchain</strong>
+                </div>
+                <div>
+                  <span style={{ color: "var(--ink-muted)", display: "block", fontSize: "0.72rem", textTransform: "uppercase", fontWeight: 700 }}>
+                    Wallet API
+                  </span>
+                  <strong style={{ color: "var(--interactive-ink)" }}>Nimiq Hub v2</strong>
+                </div>
+              </div>
+            </section>
           </div>
-        </section>
-
-        {/* Accessibility & Visuals */}
-        <section className="settings-card">
-          <h3 className="settings-card__title">
-            <span>👁️</span> Accessibility & Display
-          </h3>
-
-          <div className="settings-item">
-            <div className="settings-item__info">
-              <span className="settings-item__label">High Contrast Mode</span>
-              <span className="settings-item__desc">
-                Enhance tile borders and increase contrast for maximum outdoor visibility.
-              </span>
-            </div>
-            <div className="settings-item__control">
-              <button
-                type="button"
-                className={`ui-switch ${settings.highContrast ? "ui-switch--active" : ""}`}
-                onClick={() => onToggle("highContrast")}
-                aria-label="Toggle High Contrast Mode"
-              >
-                <span className="ui-switch__thumb" />
-              </button>
-            </div>
-          </div>
-
-          <div className="settings-item">
-            <div className="settings-item__info">
-              <span className="settings-item__label">Larger Tile Text</span>
-              <span className="settings-item__desc">
-                Scale up letter tile typography for easier reading.
-              </span>
-            </div>
-            <div className="settings-item__control">
-              <button
-                type="button"
-                className={`ui-switch ${settings.largeText ? "ui-switch--active" : ""}`}
-                onClick={() => onToggle("largeText")}
-                aria-label="Toggle Large Text"
-              >
-                <span className="ui-switch__thumb" />
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* Privacy & Profile */}
-        <section className="settings-card">
-          <h3 className="settings-card__title">
-            <span>🔒</span> Privacy & Profile
-          </h3>
-
-          <div className="settings-item">
-            <div className="settings-item__info">
-              <span className="settings-item__label">Show Earnings Publicly</span>
-              <span className="settings-item__desc">
-                Allow other players to view your total NIM rewards on the leaderboard.
-              </span>
-            </div>
-            <div className="settings-item__control">
-              <button
-                type="button"
-                className={`ui-switch ${settings.showEarnings ? "ui-switch--active" : ""}`}
-                onClick={() => onToggle("showEarnings")}
-                aria-label="Toggle Public Earnings"
-              >
-                <span className="ui-switch__thumb" />
-              </button>
-            </div>
-          </div>
-
-          <div className="settings-item">
-            <div className="settings-item__info">
-              <span className="settings-item__label">Show Rank Publicly</span>
-              <span className="settings-item__desc">
-                Display your competitive rank badge next to your player alias.
-              </span>
-            </div>
-            <div className="settings-item__control">
-              <button
-                type="button"
-                className={`ui-switch ${settings.showRank ? "ui-switch--active" : ""}`}
-                onClick={() => onToggle("showRank")}
-                aria-label="Toggle Public Rank"
-              >
-                <span className="ui-switch__thumb" />
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* Network & Info */}
-        <section className="settings-card" style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)" }}>
-          <h3 className="settings-card__title">
-            <span>⚡</span> Protocol & Network Info
-          </h3>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", fontSize: "0.82rem" }}>
-            <div>
-              <span style={{ color: "var(--ink-muted)", display: "block", fontSize: "0.72rem", textTransform: "uppercase", fontWeight: 700 }}>
-                Network
-              </span>
-              <strong style={{ color: "var(--ink)" }}>Nimiq Mainnet (PoS)</strong>
-            </div>
-            <div>
-              <span style={{ color: "var(--ink-muted)", display: "block", fontSize: "0.72rem", textTransform: "uppercase", fontWeight: 700 }}>
-                Version
-              </span>
-              <strong style={{ color: "var(--ink)" }}>NimWord v1.0.0</strong>
-            </div>
-            <div>
-              <span style={{ color: "var(--ink-muted)", display: "block", fontSize: "0.72rem", textTransform: "uppercase", fontWeight: 700 }}>
-                Settlement
-              </span>
-              <strong style={{ color: "var(--good)" }}>Verified Onchain</strong>
-            </div>
-            <div>
-              <span style={{ color: "var(--ink-muted)", display: "block", fontSize: "0.72rem", textTransform: "uppercase", fontWeight: 700 }}>
-                Wallet API
-              </span>
-              <strong style={{ color: "var(--interactive-ink)" }}>Nimiq Hub v2</strong>
-            </div>
-          </div>
-        </section>
+        </div>
       </div>
     </main>
   );

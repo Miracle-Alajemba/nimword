@@ -110,13 +110,29 @@ export default function App() {
   const [dailyNextAvailableAt, setDailyNextAvailableAt] = useState(null);
   const [roomSyncStatus, setRoomSyncStatus] = useState("idle");
   const inviteRoomJoinAttemptedRef = useRef(false);
-  const [settings, setSettings] = useState({
-    sound: true,
-    haptics: true,
-    highContrast: false,
-    largeText: false,
-    showEarnings: true,
-    showRank: true,
+  const [settings, setSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem("nimword_settings");
+      if (saved) {
+        return {
+          sound: true,
+          haptics: true,
+          highContrast: false,
+          largeText: false,
+          showEarnings: true,
+          showRank: true,
+          ...JSON.parse(saved),
+        };
+      }
+    } catch {}
+    return {
+      sound: true,
+      haptics: true,
+      highContrast: false,
+      largeText: false,
+      showEarnings: true,
+      showRank: true,
+    };
   });
   const {
     walletAddress,
@@ -739,10 +755,40 @@ export default function App() {
   }
 
   function toggleSetting(key) {
-    setSettings((current) => ({
-      ...current,
-      [key]: !current[key],
-    }));
+    setSettings((current) => {
+      const updated = {
+        ...current,
+        [key]: !current[key],
+      };
+      try {
+        localStorage.setItem("nimword_settings", JSON.stringify(updated));
+      } catch {}
+
+      // Interactive feedback
+      if (key === "sound" && updated.sound) {
+        try {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) {
+            const ctx = new AudioCtx();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+            gain.gain.setValueAtTime(0.12, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.12);
+          }
+        } catch {}
+      } else if (key === "haptics" && updated.haptics) {
+        if (typeof window !== "undefined" && window.navigator && window.navigator.vibrate) {
+          window.navigator.vibrate([40, 50, 40]);
+        }
+      }
+
+      return updated;
+    });
   }
 
   useEffect(() => {
