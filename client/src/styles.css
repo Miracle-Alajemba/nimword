@@ -3648,6 +3648,7 @@ button:hover:not(:disabled),
   background: var(--interactive-press) !important;
   border-color: var(--interactive-press) !important;
   box-shadow: 0 1px 0 var(--interactive-press), 0 6px 18px oklch(0.481 0.1164 243.72 / 0.32) !important;
+  color: #ffffff !important;
   /* Fix 4 lift. :not(:disabled) so a disabled button never appears to react. */
   transform: translateY(-2px) !important;
   transition: transform 120ms cubic-bezier(0.34, 1.56, 0.64, 1) !important;
@@ -3658,6 +3659,7 @@ button:hover:not(:disabled),
 button:active:not(:disabled),
 .submit-panel button:first-of-type:active {
   box-shadow: 0 1px 0 var(--interactive-press) !important;
+  color: #ffffff !important;
   transform: translateY(0) scale(0.97) !important;
 }
 
@@ -3698,6 +3700,7 @@ button:disabled,
   box-shadow: none !important;
   color: var(--ink-2) !important;
   font-weight: 700 !important;
+  transition: all 160ms ease !important;
 }
 
 .button-secondary:hover,
@@ -3707,11 +3710,11 @@ button:disabled,
 .theme-toggle__option:hover,
 .submit-panel button:last-of-type:hover,
 .submit-panel .button-secondary:hover {
-  background: var(--surface-sunk) !important;
+  background: var(--interactive) !important;
   border-color: var(--interactive) !important;
-  box-shadow: none !important;
-  color: var(--ink) !important;
-  transform: none !important;
+  box-shadow: 0 4px 14px -2px oklch(0.5849 0.1438 244.29 / 0.35) !important;
+  color: #ffffff !important;
+  transform: translateY(-2px) !important;
 }
 
 /* Every interactive thing gets the same visible focus ring — one of the
