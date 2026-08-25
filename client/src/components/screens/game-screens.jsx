@@ -162,7 +162,7 @@ export function HomeScreen({
 
     // Strict English dictionary solution checking
     if (!currentPreset.solutions.has(upper)) {
-      setSampleFeedback({ text: `"${upper}" is not a recognized English word!`, type: "error" });
+      setSampleFeedback({ text: "This is not a valid word", type: "error" });
       return;
     }
 
