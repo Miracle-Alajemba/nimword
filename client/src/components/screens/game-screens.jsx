@@ -234,12 +234,12 @@ export function HomeScreen({
               </button>
             </div>
 
-            <div style={{ display: "flex", justifyContent: "center", marginTop: "0.35rem" }}>
+            <div style={{ display: "flex", justifyContent: "center", margin: "0.15rem 0 0.1rem" }}>
               <button
                 type="button"
                 className="ghost-button"
                 onClick={() => setShowRulesModal(true)}
-                style={{ fontSize: "0.84rem", padding: "6px 12px", minHeight: "32px", color: "var(--ink-2)" }}
+                style={{ fontSize: "0.84rem", padding: "5px 14px", minHeight: "30px", color: "var(--ink-2)", display: "inline-flex", alignItems: "center", gap: "5px" }}
               >
                 📖 How to Play & Rules
               </button>
@@ -340,29 +340,14 @@ export function HomeScreen({
             </div>
           ) : null}
 
-          <div className="game-info-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.65rem", width: "100%", margin: "0.75rem 0" }}>
-            <div className="game-info-cell" style={{ padding: "0.7rem 1rem", fontSize: "0.85rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
-              <span style={{ color: "var(--ink)", fontWeight: 800 }}>TIMER: 60S</span>
-            </div>
-            <div className="game-info-cell" style={{ padding: "0.7rem 1rem", fontSize: "0.85rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
-              <span style={{ color: "var(--ink)", fontWeight: 800 }}>STAKE: 1 NIM</span>
-            </div>
-            <div className="game-info-cell" style={{ padding: "0.7rem 1rem", fontSize: "0.85rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
-              <span style={{ color: "var(--ink)", fontWeight: 800 }}>PLAYERS: 2-5</span>
-            </div>
-            <div className="game-info-cell" style={{ padding: "0.7rem 1rem", fontSize: "0.85rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
-              <span style={{ color: "var(--ink)", fontWeight: 800 }}>POOL: 90% SHARED</span>
-            </div>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", width: "100%", marginTop: "0.75rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", width: "100%", marginTop: "0.6rem", marginBottom: "0.75rem" }}>
             <button
               type="button"
               className="button-secondary"
               style={{ minHeight: "44px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               onClick={onOpenProfile}
             >
-              View Profile
+              👤 View Profile
             </button>
             <button
               type="button"
@@ -370,41 +355,43 @@ export function HomeScreen({
               style={{ minHeight: "44px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               onClick={onOpenSettings}
             >
-              Settings
+              ⚙️ Settings
             </button>
           </div>
 
+          {/* Symmetrical Bottom Scoring Matrix Banner */}
           <div
             className="score-matrix-card"
             style={{
-              background: "var(--surface-sunk)",
-              border: "1px solid var(--rule)",
-              borderRadius: "12px",
-              padding: "0.65rem 0.95rem",
+              background: "var(--surface)",
+              border: "1px solid var(--rule-strong)",
+              borderRadius: "14px",
+              padding: "0.75rem 1rem",
+              boxShadow: "0 4px 14px -4px oklch(0.2737 0.068 276.29 / 0.08)",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem", fontSize: "0.78rem" }}>
-              <strong style={{ color: "var(--interactive-ink)", display: "flex", alignItems: "center", gap: "5px" }}>
-                ⚡ WORD SCORING MATRIX
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem", fontSize: "0.78rem" }}>
+              <strong style={{ color: "var(--interactive-ink)", display: "flex", alignItems: "center", gap: "5px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+                ⚡ Word Scoring Matrix
               </strong>
-              <span style={{ color: "var(--good)", fontWeight: 800 }}>✓ NIMIQ PAY VERIFIED</span>
+              <span style={{ color: "var(--good)", fontWeight: 800, fontSize: "0.74rem" }}>✓ NIMIQ PAY VERIFIED</span>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.4rem", textAlign: "center", fontSize: "0.76rem" }}>
-              <div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.45rem", textAlign: "center" }}>
+              <div style={{ background: "var(--surface-sunk)", padding: "4px", borderRadius: "6px", border: "1px solid var(--rule)" }}>
                 <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>3 LTRS</span>
-                <strong style={{ color: "var(--ink)" }}>3 PTS</strong>
+                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.84rem" }}>3 PTS</strong>
               </div>
-              <div>
+              <div style={{ background: "var(--surface-sunk)", padding: "4px", borderRadius: "6px", border: "1px solid var(--rule)" }}>
                 <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>4 LTRS</span>
-                <strong style={{ color: "var(--ink)" }}>5 PTS</strong>
+                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.84rem" }}>5 PTS</strong>
               </div>
-              <div>
+              <div style={{ background: "var(--surface-sunk)", padding: "4px", borderRadius: "6px", border: "1px solid var(--rule)" }}>
                 <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>5 LTRS</span>
-                <strong style={{ color: "var(--ink)" }}>8 PTS</strong>
+                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.84rem" }}>8 PTS</strong>
               </div>
-              <div>
+              <div style={{ background: "var(--surface-sunk)", padding: "4px", borderRadius: "6px", border: "1px solid var(--rule)" }}>
                 <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>6+ LTRS</span>
-                <strong style={{ color: "var(--ink)" }}>12 PTS</strong>
+                <strong style={{ color: "var(--interactive-ink)", fontFamily: "var(--font-mono)", fontSize: "0.84rem" }}>12 PTS</strong>
               </div>
             </div>
           </div>
