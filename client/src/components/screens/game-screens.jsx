@@ -55,6 +55,44 @@ function buildWordFromSelection(sourceWord, selectedIndexes) {
   return selectedIndexes.map((index) => letters[index] || "").join("").toLowerCase();
 }
 
+const SAMPLE_PRESETS = [
+  {
+    targetWord: "NIMWORD",
+    letters: ["N", "I", "M", "W", "O", "R", "D"],
+    solutions: new Set([
+      "WORD", "WORM", "MIND", "IRON", "DROWN", "WIND", "DORM", "NORM", "DOWN",
+      "ROWN", "MOD", "ROW", "WIN", "ROD", "NIM", "WON", "NOW", "DIM", "RIM", "MID", "NIMWORD"
+    ]),
+  },
+  {
+    targetWord: "VICTORY",
+    letters: ["V", "I", "C", "T", "O", "R", "Y"],
+    solutions: new Set([
+      "TOY", "CITY", "RIOT", "TRIO", "VICTOR", "VICTORY", "ROT", "CRY", "TRY", "COY", "RIVET"
+    ]),
+  },
+  {
+    targetWord: "CRYPTO",
+    letters: ["C", "R", "Y", "P", "T", "O"],
+    solutions: new Set([
+      "CRYPTO", "CROP", "PORT", "ROPY", "TYPO", "COPY", "OPT", "PRO", "TOP", "ROT", "TOY", "COT"
+    ]),
+  },
+  {
+    targetWord: "GENESIS",
+    letters: ["G", "E", "N", "E", "S", "I", "S"],
+    solutions: new Set([
+      "GENE", "SEEN", "SIGN", "SING", "SINE", "GENES", "SENSE", "SEINES", "GENESIS", "SEE", "SIN"
+    ]),
+  },
+];
+
+const LETTER_POINTS = {
+  A: 1, B: 3, C: 3, D: 2, E: 1, F: 4, G: 2, H: 4, I: 1, J: 8,
+  K: 5, L: 1, M: 3, N: 1, O: 1, P: 3, Q: 10, R: 1, S: 1, T: 1,
+  U: 1, V: 4, W: 4, X: 8, Y: 4, Z: 10
+};
+
 export function HomeScreen({
   gameRules = [],
   onStartPractice,
@@ -74,19 +112,25 @@ export function HomeScreen({
   onDisconnectWallet,
   roomError,
 }) {
+  const [presetIndex, setPresetIndex] = useState(0);
+  const currentPreset = SAMPLE_PRESETS[presetIndex];
+  const sampleLetters = currentPreset.letters;
+
   const [sampleIndexes, setSampleIndexes] = useState([]);
   const [sampleScore, setSampleScore] = useState(0);
   const [sampleWords, setSampleWords] = useState([]);
   const [sampleFeedback, setSampleFeedback] = useState(null);
   const [showRulesModal, setShowRulesModal] = useState(false);
 
-  const sampleLetters = "BLOCKCHAIN".split("");
   const sampleCandidate = sampleIndexes.map((i) => sampleLetters[i]).join("");
 
-  const VALID_SAMPLE_DICTIONARY = new Set([
-    "BLOCK", "CHAIN", "COIN", "LACK", "LOCK", "BACK", "BANK", "LOAN", "CHIN",
-    "BACON", "CLAN", "BLACK", "CABIN", "HALO", "COLON", "ALIBI", "ACOL"
-  ]);
+  function handleNextPreset() {
+    setPresetIndex((prev) => (prev + 1) % SAMPLE_PRESETS.length);
+    setSampleIndexes([]);
+    setSampleFeedback(null);
+    setSampleScore(0);
+    setSampleWords([]);
+  }
 
   function handleToggleSampleTile(index) {
     setSampleIndexes((prev) =>
@@ -111,7 +155,7 @@ export function HomeScreen({
     else if (len === 4) pts = 5;
     else if (len === 3) pts = 3;
 
-    if (pts > 0 && (VALID_SAMPLE_DICTIONARY.has(upper) || upper.length >= 3)) {
+    if (pts > 0 && (currentPreset.solutions.has(upper) || upper.length >= 3)) {
       setSampleScore((prev) => prev + pts);
       setSampleWords((prev) => [{ word: upper, points: pts }, ...prev]);
       setSampleFeedback({ text: `+${pts} pts!`, type: "success" });
@@ -256,38 +300,126 @@ export function HomeScreen({
         </div>
 
         <div className="hero-card hero-card--interactive">
-          <div className="hero-card__top">
+          <div className="hero-card__top" style={{ alignItems: "center", marginBottom: "0.4rem" }}>
             <div>
-              <p className="hero-card__label" style={{ fontSize: "0.82rem", marginBottom: "0.3rem" }}>
-                <span aria-hidden="true">🎲</span> Interactive Sample Round
-              </p>
-              <h2 style={{ fontSize: "1.75rem", margin: 0 }}>BLOCKCHAIN</h2>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "0.25rem" }}>
+                <span
+                  style={{
+                    width: "7px",
+                    height: "7px",
+                    borderRadius: "50%",
+                    backgroundColor: "var(--interactive)",
+                    boxShadow: "0 0 6px var(--interactive)",
+                    display: "inline-block",
+                  }}
+                />
+                <p className="hero-card__label" style={{ fontSize: "0.76rem", margin: 0, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                  Live Interactive Demo
+                </p>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <h2 style={{ fontSize: "1.75rem", margin: 0, fontFamily: "var(--font-game)", letterSpacing: "0.04em", color: "var(--ink)" }}>
+                  {currentPreset.targetWord}
+                </h2>
+                <button
+                  type="button"
+                  onClick={handleNextPreset}
+                  title="Try another word"
+                  style={{
+                    padding: "4px 8px",
+                    fontSize: "0.76rem",
+                    minHeight: "26px",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    borderRadius: "8px",
+                    background: "var(--surface-sunk)",
+                    border: "1px solid var(--rule)",
+                    color: "var(--ink-2)",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  🔄 Next Word
+                </button>
+              </div>
             </div>
-            <div className="hero-card__score-badge" style={{ padding: "0.5rem 0.9rem" }}>
-              <span style={{ fontSize: "0.72rem" }}>Demo Score</span>
-              <strong style={{ fontSize: "1.15rem" }}>{sampleScore} pts</strong>
+            <div
+              className="hero-card__score-badge"
+              style={{
+                padding: "0.45rem 0.85rem",
+                background: "var(--surface-sunk)",
+                borderRadius: "12px",
+                border: "1px solid var(--rule-strong)",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.06)",
+                textAlign: "right",
+              }}
+            >
+              <span style={{ fontSize: "0.68rem", fontWeight: 800, color: "var(--ink-muted)", textTransform: "uppercase" }}>Demo Score</span>
+              <strong style={{ fontSize: "1.15rem", color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)" }}>
+                🪙 {sampleScore} pts
+              </strong>
             </div>
           </div>
 
-          <div className="sample-rack-wrapper" style={{ marginBottom: "0.8rem", marginTop: "0.6rem" }}>
-            <p className="field-hint" style={{ fontSize: "0.82rem", marginBottom: "8px" }}>
+          <div className="sample-rack-wrapper" style={{ marginBottom: "0.75rem", marginTop: "0.5rem" }}>
+            <p className="field-hint" style={{ fontSize: "0.8rem", marginBottom: "8px", color: "var(--ink-2)" }}>
               <span aria-hidden="true">👆</span> Tap letter tiles below to build words:
             </p>
-            <div className="letter-rack" style={{ gap: "0.55rem" }}>
+            <div className="letter-rack" style={{ display: "flex", justifyContent: "center", gap: "0.45rem", flexWrap: "wrap" }}>
               {sampleLetters.map((letter, index) => {
                 const isSelected = sampleIndexes.includes(index);
+                const pointValue = LETTER_POINTS[letter] || 1;
                 return (
                   <button
-                    key={`${letter}-${index}`}
+                    key={`${currentPreset.targetWord}-${letter}-${index}`}
                     type="button"
                     className={`letter-tile letter-tile--interactive ${isSelected ? "letter-tile--selected" : ""}`}
-                    style={{ height: "3rem", width: "3rem", fontSize: "1.3rem", borderRadius: "10px" }}
+                    style={{
+                      position: "relative",
+                      height: "3.15rem",
+                      width: "3.15rem",
+                      fontSize: "1.3rem",
+                      fontWeight: 900,
+                      borderRadius: "12px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontFamily: "var(--font-game, var(--font-sans))",
+                      boxShadow: isSelected
+                        ? "0 0 12px var(--interactive), 0 4px 10px rgba(0,0,0,0.15)"
+                        : "0 3px 8px rgba(0,0,0,0.1)",
+                      border: isSelected
+                        ? "2px solid var(--interactive)"
+                        : "1px solid var(--rule-strong)",
+                      background: isSelected
+                        ? "linear-gradient(135deg, var(--interactive) 0%, oklch(0.6932 0.1245 178.48) 100%)"
+                        : "var(--surface)",
+                      color: isSelected ? "#ffffff" : "var(--ink)",
+                      cursor: "pointer",
+                      transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                    }}
                     onClick={(event) => {
                       animateTileTap(event.currentTarget);
                       handleToggleSampleTile(index);
                     }}
                   >
-                    {letter}
+                    <span>{letter}</span>
+                    <span
+                      style={{
+                        position: "absolute",
+                        bottom: "2px",
+                        right: "4px",
+                        fontSize: "0.6rem",
+                        fontWeight: 800,
+                        opacity: isSelected ? 0.9 : 0.65,
+                        color: isSelected ? "#ffffff" : "var(--nq-gold-deep, var(--ink-2))",
+                        fontFamily: "var(--font-mono)",
+                        lineHeight: 1,
+                      }}
+                    >
+                      {pointValue}
+                    </span>
                   </button>
                 );
               })}
@@ -295,10 +427,27 @@ export function HomeScreen({
           </div>
 
           <div className="sample-builder-box" style={{ padding: "0.75rem 1.1rem", minHeight: "52px", marginBottom: "0.8rem", borderRadius: "12px" }}>
-            <div className="sample-builder-box__display">
-              <span className="sample-builder-box__placeholder" style={{ fontSize: "1.05rem", fontWeight: 800, letterSpacing: "0.04em" }}>
-                {sampleCandidate || "TAP TILES ABOVE"}
-              </span>
+            <div className="sample-builder-box__display" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              {sampleCandidate ? (
+                <>
+                  <span style={{ fontSize: "1.15rem", fontWeight: 900, letterSpacing: "0.06em", color: "var(--ink)", fontFamily: "var(--font-game)" }}>
+                    {sampleCandidate}
+                  </span>
+                  {sampleCandidate.length >= 3 ? (
+                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "var(--good)", background: "rgba(34, 197, 94, 0.15)", padding: "2px 8px", borderRadius: "6px" }}>
+                      +{sampleCandidate.length >= 6 ? 12 : sampleCandidate.length === 5 ? 8 : sampleCandidate.length === 4 ? 5 : 3} pts
+                    </span>
+                  ) : (
+                    <span style={{ fontSize: "0.72rem", color: "var(--ink-muted)" }}>
+                      (min 3 letters)
+                    </span>
+                  )}
+                </>
+              ) : (
+                <span className="sample-builder-box__placeholder" style={{ fontSize: "0.92rem", fontWeight: 800, letterSpacing: "0.04em" }}>
+                  TAP TILES ABOVE TO BUILD WORDS
+                </span>
+              )}
             </div>
             <div className="sample-builder-box__actions" style={{ gap: "0.5rem" }}>
               <button
