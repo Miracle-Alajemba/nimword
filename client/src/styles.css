@@ -353,18 +353,18 @@ button:disabled {
   align-items: center;
   display: inline-flex;
   flex-direction: row;
-  gap: 0.9rem;
-  margin-bottom: 0.95rem;
+  gap: 0.45rem;
+  margin-bottom: 0.85rem;
 }
 
 .hero-logo__img {
-  border-radius: 16px;
+  border-radius: 18px;
   display: block;
   flex-shrink: 0;
-  filter: drop-shadow(0 4px 14px oklch(0.7924 0.1593 85.61 / 0.4));
-  height: 76px;
+  filter: drop-shadow(0 4px 16px oklch(0.7924 0.1593 85.61 / 0.42));
+  height: 88px;
   object-fit: contain;
-  width: 76px;
+  width: 88px;
 }
 
 .hero-logo__name {
@@ -374,7 +374,7 @@ button:disabled {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: var(--font-sans);
-  font-size: 2.65rem !important;
+  font-size: 2.85rem !important;
   font-weight: 900 !important;
   letter-spacing: -0.02em !important;
   line-height: 1 !important;
@@ -3840,22 +3840,22 @@ small,
     align-items: center;
     display: inline-flex;
     flex-direction: row;
-    gap: 0.75rem;
+    gap: 0.4rem;
     justify-content: flex-start;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.75rem;
   }
 
   .hero-logo__img {
-    border-radius: 14px;
-    filter: drop-shadow(0 3px 10px oklch(0.7924 0.1593 85.61 / 0.35));
-    height: 60px;
+    border-radius: 15px;
+    filter: drop-shadow(0 3px 12px oklch(0.7924 0.1593 85.61 / 0.38));
+    height: 68px;
     margin-right: 0;
     object-fit: contain;
-    width: 60px;
+    width: 68px;
   }
 
   .hero-logo__name {
-    font-size: 2.15rem !important;
+    font-size: 2.25rem !important;
     letter-spacing: -0.02em !important;
     line-height: 1 !important;
     display: flex;
