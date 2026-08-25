@@ -216,16 +216,16 @@ export function HomeScreen({
           </p>
 
           <div className="feature-strip" style={{ marginBottom: "0.85rem", gap: "0.55rem" }}>
-            <div className="feature-pill">⚡ 60s Rounds</div>
-            <div className="feature-pill">🪙 {stakeAmount} NIM Entry</div>
-            <div className="feature-pill">🏆 90% Win Pool</div>
+            <div className="feature-pill">60s Rounds</div>
+            <div className="feature-pill">{stakeAmount} NIM Entry</div>
+            <div className="feature-pill">90% Win Pool</div>
           </div>
 
           <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.75rem", width: "100%", margin: 0 }}>
             {/* Stake Selector */}
             <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "12px", padding: "12px 14px", display: "flex", flexDirection: "column", gap: "8px" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.86rem", color: "var(--ink-2)" }}>
-                <span><span aria-hidden="true">💰</span> Choose Stake Amount:</span>
+                <span>Stake Amount:</span>
                 <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
                   {stakeAmount} NIM
                 </strong>
@@ -263,7 +263,7 @@ export function HomeScreen({
                 onClick={() => onQuickMatch(stakeAmount)}
                 style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.94rem", fontWeight: 800, borderRadius: "12px" }}
               >
-                ⚡ {joinLabel}
+                {joinLabel}
               </button>
               <button
                 type="button"
@@ -271,7 +271,7 @@ export function HomeScreen({
                 onClick={onOpenDailyChallenge}
                 style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               >
-                ⭐ Daily Challenge
+                Daily Challenge
               </button>
               <button
                 type="button"
@@ -279,7 +279,7 @@ export function HomeScreen({
                 onClick={onStartPractice}
                 style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               >
-                🎯 Practice Arena
+                Practice Arena
               </button>
               <button
                 type="button"
@@ -287,7 +287,7 @@ export function HomeScreen({
                 onClick={onOpenLeaderboard}
                 style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               >
-                🏆 Leaderboard
+                Leaderboard
               </button>
             </div>
 
@@ -298,7 +298,7 @@ export function HomeScreen({
                 onClick={() => setShowRulesModal(true)}
                 style={{ fontSize: "0.84rem", padding: "5px 14px", minHeight: "30px", color: "var(--ink-2)", display: "inline-flex", alignItems: "center", gap: "5px" }}
               >
-                📖 How to Play & Rules
+                How to Play & Rules
               </button>
             </div>
           </div>
@@ -363,7 +363,7 @@ export function HomeScreen({
                     transition: "all 0.15s ease",
                   }}
                 >
-                  🔄 Next Word
+                  Next Word
                 </button>
               </div>
             </div>
@@ -386,7 +386,7 @@ export function HomeScreen({
                 Demo Score
               </span>
               <strong style={{ fontSize: "1.2rem", color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", lineHeight: 1.1 }}>
-                🪙 {sampleScore} pts
+                {sampleScore} pts
               </strong>
             </div>
           </div>
@@ -405,7 +405,7 @@ export function HomeScreen({
             }}
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.76rem", color: "var(--ink-muted)", padding: "0 2px" }}>
-              <span><span aria-hidden="true">👆</span> Tap letter tiles to build:</span>
+              <span>Tap tiles to form words:</span>
               <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.72rem" }}>7 TILES AVAILABLE</span>
             </div>
 
@@ -451,12 +451,12 @@ export function HomeScreen({
                     <span
                       style={{
                         position: "absolute",
-                        bottom: "2px",
-                        right: "4px",
-                        fontSize: "0.62rem",
+                        bottom: "3px",
+                        right: "5px",
+                        fontSize: "0.6rem",
                         fontWeight: 800,
-                        opacity: isSelected ? 0.95 : 0.65,
-                        color: isSelected ? "#ffffff" : "var(--nq-gold-deep, var(--ink-2))",
+                        opacity: isSelected ? 0.9 : 0.65,
+                        color: isSelected ? "#ffffff" : "var(--ink-2)",
                         fontFamily: "var(--font-mono)",
                         lineHeight: 1,
                       }}
@@ -504,7 +504,7 @@ export function HomeScreen({
                 </>
               ) : (
                 <span className="sample-builder-box__placeholder" style={{ fontSize: "0.86rem", fontWeight: 700, letterSpacing: "0.02em", color: "var(--ink-muted)" }}>
-                  ✨ Tap tiles above to construct words...
+                  Tap tiles above to construct words...
                 </span>
               )}
             </div>
@@ -525,7 +525,7 @@ export function HomeScreen({
                 onClick={handleTestSampleWord}
                 disabled={!sampleCandidate}
               >
-                ⚡ Submit Word
+                Submit Word
               </button>
             </div>
           </div>
@@ -561,7 +561,7 @@ export function HomeScreen({
               style={{ minHeight: "46px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               onClick={onOpenProfile}
             >
-              👤 View Profile
+              View Profile
             </button>
             <button
               type="button"
@@ -569,7 +569,7 @@ export function HomeScreen({
               style={{ minHeight: "46px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               onClick={onOpenSettings}
             >
-              ⚙️ Settings
+              Settings
             </button>
           </div>
 
@@ -586,7 +586,7 @@ export function HomeScreen({
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem", fontSize: "0.78rem" }}>
               <strong style={{ color: "var(--interactive-ink)", display: "flex", alignItems: "center", gap: "5px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
-                ⚡ Word Scoring Matrix
+                Word Scoring Matrix
               </strong>
               <span style={{ color: "var(--good)", fontWeight: 800, fontSize: "0.74rem" }}>✓ NIMIQ PAY VERIFIED</span>
             </div>
