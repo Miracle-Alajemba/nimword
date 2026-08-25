@@ -219,6 +219,7 @@ export function HomeScreen({
             <div className="feature-pill">60s Rounds</div>
             <div className="feature-pill">🪙 {stakeAmount} NIM Entry</div>
             <div className="feature-pill">90% Win Pool</div>
+            <div className="feature-pill feature-pill--mobile-only">Instant Payouts</div>
           </div>
 
           <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.75rem", width: "100%", margin: 0 }}>
