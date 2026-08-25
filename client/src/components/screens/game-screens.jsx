@@ -154,43 +154,43 @@ export function HomeScreen({
             <h1 className="hero-logo__name">NimWord</h1>
           </div>
 
-          <p className="lede lede--tagline" style={{ fontSize: "1rem", margin: "0 0 0.5rem" }}>
+          <p className="lede lede--tagline" style={{ fontSize: "1.05rem", margin: "0 0 0.75rem" }}>
             Form words. Beat the clock. Win NIM.
           </p>
 
-          <div className="feature-strip" style={{ marginBottom: "0.65rem", gap: "0.4rem" }}>
+          <div className="feature-strip" style={{ marginBottom: "0.85rem", gap: "0.55rem" }}>
             <div className="feature-pill">⚡ 60s Rounds</div>
             <div className="feature-pill">🪙 {stakeAmount} NIM Entry</div>
             <div className="feature-pill">🏆 90% Win Pool</div>
           </div>
 
-          <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.55rem", width: "100%", margin: 0 }}>
+          <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.75rem", width: "100%", margin: 0 }}>
             {/* Stake Selector */}
-            <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "10px", padding: "8px 12px", display: "flex", flexDirection: "column", gap: "5px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.8rem", color: "var(--ink-2)" }}>
-                <span><span aria-hidden="true">💰</span> Entry Stake:</span>
-                <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.88rem" }}>
+            <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "12px", padding: "12px 14px", display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.86rem", color: "var(--ink-2)" }}>
+                <span><span aria-hidden="true">💰</span> Choose Stake Amount:</span>
+                <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
                   {stakeAmount} NIM
                 </strong>
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "5px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px" }}>
                 {STAKE_PRESETS.map((amt) => (
                   <button
                     key={amt}
                     type="button"
                     onClick={() => setStakeAmount(amt)}
                     style={{
-                      padding: "6px 2px",
-                      fontSize: "0.82rem",
+                      padding: "8px 4px",
+                      fontSize: "0.9rem",
                       fontWeight: 800,
                       background: stakeAmount === amt ? "var(--nq-gold)" : "var(--surface)",
                       border: stakeAmount === amt ? "1px solid oklch(0.72 0.16 85.61)" : "1px solid var(--rule)",
                       color: stakeAmount === amt ? "#1A1200" : "var(--ink)",
-                      borderRadius: "6px",
+                      borderRadius: "8px",
                       cursor: "pointer",
                       transition: "all 0.15s ease",
-                      minHeight: "32px",
-                      boxShadow: stakeAmount === amt ? "0 2px 6px oklch(0.7924 0.1593 85.61 / 0.25)" : "none",
+                      minHeight: "38px",
+                      boxShadow: stakeAmount === amt ? "0 2px 8px oklch(0.7924 0.1593 85.61 / 0.28)" : "none",
                     }}
                   >
                     {amt}
@@ -199,12 +199,12 @@ export function HomeScreen({
               </div>
             </div>
 
-            {/* 2x2 Balanced Action Grid (Non-stretched) */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.55rem", width: "100%" }}>
+            {/* 2x2 Balanced Action Grid */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", width: "100%" }}>
               <button
                 type="button"
                 onClick={() => onQuickMatch(stakeAmount)}
-                style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.9rem", fontWeight: 800 }}
+                style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.94rem", fontWeight: 800, borderRadius: "12px" }}
               >
                 ⚡ {joinLabel}
               </button>
@@ -212,7 +212,7 @@ export function HomeScreen({
                 type="button"
                 className="button-secondary"
                 onClick={onOpenDailyChallenge}
-                style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.86rem" }}
+                style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               >
                 ⭐ Daily Challenge
               </button>
@@ -220,7 +220,7 @@ export function HomeScreen({
                 type="button"
                 className="button-secondary"
                 onClick={onStartPractice}
-                style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.86rem" }}
+                style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               >
                 🎯 Practice Arena
               </button>
@@ -228,18 +228,18 @@ export function HomeScreen({
                 type="button"
                 className="button-secondary button-accent-blue"
                 onClick={onOpenLeaderboard}
-                style={{ minHeight: "42px", padding: "0.6rem 0.85rem", fontSize: "0.86rem" }}
+                style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               >
                 🏆 Leaderboard
               </button>
             </div>
 
-            <div style={{ display: "flex", justifyContent: "center", marginTop: "0.2rem" }}>
+            <div style={{ display: "flex", justifyContent: "center", marginTop: "0.35rem" }}>
               <button
                 type="button"
                 className="ghost-button"
                 onClick={() => setShowRulesModal(true)}
-                style={{ fontSize: "0.8rem", padding: "4px 10px", minHeight: "28px", color: "var(--ink-2)" }}
+                style={{ fontSize: "0.84rem", padding: "6px 12px", minHeight: "32px", color: "var(--ink-2)" }}
               >
                 📖 How to Play & Rules
               </button>
@@ -258,22 +258,22 @@ export function HomeScreen({
         <div className="hero-card hero-card--interactive">
           <div className="hero-card__top">
             <div>
-              <p className="hero-card__label" style={{ fontSize: "0.8rem", marginBottom: "0.25rem" }}>
+              <p className="hero-card__label" style={{ fontSize: "0.82rem", marginBottom: "0.3rem" }}>
                 <span aria-hidden="true">🎲</span> Interactive Sample Round
               </p>
-              <h2 style={{ fontSize: "1.65rem", margin: 0 }}>BLOCKCHAIN</h2>
+              <h2 style={{ fontSize: "1.75rem", margin: 0 }}>BLOCKCHAIN</h2>
             </div>
-            <div className="hero-card__score-badge" style={{ padding: "0.45rem 0.8rem" }}>
-              <span style={{ fontSize: "0.7rem" }}>Demo Score</span>
-              <strong style={{ fontSize: "1.05rem" }}>{sampleScore} pts</strong>
+            <div className="hero-card__score-badge" style={{ padding: "0.5rem 0.9rem" }}>
+              <span style={{ fontSize: "0.72rem" }}>Demo Score</span>
+              <strong style={{ fontSize: "1.15rem" }}>{sampleScore} pts</strong>
             </div>
           </div>
 
-          <div className="sample-rack-wrapper" style={{ marginBottom: "0.6rem" }}>
-            <p className="field-hint" style={{ fontSize: "0.78rem", marginBottom: "6px" }}>
+          <div className="sample-rack-wrapper" style={{ marginBottom: "0.8rem", marginTop: "0.6rem" }}>
+            <p className="field-hint" style={{ fontSize: "0.82rem", marginBottom: "8px" }}>
               <span aria-hidden="true">👆</span> Tap letter tiles below to build words:
             </p>
-            <div className="letter-rack" style={{ gap: "0.45rem" }}>
+            <div className="letter-rack" style={{ gap: "0.55rem" }}>
               {sampleLetters.map((letter, index) => {
                 const isSelected = sampleIndexes.includes(index);
                 return (
@@ -281,7 +281,7 @@ export function HomeScreen({
                     key={`${letter}-${index}`}
                     type="button"
                     className={`letter-tile letter-tile--interactive ${isSelected ? "letter-tile--selected" : ""}`}
-                    style={{ height: "2.75rem", width: "2.75rem", fontSize: "1.2rem" }}
+                    style={{ height: "3rem", width: "3rem", fontSize: "1.3rem", borderRadius: "10px" }}
                     onClick={(event) => {
                       animateTileTap(event.currentTarget);
                       handleToggleSampleTile(index);
@@ -294,17 +294,17 @@ export function HomeScreen({
             </div>
           </div>
 
-          <div className="sample-builder-box" style={{ padding: "0.5rem 0.85rem", minHeight: "44px", marginBottom: "0.6rem" }}>
+          <div className="sample-builder-box" style={{ padding: "0.75rem 1.1rem", minHeight: "52px", marginBottom: "0.8rem", borderRadius: "12px" }}>
             <div className="sample-builder-box__display">
-              <span className="sample-builder-box__placeholder" style={{ fontSize: "0.92rem" }}>
+              <span className="sample-builder-box__placeholder" style={{ fontSize: "1.05rem", fontWeight: 800, letterSpacing: "0.04em" }}>
                 {sampleCandidate || "TAP TILES ABOVE"}
               </span>
             </div>
-            <div className="sample-builder-box__actions" style={{ gap: "0.4rem" }}>
+            <div className="sample-builder-box__actions" style={{ gap: "0.5rem" }}>
               <button
                 type="button"
                 className="button-secondary"
-                style={{ padding: "0.4rem 0.85rem", fontSize: "0.8rem", minHeight: "32px" }}
+                style={{ padding: "0.45rem 0.95rem", fontSize: "0.84rem", minHeight: "36px", borderRadius: "8px" }}
                 onClick={handleClearSample}
                 disabled={sampleIndexes.length === 0}
               >
@@ -312,7 +312,7 @@ export function HomeScreen({
               </button>
               <button
                 type="button"
-                style={{ padding: "0.4rem 1rem", fontSize: "0.8rem", minHeight: "32px" }}
+                style={{ padding: "0.45rem 1.1rem", fontSize: "0.84rem", minHeight: "36px", borderRadius: "8px" }}
                 onClick={handleTestSampleWord}
                 disabled={!sampleCandidate}
               >
@@ -322,17 +322,17 @@ export function HomeScreen({
           </div>
 
           {sampleFeedback ? (
-            <div className={`notice-strip notice-strip--${sampleFeedback.type}`} style={{ padding: "0.5rem 0.8rem", fontSize: "0.8rem", margin: "0.4rem 0" }}>
+            <div className={`notice-strip notice-strip--${sampleFeedback.type}`} style={{ padding: "0.55rem 0.9rem", fontSize: "0.84rem", margin: "0.5rem 0" }}>
               {sampleFeedback.text}
             </div>
           ) : null}
 
           {sampleWords.length > 0 ? (
-            <div className="sample-found-list" style={{ margin: "0.4rem 0" }}>
-              <span className="field-hint" style={{ fontSize: "0.76rem" }}>Words Found ({sampleWords.length}):</span>
-              <div className="sample-chips-row" style={{ gap: "0.4rem" }}>
+            <div className="sample-found-list" style={{ margin: "0.5rem 0" }}>
+              <span className="field-hint" style={{ fontSize: "0.8rem" }}>Words Found ({sampleWords.length}):</span>
+              <div className="sample-chips-row" style={{ gap: "0.45rem" }}>
                 {sampleWords.map((w, idx) => (
-                  <span key={idx} className="word-chip" style={{ padding: "0.3rem 0.6rem", fontSize: "0.78rem" }}>
+                  <span key={idx} className="word-chip" style={{ padding: "0.35rem 0.7rem", fontSize: "0.82rem" }}>
                     <strong>{w.word}</strong> <small>+{w.points}</small>
                   </span>
                 ))}
@@ -340,26 +340,26 @@ export function HomeScreen({
             </div>
           ) : null}
 
-          <div className="game-info-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.55rem", width: "100%", margin: "0.6rem 0" }}>
-            <div className="game-info-cell" style={{ padding: "0.6rem 0.85rem", fontSize: "0.82rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
+          <div className="game-info-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.65rem", width: "100%", margin: "0.75rem 0" }}>
+            <div className="game-info-cell" style={{ padding: "0.7rem 1rem", fontSize: "0.85rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
               <span style={{ color: "var(--ink)", fontWeight: 800 }}>TIMER: 60S</span>
             </div>
-            <div className="game-info-cell" style={{ padding: "0.6rem 0.85rem", fontSize: "0.82rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
+            <div className="game-info-cell" style={{ padding: "0.7rem 1rem", fontSize: "0.85rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
               <span style={{ color: "var(--ink)", fontWeight: 800 }}>STAKE: 1 NIM</span>
             </div>
-            <div className="game-info-cell" style={{ padding: "0.6rem 0.85rem", fontSize: "0.82rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
+            <div className="game-info-cell" style={{ padding: "0.7rem 1rem", fontSize: "0.85rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
               <span style={{ color: "var(--ink)", fontWeight: 800 }}>PLAYERS: 2-5</span>
             </div>
-            <div className="game-info-cell" style={{ padding: "0.6rem 0.85rem", fontSize: "0.82rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
+            <div className="game-info-cell" style={{ padding: "0.7rem 1rem", fontSize: "0.85rem", background: "var(--surface-sunk)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
               <span style={{ color: "var(--ink)", fontWeight: 800 }}>POOL: 90% SHARED</span>
             </div>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%", marginBottom: "0.6rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", width: "100%", marginTop: "0.75rem" }}>
             <button
               type="button"
               className="button-secondary"
-              style={{ minHeight: "42px", padding: "0.55rem 0.85rem", fontSize: "0.88rem" }}
+              style={{ minHeight: "44px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               onClick={onOpenProfile}
             >
               View Profile
@@ -367,7 +367,7 @@ export function HomeScreen({
             <button
               type="button"
               className="button-secondary"
-              style={{ minHeight: "42px", padding: "0.55rem 0.85rem", fontSize: "0.88rem" }}
+              style={{ minHeight: "44px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
               onClick={onOpenSettings}
             >
               Settings
