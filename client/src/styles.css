@@ -605,10 +605,6 @@ button:disabled {
   padding: 0.72rem 1rem;
 }
 
-.feature-pill--mobile-only {
-  display: none !important;
-}
-
 .hero-card {
   display: flex;
   flex-direction: column;
@@ -4070,10 +4066,6 @@ small,
     min-height: 44px;
     padding: 0.55rem 0.6rem;
     text-align: center;
-  }
-
-  .feature-pill--mobile-only {
-    display: flex !important;
   }
 
   .content-grid {
