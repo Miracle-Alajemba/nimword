@@ -1,6 +1,6 @@
 export const NIM_STAKE_LUNA = 100000; // 1 NIM = 100,000 Luna
 export const NIM_STAKE_DISPLAY = "1 NIM";
-export const DEFAULT_TREASURY_ADDRESS = "NQ69 9B0U S1V8 8V6A T452 7954 6C4C S05J C298";
+export const DEFAULT_TREASURY_ADDRESS = "NQ74 L96C PLXT V9RM TL7S A037 VPPA NHPH EFAN";
 export const NIMIQ_HUB_URL = "https://hub.nimiq.com";
 export const NIMIQ_NETWORK = import.meta.env.VITE_NIMIQ_NETWORK || "main";
 
