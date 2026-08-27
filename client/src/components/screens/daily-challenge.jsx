@@ -672,16 +672,6 @@ export function DailyChallenge({
             </h2>
             <p className="dc-claimed-screen__sub">You claimed your 0.1 NIM reward today.</p>
             <div className="dc-claimed-screen__amount">0.1 NIM</div>
-            {dailyClaimTx ? (
-              <a
-                className="dc-result-card__tx-link"
-                href={`https://nimiqwatch.com/tx/${dailyClaimTx}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                View transaction on Nimiq Explorer →
-              </a>
-            ) : null}
             <button
               type="button"
               className="dc-result-card__share-btn"
