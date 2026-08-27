@@ -11,3 +11,8 @@ contracts/artifacts/
 # Local reading copy of a built-in Claude Code skill - not project code
 .claude/skills/
 SKILL.md
+
+# Firebase & Cloud Credentials
+*service-account*.json
+service-account.json
+*.pem

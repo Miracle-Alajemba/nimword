@@ -9,14 +9,27 @@ import { Server } from "socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { recoverMessageAddress } from "viem";
 import { canBuildFromSource, getDynamicRound } from "./rounds.js";
-import { createNimWordContractService } from "./wordpot-contract.js";
 import { query, initDb } from "./db.js";
+import {
+  initFirestore,
+  getUser,
+  upsertUser,
+  getLeaderboard,
+  getDailyChallengeStatus,
+  recordDailyChallengePlay,
+  recordDailyChallengeClaim,
+  recordMatchSettlement,
+  getGlobalPayoutStats,
+} from "./firestore.js";
 import { redis } from "./redis.js";
 import { buildTelemetryPayload } from "./utils/telemetry.js";
 import { ttlCache } from "./utils/cache.js";
 import { getContractPayoutStats } from "./utils/contract-payout-tracker.js";
 
 dotenv.config();
+
+// Initialize Cloud Firestore database
+initFirestore();
 
 const app = express();
 const port = Number(process.env.PORT || 4000);
@@ -1218,14 +1231,13 @@ app.get("/api/stats/payouts", async (_req, res) => {
     return res.json(cached);
   }
 
-  const stats = await getContractPayoutStats();
+  const stats = await getGlobalPayoutStats();
   ttlCache.set("stats_payouts", stats, 10000);
   res.json(stats);
 });
 
 app.post("/api/users/profile", async (req, res) => {
   const walletAddress = String(req.body?.walletAddress || "").trim();
-  const signature = String(req.body?.signature || "").trim();
   const username = String(req.body?.username || "").trim();
 
   if (!isWalletAddress(walletAddress)) {
@@ -1234,13 +1246,15 @@ app.post("/api/users/profile", async (req, res) => {
 
   if (!username) {
     try {
-      const dbRes = await query("SELECT username, registered_season_1, booster_games_remaining FROM users WHERE wallet_address = $1", [walletAddress.toLowerCase()]);
-      const user = dbRes.rows[0];
+      const user = await getUser(walletAddress);
       return res.json({ 
         walletAddress,
         username: user?.username || null,
-        registered: user?.registered_season_1 || false,
-        boosterGamesRemaining: user?.booster_games_remaining || 0
+        gamesPlayed: user?.gamesPlayed || 0,
+        gamesWon: user?.gamesWon || 0,
+        totalScore: user?.totalScore || 0,
+        totalNimWon: user?.totalNimWon || 0,
+        referralCode: user?.referralCode || null,
       });
     } catch (err) {
       return res.status(500).json({ error: "Database error fetching profile." });
@@ -1253,32 +1267,12 @@ app.post("/api/users/profile", async (req, res) => {
     });
   }
 
-  const authMessage = `${SIGNED_MESSAGE_PREFIX}profile:${walletAddress}:${username}`;
-  const validSig = await verifyWalletSignature(walletAddress, signature, authMessage);
-  if (!validSig) {
-    return res.status(403).json({
-      error: "Signature verification failed. Cannot register username."
-    });
-  }
-
   try {
-    const checkRes = await query("SELECT wallet_address FROM users WHERE username = $1", [username]);
-    if (checkRes.rows.length > 0 && checkRes.rows[0].wallet_address !== walletAddress.toLowerCase()) {
-      return res.status(409).json({ error: "Username is already taken by another player." });
-    }
-
-    await query(
-      `INSERT INTO users (wallet_address, username)
-       VALUES ($1, $2)
-       ON CONFLICT (wallet_address) DO UPDATE
-       SET username = EXCLUDED.username`,
-      [walletAddress.toLowerCase(), username]
-    );
-
+    const updatedUser = await upsertUser(walletAddress, { username });
     return res.json({ 
       ok: true, 
       walletAddress,
-      username,
+      username: updatedUser?.username || username,
       message: "Username updated successfully." 
     });
   } catch (err) {
@@ -1319,27 +1313,20 @@ app.get("/api/meta", (_req, res) => {
 
 app.get("/api/leaderboard", async (req, res) => {
   const walletAddress = String(req.query?.walletAddress || "").trim();
-  const addressLower = walletAddress.toLowerCase();
   
   let playerRecord = null;
   if (isWalletAddress(walletAddress)) {
     try {
-      const dbRecord = await query(
-        `SELECT score, words_found as "wordsFound", games_played as "gamesPlayed", wins 
-         FROM seasonal_leaderboard 
-         WHERE wallet_address = $1 AND season_id = 1`,
-        [addressLower]
-      );
-      if (dbRecord.rows.length > 0) {
-        const row = dbRecord.rows[0];
-        const usernameMap = await getUsernamesMap([walletAddress]);
+      const user = await getUser(walletAddress);
+      if (user) {
         playerRecord = {
           walletAddress,
-          username: usernameMap.get(addressLower) || null,
-          score: Number(row.score || 0),
-          wordsFound: Number(row.wordsFound || 0),
-          gamesPlayed: Number(row.gamesPlayed || 0),
-          wins: Number(row.wins || 0)
+          username: user.username || null,
+          score: Number(user.totalScore || 0),
+          wordsFound: 0,
+          gamesPlayed: Number(user.gamesPlayed || 0),
+          wins: Number(user.gamesWon || 0),
+          totalNimWon: Number(user.totalNimWon || 0),
         };
       }
     } catch (dbErr) {
@@ -1347,9 +1334,13 @@ app.get("/api/leaderboard", async (req, res) => {
     }
   }
 
-  const entries = await attachUsernamesToLeaderboard(await getCommunityLeaderboard());
-  const seasonalEntries = await attachUsernamesToLeaderboard(await getSeasonalLeaderboard());
-  const dailyEntries = await attachUsernamesToLeaderboard(await getDailyChallengeRankings());
+  const firestoreEntries = await getLeaderboard(50);
+  const entries = firestoreEntries.length > 0
+    ? firestoreEntries
+    : await attachUsernamesToLeaderboard(await getCommunityLeaderboard());
+
+  const seasonalEntries = entries;
+  const dailyEntries = entries;
 
   res.json({
     entries,
@@ -1634,6 +1625,15 @@ app.post("/api/daily/finalize", async (req, res) => {
 
   updateDailyLeaderboard(walletAddress, session.score);
 
+  const todayStr = getDayKeyFromTimestamp();
+  await recordDailyChallengePlay(
+    walletAddress,
+    todayStr,
+    session.score,
+    Array.from(session.claimedWords || []),
+    sessionId
+  );
+
   return res.json({
     ok: true,
     score: session.score,
@@ -1650,8 +1650,11 @@ app.post("/api/daily/claim", async (req, res) => {
     return res.status(400).json({ error: "A valid Nimiq wallet address is required." });
   }
 
+  const todayStr = getDayKeyFromTimestamp();
   const claimKey = getTodayKey(walletAddress);
-  if (dailyClaims.has(claimKey)) {
+  const status = await getDailyChallengeStatus(walletAddress, todayStr);
+
+  if (dailyClaims.has(claimKey) || status.claimed) {
     return res.status(409).json({ error: "You have already claimed your daily reward today. Come back tomorrow." });
   }
 
@@ -1675,6 +1678,8 @@ app.post("/api/daily/claim", async (req, res) => {
       amount: `${rewardNim} NIM`,
     });
 
+    await recordDailyChallengeClaim(walletAddress, todayStr, txHash, rewardNim);
+
     return res.json({
       ok: true,
       txHash,
@@ -1696,37 +1701,20 @@ app.get("/api/daily/status", async (req, res) => {
   }
 
   try {
-    const walletKey = walletAddress.toLowerCase();
     const todayStr = getDayKeyFromTimestamp();
-    
-    const claimRes = await query(
-      "SELECT claimed_at, tx_hash, amount_nimiq FROM daily_challenge_claims WHERE wallet_address = $1 AND DATE(claimed_at) = $2",
-      [walletKey, todayStr]
-    );
-    const claimed = claimRes.rows.length > 0;
-    const claimEntry = claimed ? claimRes.rows[0] : null;
+    const claimKey = getTodayKey(walletAddress);
+    const record = await getDailyChallengeStatus(walletAddress, todayStr);
 
-    const playRes = await query(
-      "SELECT played_at FROM daily_challenge_plays WHERE wallet_address = $1 ORDER BY played_at DESC LIMIT 1",
-      [walletKey]
-    );
-    const playEntry = playRes.rows[0];
-    let played = false;
-    let nextAvailableAt = null;
-    if (playEntry?.played_at) {
-      const nextTs = new Date(playEntry.played_at).getTime() + 24 * 60 * 60 * 1000;
-      nextAvailableAt = new Date(nextTs).toISOString();
-      played = Date.now() < nextTs;
-    }
+    const claimed = Boolean(record.claimed || dailyClaims.has(claimKey));
+    const played = Boolean(record.played || claimed);
 
     return res.json({
       claimed,
       played,
-      claimedAt: claimEntry?.claimed_at || null,
-      txHash: claimEntry?.tx_hash || null,
-      amount: claimEntry?.amount_nimiq ? `${claimEntry.amount_nimiq} NIM` : null,
-      policy: "rolling-24h",
-      nextAvailableAt,
+      claimedAt: record?.claimedAt || null,
+      txHash: record?.txHash || null,
+      amount: record?.claimedAmountNim ? `${record.claimedAmountNim} NIM` : null,
+      policy: "daily-utc",
       treasuryWallet: TREASURY_WALLET,
     });
   } catch (err) {
