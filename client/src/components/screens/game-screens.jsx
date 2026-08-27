@@ -320,12 +320,13 @@ export function HomeScreen({
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              paddingBottom: "0.4rem",
+              gap: "8px",
+              paddingBottom: "0.45rem",
               borderBottom: "1px solid var(--rule)",
             }}
           >
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "3px" }}>
+            <div style={{ minWidth: 0, flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "2px" }}>
                 <span
                   style={{
                     width: "7px",
@@ -334,14 +335,15 @@ export function HomeScreen({
                     backgroundColor: "var(--interactive)",
                     boxShadow: "0 0 8px var(--interactive)",
                     display: "inline-block",
+                    flexShrink: 0,
                   }}
                 />
-                <span style={{ fontSize: "0.72rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--interactive-ink)" }}>
+                <span style={{ fontSize: "0.68rem", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--interactive-ink)" }}>
                   Live Arena Preview
                 </span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <h2 style={{ fontSize: "1.85rem", margin: 0, fontFamily: "var(--font-game)", letterSpacing: "0.05em", color: "var(--ink)", lineHeight: 1.1 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+                <h2 style={{ fontSize: "1.55rem", margin: 0, fontFamily: "var(--font-game)", letterSpacing: "0.04em", color: "var(--ink)", lineHeight: 1.1 }}>
                   {currentPreset.targetWord}
                 </h2>
                 <button
@@ -349,13 +351,13 @@ export function HomeScreen({
                   onClick={handleNextPreset}
                   title="Roll next word"
                   style={{
-                    padding: "4px 8px",
-                    fontSize: "0.74rem",
-                    minHeight: "26px",
+                    padding: "3px 8px",
+                    fontSize: "0.72rem",
+                    minHeight: "24px",
                     display: "inline-flex",
                     alignItems: "center",
                     gap: "4px",
-                    borderRadius: "8px",
+                    borderRadius: "6px",
                     background: "var(--surface-sunk)",
                     border: "1px solid var(--rule)",
                     color: "var(--ink-2)",
@@ -364,7 +366,7 @@ export function HomeScreen({
                     transition: "all 0.15s ease",
                   }}
                 >
-                  Next Word
+                  ↻ Next
                 </button>
               </div>
             </div>
@@ -372,22 +374,22 @@ export function HomeScreen({
             {/* Score HUD */}
             <div
               style={{
-                padding: "0.5rem 0.95rem",
+                padding: "0.4rem 0.75rem",
                 background: "var(--surface-sunk)",
-                borderRadius: "14px",
-                border: "1px solid var(--rule-strong)",
-                boxShadow: "0 4px 12px -4px oklch(0.2737 0.068 276.29 / 0.08)",
+                borderRadius: "10px",
+                border: "1px solid var(--rule)",
                 textAlign: "right",
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-end",
+                flexShrink: 0,
               }}
             >
-              <span style={{ fontSize: "0.66rem", fontWeight: 800, color: "var(--ink-muted)", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+              <span style={{ fontSize: "0.62rem", fontWeight: 800, color: "var(--ink-muted)", textTransform: "uppercase", letterSpacing: "0.04em" }}>
                 Demo Score
               </span>
-              <strong style={{ fontSize: "1.2rem", color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", lineHeight: 1.1 }}>
-                {sampleScore} pts
+              <strong style={{ fontSize: "1.05rem", color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", lineHeight: 1 }}>
+                {sampleScore} <span style={{ fontSize: "0.75rem", fontWeight: 600 }}>pts</span>
               </strong>
             </div>
           </div>
