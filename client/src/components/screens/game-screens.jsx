@@ -459,47 +459,47 @@ export function HomeScreen({
           <div
             className="sample-builder-box"
             style={{
-              padding: "0.75rem 1.1rem",
-              minHeight: "54px",
-              borderRadius: "14px",
+              padding: "0.6rem 0.85rem",
+              minHeight: "48px",
+              borderRadius: "12px",
               background: "var(--surface)",
               border: sampleCandidate ? "1.5px solid var(--interactive)" : "1px solid var(--rule)",
               boxShadow: sampleCandidate ? "0 0 14px -2px var(--interactive)" : "none",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              gap: "0.75rem",
+              gap: "0.6rem",
               transition: "border 0.2s ease, box-shadow 0.2s ease",
             }}
           >
-            <div className="sample-builder-box__display" style={{ display: "flex", alignItems: "center", gap: "8px", flex: 1, overflow: "hidden" }}>
+            <div className="sample-builder-box__display" style={{ display: "flex", alignItems: "center", gap: "6px", flex: 1, minWidth: 0, overflow: "hidden" }}>
               {sampleCandidate ? (
                 <>
-                  <span style={{ fontSize: "1.25rem", fontWeight: 900, letterSpacing: "0.08em", color: "var(--ink)", fontFamily: "var(--font-game)" }}>
+                  <span style={{ fontSize: "1.2rem", fontWeight: 900, letterSpacing: "0.06em", color: "var(--ink)", fontFamily: "var(--font-game)" }}>
                     {sampleCandidate}
                   </span>
                   {sampleCandidate.length >= 3 ? (
-                    <span style={{ fontSize: "0.75rem", fontWeight: 800, color: "var(--good)", background: "rgba(34, 197, 94, 0.15)", padding: "3px 8px", borderRadius: "6px" }}>
+                    <span style={{ fontSize: "0.72rem", fontWeight: 800, color: "var(--good)", background: "rgba(34, 197, 94, 0.15)", padding: "2px 6px", borderRadius: "5px" }}>
                       +{sampleCandidate.length >= 6 ? 12 : sampleCandidate.length === 5 ? 8 : sampleCandidate.length === 4 ? 5 : 3} pts
                     </span>
                   ) : (
-                    <span style={{ fontSize: "0.72rem", color: "var(--ink-muted)" }}>
-                      (min 3 letters)
+                    <span style={{ fontSize: "0.68rem", color: "var(--ink-muted)" }}>
+                      (min 3)
                     </span>
                   )}
                 </>
               ) : (
-                <span className="sample-builder-box__placeholder" style={{ fontSize: "0.86rem", fontWeight: 700, letterSpacing: "0.02em", color: "var(--ink-muted)" }}>
-                  Tap tiles above to construct words...
+                <span className="sample-builder-box__placeholder" style={{ fontSize: "0.8rem", fontWeight: 600, color: "var(--ink-muted)", lineHeight: 1.2 }}>
+                  Tap tiles to build a word...
                 </span>
               )}
             </div>
 
-            <div className="sample-builder-box__actions" style={{ display: "flex", gap: "0.45rem", flexShrink: 0 }}>
+            <div className="sample-builder-box__actions" style={{ display: "flex", gap: "0.35rem", flexShrink: 0 }}>
               <button
                 type="button"
                 className="button-secondary"
-                style={{ padding: "0.45rem 0.85rem", fontSize: "0.82rem", minHeight: "36px", borderRadius: "8px" }}
+                style={{ padding: "0.4rem 0.65rem", fontSize: "0.78rem", minHeight: "32px", borderRadius: "8px" }}
                 onClick={handleClearSample}
                 disabled={sampleIndexes.length === 0}
               >
@@ -507,11 +507,11 @@ export function HomeScreen({
               </button>
               <button
                 type="button"
-                style={{ padding: "0.45rem 1.1rem", fontSize: "0.84rem", minHeight: "36px", borderRadius: "8px", fontWeight: 800 }}
+                style={{ padding: "0.4rem 0.85rem", fontSize: "0.8rem", minHeight: "32px", borderRadius: "8px", fontWeight: 800 }}
                 onClick={handleTestSampleWord}
                 disabled={!sampleCandidate}
               >
-                Submit Word
+                Submit
               </button>
             </div>
           </div>
@@ -540,11 +540,11 @@ export function HomeScreen({
           ) : null}
 
           {/* Symmetrical Quick Navigation */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", width: "100%", marginTop: "0.2rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.65rem", width: "100%", marginTop: "0.1rem" }}>
             <button
               type="button"
               className="button-secondary"
-              style={{ minHeight: "46px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
+              style={{ minHeight: "44px", padding: "0.55rem 0.85rem", fontSize: "0.86rem", borderRadius: "12px" }}
               onClick={onOpenProfile}
             >
               👤 View Profile
@@ -552,7 +552,7 @@ export function HomeScreen({
             <button
               type="button"
               className="button-secondary"
-              style={{ minHeight: "46px", padding: "0.65rem 1rem", fontSize: "0.9rem", borderRadius: "12px" }}
+              style={{ minHeight: "44px", padding: "0.55rem 0.85rem", fontSize: "0.86rem", borderRadius: "12px" }}
               onClick={onOpenSettings}
             >
               ⚙️ Settings
@@ -566,32 +566,32 @@ export function HomeScreen({
               background: "var(--surface)",
               border: "1px solid var(--rule-strong)",
               borderRadius: "14px",
-              padding: "0.75rem 1rem",
+              padding: "0.65rem 0.85rem",
               boxShadow: "0 4px 14px -4px oklch(0.2737 0.068 276.29 / 0.08)",
             }}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem", fontSize: "0.78rem" }}>
-              <strong style={{ color: "var(--interactive-ink)", display: "flex", alignItems: "center", gap: "5px", textTransform: "uppercase", letterSpacing: "0.04em" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem", fontSize: "0.76rem" }}>
+              <strong style={{ color: "var(--interactive-ink)", display: "flex", alignItems: "center", gap: "5px", textTransform: "uppercase", letterSpacing: "0.03em" }}>
                 Word Scoring Matrix
               </strong>
-              <span style={{ color: "var(--good)", fontWeight: 800, fontSize: "0.74rem" }}>✓ NIMIQ PAY VERIFIED</span>
+              <span style={{ color: "var(--good)", fontWeight: 800, fontSize: "0.72rem" }}>✓ NIMIQ PAY VERIFIED</span>
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.45rem", textAlign: "center" }}>
-              <div style={{ background: "var(--surface-sunk)", padding: "5px 4px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
-                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>3 LTRS</span>
-                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.86rem" }}>3 PTS</strong>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "0.35rem", textAlign: "center" }}>
+              <div style={{ background: "var(--surface-sunk)", padding: "5px 2px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.66rem" }}>3 LTRS</span>
+                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.82rem", whiteSpace: "nowrap" }}>3 PTS</strong>
               </div>
-              <div style={{ background: "var(--surface-sunk)", padding: "5px 4px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
-                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>4 LTRS</span>
-                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.86rem" }}>5 PTS</strong>
+              <div style={{ background: "var(--surface-sunk)", padding: "5px 2px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.66rem" }}>4 LTRS</span>
+                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.82rem", whiteSpace: "nowrap" }}>5 PTS</strong>
               </div>
-              <div style={{ background: "var(--surface-sunk)", padding: "5px 4px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
-                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>5 LTRS</span>
-                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.86rem" }}>8 PTS</strong>
+              <div style={{ background: "var(--surface-sunk)", padding: "5px 2px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.66rem" }}>5 LTRS</span>
+                <strong style={{ color: "var(--ink)", fontFamily: "var(--font-mono)", fontSize: "0.82rem", whiteSpace: "nowrap" }}>8 PTS</strong>
               </div>
-              <div style={{ background: "var(--surface-sunk)", padding: "5px 4px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
-                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.68rem" }}>6+ LTRS</span>
-                <strong style={{ color: "var(--interactive-ink)", fontFamily: "var(--font-mono)", fontSize: "0.86rem" }}>12 PTS</strong>
+              <div style={{ background: "var(--surface-sunk)", padding: "5px 2px", borderRadius: "8px", border: "1px solid var(--rule)" }}>
+                <span style={{ display: "block", color: "var(--ink-2)", fontSize: "0.66rem" }}>6+ LTRS</span>
+                <strong style={{ color: "var(--interactive-ink)", fontFamily: "var(--font-mono)", fontSize: "0.82rem", whiteSpace: "nowrap" }}>12 PTS</strong>
               </div>
             </div>
           </div>
