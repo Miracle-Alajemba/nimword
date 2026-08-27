@@ -20,5 +20,8 @@
     "pg": "^8.22.0",
     "socket.io": "^4.8.3",
     "viem": "^2.48.1"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.7.10"
   }
 }
