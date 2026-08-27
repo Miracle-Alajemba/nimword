@@ -104,17 +104,18 @@ export function TotalPayoutsBanner({ className = "" }) {
         {/* Status Tag */}
         <div
           style={{
-            padding: "6px 12px",
+            padding: "5px 10px",
             borderRadius: "8px",
             background: "var(--surface-sunk)",
             border: "1px solid var(--rule)",
-            fontSize: "0.75rem",
+            fontSize: "0.72rem",
             fontWeight: "600",
             color: "var(--ink-2)",
             display: "flex",
             alignItems: "center",
-            gap: "6px",
-            whiteSpace: "nowrap",
+            gap: "5px",
+            maxWidth: "100%",
+            flexWrap: "wrap",
           }}
         >
           <span style={{ color: "var(--good)", fontSize: "0.85rem" }}>⚡</span>

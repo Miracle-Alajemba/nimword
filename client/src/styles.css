@@ -112,6 +112,12 @@
   padding: 0;
 }
 
+html {
+  max-width: 100vw;
+  overflow-x: hidden;
+  width: 100%;
+}
+
 html,
 body,
 #root {
@@ -119,6 +125,9 @@ body,
   /* dvh tracks the viewport as mobile browser chrome collapses, so the
      board does not jump on first scroll. vh above is the fallback. */
   min-height: 100dvh;
+  max-width: 100vw;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* The ground. The washes and the graph paper are declared once, in the
@@ -126,8 +135,10 @@ body,
 body {
   margin: 0;
   min-width: 320px;
+  max-width: 100vw;
   overflow-x: hidden;
   position: relative;
+  width: 100%;
 }
 
 body,
@@ -3972,22 +3983,47 @@ small,
 
 /* Mobile home polish */
 @media (max-width: 640px) {
-  body {
-    overflow-x: hidden;
+  html,
+  body,
+  #root {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    width: 100% !important;
   }
 
   .page-shell {
-    padding: max(0.85rem, env(safe-area-inset-top)) 0.8rem calc(var(--nav-reserve) + 2.5rem);
+    padding: max(0.85rem, env(safe-area-inset-top)) 0.75rem calc(var(--nav-reserve) + 2.5rem) !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
   }
 
   .hero {
-    gap: 1rem;
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 0.85rem !important;
+    box-sizing: border-box !important;
   }
 
   .hero-copy {
     border-radius: 16px !important;
-    padding: 1.15rem 1rem !important;
+    padding: 1.15rem 0.95rem !important;
     text-align: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-card {
+    border-radius: 16px !important;
+    padding: 1.15rem 0.95rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .hero-logo {
@@ -4038,23 +4074,29 @@ small,
 
   .feature-strip {
     display: grid !important;
-    gap: 0.5rem !important;
+    gap: 0.45rem !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     margin-top: 0.8rem;
     margin-left: auto !important;
     margin-right: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .feature-pill {
     align-items: center;
     display: flex;
-    font-size: 0.76rem;
+    font-size: 0.74rem;
     font-weight: 700;
     justify-content: center;
-    min-height: 42px;
-    padding: 0.5rem 0.5rem;
+    min-height: 40px;
+    padding: 0.45rem 0.35rem;
     text-align: center;
     border-radius: 10px;
+    white-space: normal !important;
+    word-break: break-word !important;
+    box-sizing: border-box !important;
   }
 
   .hero-actions--grid {
