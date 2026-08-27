@@ -604,19 +604,58 @@ export function DailyChallenge({
               gap: "1rem",
             }}
           >
-            <div style={{ fontSize: "2.8rem", marginBottom: "0.25rem" }}>⏳</div>
-            <h2 style={{ fontSize: "1.85rem", fontFamily: "var(--font-game)", margin: 0, color: "var(--ink)" }}>
+            <div className="hourglass-animated" style={{ fontSize: "3.2rem", marginBottom: "0.25rem", lineHeight: 1 }}>⏳</div>
+            <h2 style={{ fontSize: "1.75rem", fontFamily: "var(--font-game)", margin: 0, color: "var(--ink)" }}>
               Next Play Available In
             </h2>
-            <div style={{ background: "var(--surface-sunk)", padding: "0.6rem 1.4rem", borderRadius: "12px", border: "1px solid var(--rule)" }}>
-              <strong style={{ fontSize: "1.5rem", fontFamily: "var(--font-mono)", color: "var(--interactive-ink)" }}>
-                {cooldownSeconds > 0
-                  ? `${Math.floor(cooldownSeconds / 3600)}h ${Math.floor((cooldownSeconds % 3600) / 60)}m ${cooldownSeconds % 60}s`
-                  : "Less than a minute"}
-              </strong>
-            </div>
-            <p style={{ fontSize: "0.9rem", color: "var(--ink-2)", margin: 0, maxWidth: "420px", lineHeight: 1.4 }}>
-              Come back when the cooldown timer expires to play again and claim your next daily reward.
+
+            {/* Real-time digital HUD Countdown Clock */}
+            {(() => {
+              const effectiveSecs = cooldownSeconds > 0
+                ? cooldownSeconds
+                : (() => {
+                    const now = new Date();
+                    const nextMid = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0, 0));
+                    return Math.max(0, Math.floor((nextMid.getTime() - Date.now()) / 1000));
+                  })();
+              const chHours = String(Math.floor(effectiveSecs / 3600)).padStart(2, "0");
+              const chMins = String(Math.floor((effectiveSecs % 3600) / 60)).padStart(2, "0");
+              const chSecs = String(effectiveSecs % 60).padStart(2, "0");
+
+              return (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", margin: "0.25rem 0" }}>
+                  <div style={{ background: "var(--surface-sunk)", padding: "0.65rem 1rem", borderRadius: "12px", border: "1px solid var(--rule)", minWidth: "68px", textAlign: "center" }}>
+                    <div style={{ fontSize: "1.75rem", fontFamily: "var(--font-mono)", fontWeight: 900, color: "var(--interactive-ink)", lineHeight: 1 }}>
+                      {chHours}
+                    </div>
+                    <div style={{ fontSize: "0.65rem", fontWeight: 800, color: "var(--ink-muted)", textTransform: "uppercase", marginTop: "4px" }}>
+                      HOURS
+                    </div>
+                  </div>
+                  <span style={{ fontSize: "1.5rem", fontWeight: 900, color: "var(--interactive)", opacity: 0.7 }}>:</span>
+                  <div style={{ background: "var(--surface-sunk)", padding: "0.65rem 1rem", borderRadius: "12px", border: "1px solid var(--rule)", minWidth: "68px", textAlign: "center" }}>
+                    <div style={{ fontSize: "1.75rem", fontFamily: "var(--font-mono)", fontWeight: 900, color: "var(--interactive-ink)", lineHeight: 1 }}>
+                      {chMins}
+                    </div>
+                    <div style={{ fontSize: "0.65rem", fontWeight: 800, color: "var(--ink-muted)", textTransform: "uppercase", marginTop: "4px" }}>
+                      MINS
+                    </div>
+                  </div>
+                  <span style={{ fontSize: "1.5rem", fontWeight: 900, color: "var(--interactive)", opacity: 0.7 }}>:</span>
+                  <div style={{ background: "var(--surface-sunk)", padding: "0.65rem 1rem", borderRadius: "12px", border: "1px solid var(--rule)", minWidth: "68px", textAlign: "center" }}>
+                    <div style={{ fontSize: "1.75rem", fontFamily: "var(--font-mono)", fontWeight: 900, color: "var(--interactive-ink)", lineHeight: 1 }}>
+                      {chSecs}
+                    </div>
+                    <div style={{ fontSize: "0.65rem", fontWeight: 800, color: "var(--ink-muted)", textTransform: "uppercase", marginTop: "4px" }}>
+                      SECS
+                    </div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            <p style={{ fontSize: "0.88rem", color: "var(--ink-2)", margin: "0.2rem 0 0", maxWidth: "420px", lineHeight: 1.45 }}>
+              Daily Challenge resets daily at <strong>12:00 AM UTC (Midnight)</strong>. Come back when the clock hits zero to play and claim your next reward!
             </p>
 
             <div style={{ borderTop: "1px solid var(--rule)", paddingTop: "1.25rem", marginTop: "0.5rem", width: "100%" }}>

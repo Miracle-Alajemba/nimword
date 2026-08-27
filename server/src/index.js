@@ -1695,13 +1695,23 @@ app.get("/api/daily/status", async (req, res) => {
     const claimed = Boolean(record.claimed || dailyClaims.has(claimKey));
     const played = Boolean(record.played || claimed);
 
+    const now = new Date();
+    const nextMidnightUtc = new Date(Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth(),
+      now.getUTCDate() + 1,
+      0, 0, 0, 0
+    ));
+    const nextAvailableAt = nextMidnightUtc.toISOString();
+
     return res.json({
       claimed,
       played,
       claimedAt: record?.claimedAt || null,
       txHash: record?.txHash || null,
       amount: record?.claimedAmountNim ? `${record.claimedAmountNim} NIM` : null,
-      policy: "daily-utc",
+      policy: "daily-utc-midnight",
+      nextAvailableAt,
       treasuryWallet: TREASURY_WALLET,
     });
   } catch (err) {
