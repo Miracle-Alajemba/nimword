@@ -1,5 +1,5 @@
 export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "https://your-nimword-server.railway.app/api";
+  import.meta.env.VITE_API_BASE_URL || "https://nimword-server.fly.dev/api";
 export const APP_URL =
   import.meta.env.VITE_APP_URL || "https://nimword.vercel.app";
 
