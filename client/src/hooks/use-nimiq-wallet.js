@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import HubApi from "@nimiq/hub-api";
 import {
   DEFAULT_TREASURY_ADDRESS,
   NIM_STAKE_LUNA,
@@ -14,14 +15,12 @@ import {
 
 let hubApiInstance = null;
 
-async function getHubApi() {
+function getHubApi() {
   if (!hubApiInstance && typeof window !== "undefined") {
     try {
-      const HubApiModule = await import("@nimiq/hub-api");
-      const HubApi = HubApiModule.default || HubApiModule.HubApi || HubApiModule;
       hubApiInstance = new HubApi(NIMIQ_HUB_URL);
     } catch (err) {
-      console.warn("Failed to load @nimiq/hub-api:", err);
+      console.warn("Failed to initialize @nimiq/hub-api:", err);
       return null;
     }
   }
@@ -35,10 +34,14 @@ export function useNimiqWallet() {
   const [isNimiqPay, setIsNimiqPay] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
 
-  // Detect window.nimiq provider (Nimiq Pay environment)
+  // Detect window.nimiq provider (Nimiq Pay mobile app environment)
   const getNimiqProvider = useCallback(() => {
-    if (typeof window !== "undefined" && window.nimiq) {
-      return window.nimiq;
+    if (typeof window !== "undefined") {
+      if (window.nimiq) return window.nimiq;
+      if (window.Nimiq) return window.Nimiq;
+      if (window.ethereum && (window.ethereum.isNimiq || window.ethereum.isMiniPay)) {
+        return window.ethereum;
+      }
     }
     return null;
   }, []);
@@ -57,17 +60,14 @@ export function useNimiqWallet() {
         }
       }
     } catch {
-      // Fallback mock balance if offline/test environment
+      // Fallback balance if offline/test environment
     }
-    setNimBalance((prev) => (prev > 0 ? prev : 100.0));
+    setNimBalance((prev) => (prev > 0 ? prev : 10.0));
   }, []);
 
-  // Pre-load HubApi and initialize/restore wallet
+  // Initialize and restore saved wallet
   useEffect(() => {
     let isMounted = true;
-
-    // Eagerly pre-load HubApi so popup gesture is not delayed on mobile tap
-    getHubApi().catch(() => {});
 
     const checkProviderAndRestore = () => {
       const nimiqProvider = getNimiqProvider();
@@ -91,14 +91,12 @@ export function useNimiqWallet() {
       }
 
       if (isMounted) {
-        setWalletStatus(isPayApp ? "Nimiq Pay detected. Tap to connect." : "Nimiq wallet ready. Connect your wallet to play.");
+        setWalletStatus(isPayApp ? "Nimiq Pay detected. Tap to connect." : "Nimiq wallet ready. Tap Connect to play.");
       }
     };
 
     checkProviderAndRestore();
-
-    // Check again after a brief delay for delayed WebView injection (e.g. Nimiq Pay / MiniPay)
-    const timer = setTimeout(checkProviderAndRestore, 400);
+    const timer = setTimeout(checkProviderAndRestore, 300);
 
     return () => {
       isMounted = false;
@@ -113,41 +111,25 @@ export function useNimiqWallet() {
     try {
       const nimiqProvider = getNimiqProvider();
 
-      // 1. In-App Provider (Nimiq Pay / WebView)
+      // 1. In-App Provider (Nimiq Pay Mobile App)
       if (nimiqProvider) {
+        let addr = "";
         if (typeof nimiqProvider.connect === "function") {
           const res = await nimiqProvider.connect();
-          const addr = res?.address || res?.account || res || "";
-          if (addr && isNimiqAddress(addr)) {
-            const formatted = formatNimiqAddress(addr);
-            setWalletAddress(formatted);
-            setWalletStatus(`Ready on Nimiq Pay as ${shortenNimiqAddress(formatted)}`);
-            try {
-              window.localStorage.setItem(NIMWORD_STORAGE_KEY, formatted);
-            } catch {}
-            await fetchBalance(formatted);
-            setIsConnecting(false);
-            return formatted;
-          }
-        }
-      }
-
-      // 2. Standard Browser with Nimiq Hub API
-      const hub = await getHubApi();
-      if (hub && typeof hub.chooseAddress === "function") {
-        setWalletStatus("Opening Nimiq Hub...");
-        let result = null;
-        try {
-          result = await hub.chooseAddress({ appName: "NimWord" });
-        } catch (hubErr) {
-          console.warn("Nimiq Hub closed or cancelled:", hubErr);
+          addr = res?.address || res?.account || res || "";
+        } else if (typeof nimiqProvider.request === "function") {
+          const accounts = await nimiqProvider.request({ method: "nimiq_requestAccounts" }).catch(() => null)
+            || await nimiqProvider.request({ method: "eth_requestAccounts" }).catch(() => null);
+          addr = Array.isArray(accounts) ? accounts[0] : accounts || "";
+        } else if (typeof nimiqProvider.getAccounts === "function") {
+          const accounts = await nimiqProvider.getAccounts();
+          addr = Array.isArray(accounts) ? accounts[0] : accounts || "";
         }
 
-        const addr = result?.address || result?.account?.address || (Array.isArray(result?.addresses) && result.addresses[0]?.address) || "";
         if (addr && isNimiqAddress(addr)) {
           const formatted = formatNimiqAddress(addr);
           setWalletAddress(formatted);
-          setWalletStatus(`Ready on Nimiq Hub as ${shortenNimiqAddress(formatted)}`);
+          setWalletStatus(`Connected via Nimiq Pay (${shortenNimiqAddress(formatted)})`);
           try {
             window.localStorage.setItem(NIMWORD_STORAGE_KEY, formatted);
           } catch {}
@@ -157,16 +139,38 @@ export function useNimiqWallet() {
         }
       }
 
-      // 3. Fallback test address if in dev/test mode
-      const mockAddress = "NQ43 8S3S J4D4 7979 K2D8 X7B0 XL0D 43K9";
-      setWalletAddress(mockAddress);
-      setWalletStatus(`Connected as ${shortenNimiqAddress(mockAddress)}`);
-      try {
-        window.localStorage.setItem(NIMWORD_STORAGE_KEY, mockAddress);
-      } catch {}
-      fetchBalance(mockAddress);
+      // 2. Browser with Nimiq Hub API (Synchronous popup initiation)
+      const hub = getHubApi();
+      if (hub && typeof hub.chooseAddress === "function") {
+        setWalletStatus("Opening Nimiq Hub...");
+        let result = null;
+        try {
+          result = await hub.chooseAddress({ appName: "NimWord" });
+        } catch (hubErr) {
+          console.warn("Nimiq Hub closed or cancelled:", hubErr);
+          setWalletStatus("Wallet connection cancelled. Tap to try again.");
+          setIsConnecting(false);
+          return null;
+        }
+
+        const addr = result?.address || result?.account?.address || (Array.isArray(result?.addresses) && result.addresses[0]?.address) || "";
+        if (addr && isNimiqAddress(addr)) {
+          const formatted = formatNimiqAddress(addr);
+          setWalletAddress(formatted);
+          setWalletStatus(`Connected as ${shortenNimiqAddress(formatted)}`);
+          try {
+            window.localStorage.setItem(NIMWORD_STORAGE_KEY, formatted);
+          } catch {}
+          await fetchBalance(formatted);
+          setIsConnecting(false);
+          return formatted;
+        }
+      }
+
+      // 3. Fallback address if user cancelled or testing
+      setWalletStatus("Please connect your Nimiq wallet or enter your address in Profile.");
       setIsConnecting(false);
-      return mockAddress;
+      return null;
     } catch (err) {
       console.warn("Wallet connection error:", err);
       setWalletStatus(err.message || "Failed to connect Nimiq wallet.");
