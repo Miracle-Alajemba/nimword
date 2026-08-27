@@ -145,6 +145,7 @@ export default function App() {
     walletReady,
     connectWallet,
     disconnectWallet,
+    setManualAddress,
     stakeNimToPlay,
   } = useNimiqWallet();
 
