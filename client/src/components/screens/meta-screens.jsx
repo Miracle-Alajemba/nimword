@@ -136,16 +136,38 @@ export function LeaderboardScreen({ room, onQuickMatch, onBack, apiBaseUrl }) {
   );
 }
 
-export function ProfileScreen({ walletAddress, onConnectWallet, onBack }) {
+export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddress, onDisconnect, onBack }) {
   const connected = isWalletAddress(walletAddress);
   const [alias, setAlias] = useState(connected ? getPlayerAlias(walletAddress) : "Guest Player");
   const [modalOpen, setModalOpen] = useState(false);
+  const [manualInput, setManualInput] = useState("");
+  const [manualError, setManualError] = useState("");
+  const [showManualBox, setShowManualBox] = useState(false);
 
   useEffect(() => {
     if (connected) {
       setAlias(getSavedUsername(walletAddress));
     }
   }, [walletAddress, connected]);
+
+  const handleSaveManual = (e) => {
+    e.preventDefault();
+    setManualError("");
+    const trimmed = manualInput.trim();
+    if (!trimmed) {
+      setManualError("Please enter a Nimiq address (e.g. NQ...)");
+      return;
+    }
+    try {
+      if (typeof onSetManualAddress === "function") {
+        onSetManualAddress(trimmed);
+        setManualInput("");
+        setShowManualBox(false);
+      }
+    } catch (err) {
+      setManualError(err.message || "Invalid Nimiq address format.");
+    }
+  };
 
   return (
     <main className="page-shell">
@@ -202,14 +224,69 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onBack }) {
               </div>
 
               {!connected ? (
-                <button
-                  type="button"
-                  onClick={onConnectWallet}
-                  style={{ width: "100%", marginTop: "0.5rem", minHeight: "42px", fontSize: "0.9rem", fontWeight: 800 }}
-                >
-                  Connect Nimiq Wallet
-                </button>
-              ) : null}
+                <div style={{ marginTop: "0.85rem", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+                  <button
+                    type="button"
+                    onClick={onConnectWallet}
+                    style={{ width: "100%", minHeight: "44px", fontSize: "0.92rem", fontWeight: 800, borderRadius: "12px" }}
+                  >
+                    ⚡ Connect Nimiq Wallet
+                  </button>
+
+                  <button
+                    type="button"
+                    className="ghost-button"
+                    onClick={() => setShowManualBox(!showManualBox)}
+                    style={{ fontSize: "0.8rem", color: "var(--ink-2)", textAlign: "center", padding: "4px" }}
+                  >
+                    {showManualBox ? "▲ Hide manual paste" : "▼ Or paste Nimiq address manually"}
+                  </button>
+
+                  {showManualBox && (
+                    <form onSubmit={handleSaveManual} style={{ display: "flex", flexDirection: "column", gap: "6px", marginTop: "4px" }}>
+                      <input
+                        type="text"
+                        placeholder="NQ..."
+                        value={manualInput}
+                        onChange={(e) => setManualInput(e.target.value)}
+                        style={{
+                          width: "100%",
+                          padding: "8px 12px",
+                          borderRadius: "8px",
+                          border: "1px solid var(--rule)",
+                          background: "var(--surface-sunk)",
+                          color: "var(--ink)",
+                          fontFamily: "var(--font-mono)",
+                          fontSize: "0.82rem",
+                        }}
+                      />
+                      {manualError ? (
+                        <span style={{ color: "var(--danger, #e54d2e)", fontSize: "0.76rem" }}>
+                          {manualError}
+                        </span>
+                      ) : null}
+                      <button
+                        type="submit"
+                        className="button-secondary"
+                        style={{ width: "100%", minHeight: "36px", fontSize: "0.82rem" }}
+                      >
+                        Save & Connect Address
+                      </button>
+                    </form>
+                  )}
+                </div>
+              ) : (
+                <div style={{ marginTop: "0.75rem", display: "flex", justifyContent: "flex-end" }}>
+                  <button
+                    type="button"
+                    className="ghost-button"
+                    onClick={onDisconnect}
+                    style={{ fontSize: "0.78rem", color: "var(--ink-muted)", padding: "4px 8px" }}
+                  >
+                    Disconnect Wallet
+                  </button>
+                </div>
+              )}
             </section>
 
             {/* Milestones & Badges Card */}

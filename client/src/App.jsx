@@ -904,6 +904,8 @@ export default function App() {
         <ProfileScreen
           walletAddress={walletAddress}
           onConnectWallet={connectWallet}
+          onSetManualAddress={setManualAddress}
+          onDisconnect={disconnectWallet}
           onBack={backHome}
         />
       </Suspense>
