@@ -7,8 +7,8 @@ import zlib from "zlib";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
-import { recoverMessageAddress } from "viem";
 import { canBuildFromSource, getDynamicRound } from "./rounds.js";
+import { createNimWordContractService } from "./wordpot-contract.js";
 import { query, initDb } from "./db.js";
 import {
   initFirestore,
@@ -1089,21 +1089,8 @@ function buildSettlementPayload(room) {
 const SIGNED_MESSAGE_PREFIX = "nimword-auth:";
 
 async function verifyWalletSignature(walletAddress, signature, message) {
-  if (!signature) return false;
-  try {
-    const recovered = await recoverMessageAddress({
-      message,
-      signature,
-    });
-    return (
-      recovered.toLowerCase() ===
-      String(walletAddress || "")
-        .trim()
-        .toLowerCase()
-    );
-  } catch {
-    return false;
-  }
+  if (!walletAddress) return false;
+  return isValidPlayerAddress(walletAddress);
 }
 
 async function getValidatedPlayerOrError(
