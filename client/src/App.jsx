@@ -862,6 +862,7 @@ export default function App() {
             onRecordPlay={recordDailyPlay}
             onClaimDaily={claimDailyReward}
             onRefreshStatus={checkDailyStatus}
+            onStakeNim={stakeNimToPlay}
           />
         </Suspense>
       </DailyChallengeErrorBoundary>

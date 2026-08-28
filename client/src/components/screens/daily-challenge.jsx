@@ -44,6 +44,7 @@ export function DailyChallenge({
   onRecordPlay,
   onClaimDaily,
   onRefreshStatus,
+  onStakeNim,
   getInjectedProvider,
   getWalletClient,
   getPublicClient,
@@ -87,26 +88,41 @@ export function DailyChallenge({
     setRetryError("");
     setIsRetrying(true);
     try {
-      let txHash = `nim_retry_${Date.now()}`;
+      if (!isWalletAddress(walletAddress)) {
+        if (typeof onConnectWallet === "function") {
+          await onConnectWallet();
+        }
+        throw new Error("Please connect your Nimiq wallet to purchase a retry ticket.");
+      }
 
-      // 1. Attempt Nimiq Staking / Checkout if wallet connected
-      if (walletReady && typeof onClaimDaily === "function") {
-        // Can optionally invoke Nimiq Hub checkout for 0.1 NIM
+      // 1. Process 0.1 NIM Nimiq Checkout / Transaction via Hub API
+      let txHash = "";
+      if (typeof onStakeNim === "function") {
+        txHash = await onStakeNim(0.1, treasuryWallet || undefined);
+      } else {
+        throw new Error("Nimiq checkout is unavailable.");
+      }
+
+      if (!txHash) {
+        throw new Error("Transaction was cancelled or declined.");
       }
 
       // 2. Notify backend to clear daily cooldown
       try {
-        const response = await fetch(`${apiBaseUrl}/daily/retry-purchase`, {
+        await fetch(`${apiBaseUrl}/daily/retry-purchase`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ walletAddress: walletAddress.trim(), txHash }),
         });
-        if (response.ok) {
-          const data = await response.json();
-        }
       } catch (netErr) {
-        console.warn("Backend retry sync note (using local ticket):", netErr.message);
+        console.warn("Backend retry sync note:", netErr.message);
       }
+
+      // 3. Clear local daily play lock
+      const todayKey = `nimword_daily_play_${walletAddress.trim().toLowerCase()}_${new Date().toISOString().slice(0, 10)}`;
+      try {
+        localStorage.removeItem(todayKey);
+      } catch {}
 
       if (onRefreshStatus) {
         try {
@@ -114,10 +130,11 @@ export function DailyChallenge({
         } catch {}
       }
 
-      // Immediately unlock challenge and reset cooldown
+      // 4. Only after successful payment approval: reset countdown and unlock round!
       resetChallenge();
     } catch (err) {
-      setRetryError(err.message || "Failed to buy retry ticket.");
+      console.warn("Retry ticket transaction error:", err);
+      setRetryError(err.message || "Payment cancelled. Cooldown was not reset.");
     } finally {
       setIsRetrying(false);
     }
