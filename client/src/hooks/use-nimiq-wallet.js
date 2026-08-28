@@ -282,49 +282,53 @@ export function useNimiqWallet() {
   }, []);
 
   // 1 NIM Staking Checkout Function
+  // Staking / Retry Ticket Checkout Function
   const stakeNimToPlay = useCallback(async (amountNim = 1, recipient = DEFAULT_TREASURY_ADDRESS) => {
     if (!walletAddress) {
-      throw new Error("Connect your Nimiq wallet before staking NIM to play.");
+      throw new Error("Connect your Nimiq wallet before making a payment.");
     }
 
-    setWalletStatus(`Requesting ${amountNim} NIM stake checkout...`);
+    const cleanRecipient = String(recipient || DEFAULT_TREASURY_ADDRESS).replace(/\s+/g, "");
+    const lunaValue = Math.round(Number(amountNim) * NIM_STAKE_LUNA);
+
+    setWalletStatus(`Requesting ${amountNim} NIM checkout...`);
     const nimiqProvider = getNimiqProvider();
 
-    // Inside Nimiq Pay
+    // Inside Nimiq Pay / Injected Mobile Wallet
     if (nimiqProvider) {
       if (typeof nimiqProvider.checkout === "function") {
         const tx = await nimiqProvider.checkout({
           appName: "NIMWORD",
-          recipient: recipient.replace(/\s+/g, ""),
-          value: amountNim * NIM_STAKE_LUNA,
+          recipient: cleanRecipient,
+          value: lunaValue,
         });
         const txHash = tx?.hash || tx?.transactionHash || `nim_tx_${Date.now()}`;
-        setWalletStatus(`${amountNim} NIM stake approved! Tx: ${txHash.slice(0, 10)}...`);
+        setWalletStatus(`${amountNim} NIM payment approved! Tx: ${txHash.slice(0, 10)}...`);
         return txHash;
       }
       if (typeof nimiqProvider.sendTransaction === "function") {
         const tx = await nimiqProvider.sendTransaction({
-          recipient: recipient.replace(/\s+/g, ""),
-          value: amountNim * NIM_STAKE_LUNA,
+          recipient: cleanRecipient,
+          value: lunaValue,
         });
         const txHash = tx?.hash || tx?.transactionHash || `nim_tx_${Date.now()}`;
         return txHash;
       }
     }
 
-    // Standard Browser with Hub API
+    // Standard Browser with Nimiq Hub API
     const hub = await getHubApi();
     if (hub && typeof hub.checkout === "function") {
       const result = await hub.checkout({
         appName: "NIMWORD",
-        recipient: recipient.replace(/\s+/g, ""),
-        value: amountNim * NIM_STAKE_LUNA,
+        recipient: cleanRecipient,
+        value: lunaValue,
       });
       const txHash = result?.hash || result?.transactionHash || `nim_tx_${Date.now()}`;
       return txHash;
     }
 
-    // Direct simulated confirmation for testing environment
+    // Direct fallback confirmation for testing
     const simTxHash = `0xnim_${Math.random().toString(16).slice(2)}${Date.now()}`;
     return simTxHash;
   }, [getNimiqProvider, walletAddress]);
