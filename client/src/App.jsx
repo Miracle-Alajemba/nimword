@@ -367,6 +367,20 @@ export default function App() {
     }
   }
 
+  function unlockDailyPlay() {
+    setDailyPlayed(false);
+    setDailyClaimed(false);
+    setDailyClaimTx("");
+    setDailyClaimAmount("");
+    setDailyNextAvailableAt(null);
+    if (walletAddress) {
+      const todayKey = `nimword_daily_play_${walletAddress.trim().toLowerCase()}_${new Date().toISOString().slice(0, 10)}`;
+      try {
+        localStorage.removeItem(todayKey);
+      } catch {}
+    }
+  }
+
   async function claimDailyReward(sessionId) {
     setDailyClaimError("");
     setDailyClaimMessage("");
@@ -863,6 +877,7 @@ export default function App() {
             onClaimDaily={claimDailyReward}
             onRefreshStatus={checkDailyStatus}
             onStakeNim={stakeNimToPlay}
+            onUnlockDailyPlay={unlockDailyPlay}
           />
         </Suspense>
       </DailyChallengeErrorBoundary>

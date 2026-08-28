@@ -45,6 +45,7 @@ export function DailyChallenge({
   onClaimDaily,
   onRefreshStatus,
   onStakeNim,
+  onUnlockDailyPlay,
   getInjectedProvider,
   getWalletClient,
   getPublicClient,
@@ -107,31 +108,33 @@ export function DailyChallenge({
         throw new Error("Transaction was cancelled or declined.");
       }
 
-      // 2. Notify backend to clear daily cooldown
+      // 2. Notify backend to clear daily cooldown in background
       try {
-        await fetch(`${apiBaseUrl}/daily/retry-purchase`, {
+        fetch(`${apiBaseUrl}/daily/retry-purchase`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ walletAddress: walletAddress.trim(), txHash }),
-        });
-      } catch (netErr) {
-        console.warn("Backend retry sync note:", netErr.message);
-      }
+        }).catch(() => {});
+      } catch {}
 
-      // 3. Clear local daily play lock
+      // 3. Clear local & parent daily play locks
+      if (typeof onUnlockDailyPlay === "function") {
+        onUnlockDailyPlay();
+      }
+      setCooldownSeconds(0);
+      setCurrentPlayStarted(true);
+
       const todayKey = `nimword_daily_play_${walletAddress.trim().toLowerCase()}_${new Date().toISOString().slice(0, 10)}`;
       try {
         localStorage.removeItem(todayKey);
       } catch {}
 
-      if (onRefreshStatus) {
-        try {
-          await onRefreshStatus();
-        } catch {}
-      }
-
-      // 4. Only after successful payment approval: reset countdown and unlock round!
-      resetChallenge();
+      // 4. Immediately launch the round
+      await loadDailyRound(
+        "medium",
+        "playing",
+        `Retry ticket confirmed! Build valid words fast. Reach ${DAILY_TARGET_SCORE} pts to claim today's reward.`,
+      );
     } catch (err) {
       console.warn("Retry ticket transaction error:", err);
       setRetryError(err.message || "Payment cancelled. Cooldown was not reset.");
