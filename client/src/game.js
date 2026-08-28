@@ -99,16 +99,24 @@ export function evaluatePracticeSubmission({
 export const FALLBACK_ROUNDS = {
   easy: [
     {
+      sourceWord: "BLOCKCHAIN",
+      validWords: ["blockchain", "cabin", "chain", "chalk", "cloak", "bacon", "black", "block", "blank", "chin", "chip", "coin", "icon", "lock", "bank", "back", "coal", "bail", "boil", "clan", "can", "cab", "ban", "bin", "ion", "oil", "ink", "oak", "lab", "nob"],
+    },
+    {
+      sourceWord: "EDUCATION",
+      validWords: ["education", "auction", "action", "united", "tonic", "audio", "canoe", "dance", "count", "acute", "ocean", "notice", "acted", "audit", "cite", "code", "cute", "date", "diet", "dine", "dirt", "done", "dote", "duce", "duct", "duet", "dune", "edit", "into", "node", "note", "once", "tide", "tied", "time", "toed", "tone", "tune", "unit", "acid", "aide", "cone", "coin", "coat", "cat", "cot", "cut", "den", "die", "din", "doe", "dot", "due", "dun", "eat", "end", "eon", "ice", "ion", "net", "nod", "not", "nut", "oat", "one", "out", "tan", "tea", "ten", "tie", "tin", "toe", "ton"],
+    },
+    {
+      sourceWord: "COMMUNITY",
+      validWords: ["community", "immunity", "mutiny", "county", "mount", "comic", "unity", "minty", "tonic", "icon", "mint", "city", "tiny", "unit", "coin", "into", "unto", "moon", "omit", "tout", "con", "cot", "cut", "ion", "not", "nut", "out", "tin", "tom", "ton", "too", "you"],
+    },
+    {
+      sourceWord: "TREASURY",
+      validWords: ["treasury", "starry", "surety", "arrest", "rust", "star", "stay", "sure", "user", "tear", "true", "year", "easy", "rays", "arts", "rate", "seat", "east", "art", "rat", "try", "say", "ray", "ear", "era", "tea", "use", "rue", "tar", "sat", "set"],
+    },
+    {
       sourceWord: "GAMING",
       validWords: ["game", "gain", "main", "magi", "agin", "gig", "gag", "nag", "man", "aim", "gin", "gem"],
-    },
-    {
-      sourceWord: "STREAK",
-      validWords: ["streak", "stare", "skate", "steak", "takes", "tears", "rates", "stark", "task", "take", "tear", "rate", "seat", "east", "star", "rest", "arts", "ear", "era", "tea", "set", "art", "rat", "eat", "tar", "ask", "sat"],
-    },
-    {
-      sourceWord: "NIMIQ",
-      validWords: ["nim", "min", "qin", "imi", "nimq"],
     },
     {
       sourceWord: "PLAYER",
@@ -129,8 +137,8 @@ export const FALLBACK_ROUNDS = {
       validWords: ["staking", "taking", "giant", "satin", "stink", "stain", "gain", "sink", "king", "task", "skin", "sing", "sign", "knit", "tang", "tank", "ting", "ant", "tin", "tan", "sin", "sit", "kit", "kin", "tag", "nag", "gin", "its"],
     },
     {
-      sourceWord: "TREASURY",
-      validWords: ["treasury", "starry", "surety", "arrest", "rust", "star", "stay", "sure", "user", "tear", "true", "year", "easy", "rays", "arts", "rate", "seat", "east", "art", "rat", "try", "say", "ray", "ear", "era", "tea", "use", "rue", "tar", "sat", "set"],
+      sourceWord: "ALGORITHM",
+      validWords: ["algorithm", "mortal", "tailor", "moral", "girth", "trial", "glory", "loam", "mail", "halt", "harm", "math", "roam", "gram", "girl", "goat", "moth", "toga", "tram", "trio", "riot", "aim", "air", "arm", "art", "hit", "hot", "log", "lot", "oat", "oil", "ram", "rat", "rim", "rot", "tag", "tar", "tom"],
     },
     {
       sourceWord: "REWARD",
@@ -140,19 +148,47 @@ export const FALLBACK_ROUNDS = {
       sourceWord: "WINNER",
       validWords: ["winner", "rewin", "wire", "wren", "wine", "rein", "win", "new", "wen", "err"],
     },
+    {
+      sourceWord: "PLATFORM",
+      validWords: ["platform", "formal", "format", "patrol", "portal", "mortal", "moral", "flora", "float", "flota", "polar", "tram", "trap", "tarp", "form", "fort", "from", "part", "port", "plot", "roam", "flap", "flat", "flat", "lamp", "loam", "malt", "arm", "art", "fat", "for", "lap", "lip", "lot", "map", "mat", "mop", "oat", "oft", "par", "pat", "pot", "ram", "rap", "rat", "rot", "tap", "tar", "tom", "top"],
+    },
   ],
   hard: [
     {
-      sourceWord: "BLOCKCHAIN",
-      validWords: ["blockchain", "cabin", "chain", "chalk", "cloak", "bacon", "black", "block", "blank", "chin", "chip", "coin", "icon", "lock", "bank", "back", "coal", "bail", "boil", "clan", "can", "cab", "ban", "bin", "ion", "oil", "ink", "oak", "lab", "nob"],
+      sourceWord: "CRYPTIC",
+      validWords: ["cryptic", "crypt", "pyric", "pricy", "typic", "city", "pity", "trip", "cry", "tip", "pit", "tic", "pry"],
     },
     {
-      sourceWord: "ALGORITHM",
-      validWords: ["algorithm", "mortal", "tailor", "moral", "girth", "trial", "glory", "loam", "mail", "halt", "harm", "math", "roam", "gram", "girl", "goat", "moth", "toga", "tram", "trio", "riot", "aim", "air", "arm", "art", "hit", "hot", "log", "lot", "oat", "oil", "ram", "rat", "rim", "rot", "tag", "tar", "tom"],
+      sourceWord: "ZEPHYR",
+      validWords: ["zephyr", "hype", "prey", "pyre", "rye", "her", "per", "rep", "hey", "pry", "yeh"],
     },
     {
-      sourceWord: "SPEEDY",
-      validWords: ["speedy", "speed", "seeds", "deep", "seed", "spye", "eyes", "eye", "spy", "see", "dye", "yes"],
+      sourceWord: "SYNTAX",
+      validWords: ["syntax", "stany", "antsy", "nasty", "stay", "tax", "any", "say", "tan", "ant", "sat"],
+    },
+    {
+      sourceWord: "VORTEX",
+      validWords: ["vortex", "vert", "tore", "vote", "over", "rove", "rote", "vet", "rot", "tor", "toe", "ore", "roe"],
+    },
+    {
+      sourceWord: "MATRIX",
+      validWords: ["matrix", "tram", "trio", "mart", "riot", "rim", "ram", "rat", "tar", "mat", "arm", "art", "tax", "max"],
+    },
+    {
+      sourceWord: "LABYRINTH",
+      validWords: ["labyrinth", "binary", "brainy", "tribal", "birth", "brain", "habit", "trail", "train", "bray", "bran", "hilt", "hint", "lain", "lair", "liar", "rail", "rain", "yarn", "air", "art", "bay", "bin", "bit", "hat", "hit", "lab", "lay", "nab", "nay", "nit", "ran", "rat", "ray", "rib", "tab", "tan", "tar", "tin", "van"],
+    },
+    {
+      sourceWord: "OXYGEN",
+      validWords: ["oxygen", "gone", "nose", "ego", "one", "eon", "yon", "gen", "oxy"],
+    },
+    {
+      sourceWord: "POLYMER",
+      validWords: ["polymer", "employ", "morley", "proper", "moper", "morel", "poley", "mole", "mope", "more", "pore", "prom", "pyre", "rely", "role", "rope", "elm", "lop", "lye", "mop", "ore", "per", "ply", "pro", "pry", "rep", "rim", "roe", "rom", "rye"],
+    },
+    {
+      sourceWord: "ENIGMA",
+      validWords: ["enigma", "gamine", "image", "magie", "amen", "gain", "game", "main", "mane", "mean", "mega", "mien", "mine", "name", "aim", "gem", "gin", "mag", "man", "men", "nag"],
     },
   ],
 };

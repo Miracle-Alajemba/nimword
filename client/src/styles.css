@@ -5154,3 +5154,70 @@ textarea {
   position: relative;
   z-index: 1;
 }
+
+/* ── Practice Level Selector Bar (Mobile Responsive) ─────────────────── */
+.practice-level-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto 1.25rem;
+  padding: 4px;
+  background: var(--surface-sunk);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.practice-level-btn {
+  box-sizing: border-box !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 4px !important;
+  min-height: 38px !important;
+  height: 38px !important;
+  padding: 0 4px !important;
+  border-radius: 8px !important;
+  font-family: var(--font-game) !important;
+  font-size: clamp(0.72rem, 3vw, 0.84rem) !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em !important;
+  white-space: nowrap !important;
+  text-align: center !important;
+  background: transparent !important;
+  color: var(--ink-muted) !important;
+  border: 1px solid transparent !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition: all 0.15s ease !important;
+}
+
+.practice-level-btn:hover:not(:disabled) {
+  color: var(--ink) !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+.practice-level-btn.is-active {
+  background: var(--surface) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+.practice-level-btn--easy.is-active {
+  color: var(--good) !important;
+  border-color: var(--good) !important;
+}
+
+.practice-level-btn--medium.is-active {
+  color: var(--nq-gold-deep, #d97706) !important;
+  border-color: var(--nq-gold-deep, #d97706) !important;
+}
+
+.practice-level-btn--hard.is-active {
+  color: var(--interactive-ink) !important;
+  border-color: var(--interactive-ink) !important;
+}

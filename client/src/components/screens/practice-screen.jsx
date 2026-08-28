@@ -346,52 +346,25 @@ export function PracticeScreen({
         </div>
 
         {/* Interactive Game Level Selector */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "0.6rem",
-            marginBottom: "1.25rem",
-            background: "var(--surface-sunk)",
-            padding: "6px 8px",
-            borderRadius: "14px",
-            border: "1px solid var(--rule)",
-            maxWidth: "480px",
-            margin: "0 auto 1.25rem",
-          }}
-        >
+        <div className="practice-level-bar">
           {[
-            { id: "easy", label: "🎮 Warm Up", color: "var(--good)" },
-            { id: "medium", label: "⚔️ Standard", color: "var(--nq-gold-deep, var(--ink))" },
-            { id: "hard", label: "👑 Expert", color: "var(--interactive-ink)" },
+            { id: "easy", icon: "🎮", label: "Warm Up", classSuffix: "easy" },
+            { id: "medium", icon: "⚔️", label: "Standard", classSuffix: "medium" },
+            { id: "hard", icon: "👑", label: "Expert", classSuffix: "hard" },
           ].map((lvl) => {
             const isActive = difficulty === lvl.id;
             return (
               <button
                 key={lvl.id}
                 type="button"
+                className={`practice-level-btn practice-level-btn--${lvl.classSuffix} ${isActive ? "is-active" : ""}`}
                 onClick={() => {
                   setDifficulty(lvl.id);
                   loadPracticeRound(`Switched to ${lvl.label} round.`, lvl.id);
                 }}
-                style={{
-                  flex: 1,
-                  padding: "0.55rem 0.75rem",
-                  fontSize: "0.85rem",
-                  fontWeight: 800,
-                  borderRadius: "10px",
-                  border: isActive ? `1.5px solid ${lvl.color}` : "1px solid transparent",
-                  background: isActive ? "var(--surface)" : "transparent",
-                  color: isActive ? lvl.color : "var(--ink-2)",
-                  cursor: "pointer",
-                  transition: "all 0.15s ease",
-                  boxShadow: isActive ? "0 2px 8px rgba(0,0,0,0.08)" : "none",
-                  fontFamily: "var(--font-game)",
-                  whiteSpace: "nowrap",
-                }}
               >
-                {lvl.label}
+                <span>{lvl.icon}</span>
+                <span>{lvl.label}</span>
               </button>
             );
           })}
