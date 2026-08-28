@@ -143,12 +143,28 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddre
   const [manualInput, setManualInput] = useState("");
   const [manualError, setManualError] = useState("");
   const [showManualBox, setShowManualBox] = useState(false);
+  const [stats, setStats] = useState(() => getPlayerStats(walletAddress));
 
   useEffect(() => {
     if (connected) {
       setAlias(getSavedUsername(walletAddress));
+      setStats(getPlayerStats(walletAddress));
     }
   }, [walletAddress, connected]);
+
+  // Compute live rank & level
+  const level = Math.max(1, Math.floor((stats.totalScore || 0) / 40) + (stats.gamesWon || 0) + (stats.dailyCompleted || 0));
+  const rankBadgeText =
+    level >= 10
+      ? `Level ${level} • Word Grandmaster`
+      : level >= 6
+      ? `Level ${level} • Word Champion`
+      : level >= 3
+      ? `Level ${level} • Word Master`
+      : `Level ${level} • Word Explorer`;
+
+  const winRate = stats.gamesPlayed > 0 ? Math.round((stats.gamesWon / stats.gamesPlayed) * 100) : 0;
+  const avgScore = stats.gamesPlayed > 0 ? Math.round(stats.totalScore / stats.gamesPlayed) : stats.totalScore || 0;
 
   const handleSaveManual = (e) => {
     e.preventDefault();
@@ -212,7 +228,7 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddre
                   </p>
                   <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
                     <span className="rank-badge" style={{ fontSize: "0.75rem", padding: "0.25rem 0.6rem", borderRadius: "8px" }}>
-                      Level 7 • Word Master
+                      {rankBadgeText}
                     </span>
                     {connected && (
                       <span style={{ fontSize: "0.72rem", background: "var(--surface-sunk)", padding: "0.25rem 0.5rem", borderRadius: "6px", color: "var(--ink-2)", border: "1px solid var(--rule)" }}>
@@ -299,15 +315,15 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddre
                   <span style={{ fontSize: "1.35rem" }}>⚡</span>
                   <div>
                     <span style={{ fontSize: "0.82rem", fontWeight: 800, color: "var(--ink)", display: "block" }}>Rapid Solver</span>
-                    <span style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>10+ words in 60s</span>
+                    <span style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>{stats.dailyCompleted > 0 ? `${stats.dailyCompleted} daily solved` : "Play daily round"}</span>
                   </div>
                 </div>
 
                 <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", padding: "0.65rem", background: "var(--surface-sunk)", borderRadius: "12px", border: "1px solid var(--rule)" }}>
                   <span style={{ fontSize: "1.35rem" }}>🎯</span>
                   <div>
-                    <span style={{ fontSize: "0.82rem", fontWeight: 800, color: "var(--ink)", display: "block" }}>7-Letter Master</span>
-                    <span style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>Found root word</span>
+                    <span style={{ fontSize: "0.82rem", fontWeight: 800, color: "var(--ink)", display: "block" }}>Master Solver</span>
+                    <span style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>{stats.bestWord && stats.bestWord !== "-" ? `${stats.bestWord}` : "Find top words"}</span>
                   </div>
                 </div>
 
@@ -315,7 +331,7 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddre
                   <span style={{ fontSize: "1.35rem" }}>🔥</span>
                   <div>
                     <span style={{ fontSize: "0.82rem", fontWeight: 800, color: "var(--ink)", display: "block" }}>Streak Veteran</span>
-                    <span style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>4+ win streak</span>
+                    <span style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>{stats.winStreak > 0 ? `${stats.winStreak} win streak` : "Win matches in row"}</span>
                   </div>
                 </div>
 
@@ -323,7 +339,7 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddre
                   <span style={{ fontSize: "1.35rem" }}>🪙</span>
                   <div>
                     <span style={{ fontSize: "0.82rem", fontWeight: 800, color: "var(--ink)", display: "block" }}>NIM Champion</span>
-                    <span style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>Arena victories</span>
+                    <span style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>{stats.totalNimWon > 0 ? `${stats.totalNimWon} NIM earned` : "Claim daily NIM"}</span>
                   </div>
                 </div>
               </div>
@@ -343,9 +359,9 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddre
                     Total Wins
                   </span>
                   <strong style={{ fontSize: "1.35rem", color: "var(--ink)", fontWeight: 900, fontFamily: "var(--font-mono)" }}>
-                    18
+                    {stats.gamesWon}
                   </strong>
-                  <small style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>Lifetime arena</small>
+                  <small style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>Lifetime arena & daily</small>
                 </div>
 
                 <div style={{ background: "var(--surface-sunk)", padding: "0.85rem", borderRadius: "12px", border: "1px solid var(--rule)", display: "flex", flexDirection: "column", gap: "0.2rem" }}>
@@ -353,7 +369,7 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddre
                     Win Streak
                   </span>
                   <strong style={{ fontSize: "1.35rem", color: "var(--interactive-ink)", fontWeight: 900, fontFamily: "var(--font-mono)" }}>
-                    4 🔥
+                    {stats.winStreak} 🔥
                   </strong>
                   <small style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>Current run</small>
                 </div>
@@ -363,9 +379,9 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddre
                     Progression Tier
                   </span>
                   <strong style={{ fontSize: "1.35rem", color: "var(--good)", fontWeight: 900, fontFamily: "var(--font-mono)" }}>
-                    Tier 7
+                    Tier {level}
                   </strong>
-                  <small style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>Master rank</small>
+                  <small style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>{stats.totalScore} total pts</small>
                 </div>
 
                 <div style={{ background: "var(--surface-sunk)", padding: "0.85rem", borderRadius: "12px", border: "1px solid var(--rule)", display: "flex", flexDirection: "column", gap: "0.2rem" }}>
@@ -373,7 +389,7 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddre
                     Total NIM Earned
                   </span>
                   <strong style={{ fontSize: "1.35rem", color: "var(--nq-gold-deep, var(--ink))", fontWeight: 900, fontFamily: "var(--font-mono)" }}>
-                    24.6 NIM
+                    {stats.totalNimWon.toFixed(1)} NIM
                   </strong>
                   <small style={{ fontSize: "0.7rem", color: "var(--ink-muted)" }}>Onchain payouts</small>
                 </div>
@@ -388,15 +404,17 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddre
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.6rem", textAlign: "center" }}>
                 <div style={{ padding: "0.6rem 0.4rem", background: "var(--surface)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
                   <span style={{ display: "block", fontSize: "0.7rem", color: "var(--ink-muted)", textTransform: "uppercase", fontWeight: 700 }}>Avg Score</span>
-                  <strong style={{ fontSize: "1.05rem", color: "var(--ink)", fontFamily: "var(--font-mono)" }}>42.5</strong>
+                  <strong style={{ fontSize: "1.05rem", color: "var(--ink)", fontFamily: "var(--font-mono)" }}>{avgScore}</strong>
                 </div>
                 <div style={{ padding: "0.6rem 0.4rem", background: "var(--surface)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
                   <span style={{ display: "block", fontSize: "0.7rem", color: "var(--ink-muted)", textTransform: "uppercase", fontWeight: 700 }}>Win Rate</span>
-                  <strong style={{ fontSize: "1.05rem", color: "var(--good)", fontFamily: "var(--font-mono)" }}>78%</strong>
+                  <strong style={{ fontSize: "1.05rem", color: "var(--good)", fontFamily: "var(--font-mono)" }}>{winRate}%</strong>
                 </div>
                 <div style={{ padding: "0.6rem 0.4rem", background: "var(--surface)", borderRadius: "10px", border: "1px solid var(--rule)" }}>
                   <span style={{ display: "block", fontSize: "0.7rem", color: "var(--ink-muted)", textTransform: "uppercase", fontWeight: 700 }}>Best Word</span>
-                  <strong style={{ fontSize: "1.05rem", color: "var(--interactive-ink)", fontFamily: "var(--font-mono)" }}>16 pts</strong>
+                  <strong style={{ fontSize: "0.95rem", color: "var(--interactive-ink)", fontFamily: "var(--font-mono)" }}>
+                    {stats.bestWord && stats.bestWord !== "-" ? `${stats.bestWord} (${stats.bestWordScore}p)` : "None"}
+                  </strong>
                 </div>
               </div>
             </section>

@@ -7,6 +7,7 @@ import {
 } from "../../game.js";
 import { GameLoader } from "../ui/index.js";
 import { isWalletAddress, isNimiqAddress, formatNimiqAddress } from "../../utils/nimiq-identicon.js";
+import { updatePlayerStats } from "../../utils/username.js";
 
 const DAILY_TARGET_SCORE = 40;
 const DAILY_ROUND_SECONDS = 60;
@@ -196,22 +197,38 @@ export function DailyChallenge({
   }, [phase]);
 
   useEffect(() => {
-    if (phase === "finished" && roundSeed?.id && walletAddress) {
-      fetch(`${apiBaseUrl}/daily/finalize`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          sessionId: roundSeed.id,
-          walletAddress: walletAddress.trim(),
-        }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("Daily challenge finalized:", data);
+    if (phase === "finished" && walletAddress) {
+      const bestWordObj = Array.isArray(claimedWords)
+        ? claimedWords.reduce((best, cur) => (cur.points > (best?.points || 0) ? cur : best), null)
+        : null;
+
+      updatePlayerStats(walletAddress, {
+        score,
+        gamesPlayed: 1,
+        dailyCompleted: 1,
+        won: score >= DAILY_TARGET_SCORE,
+        gamesWon: score >= DAILY_TARGET_SCORE ? 1 : 0,
+        bestWord: bestWordObj?.word || "-",
+        bestWordScore: bestWordObj?.points || 0,
+      });
+
+      if (roundSeed?.id) {
+        fetch(`${apiBaseUrl}/daily/finalize`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sessionId: roundSeed.id,
+            walletAddress: walletAddress.trim(),
+          }),
         })
-        .catch((err) => console.warn("Failed to finalize daily challenge", err));
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("Daily challenge finalized:", data);
+          })
+          .catch((err) => console.warn("Failed to finalize daily challenge", err));
+      }
     }
-  }, [phase, roundSeed?.id, walletAddress, apiBaseUrl]);
+  }, [phase, roundSeed?.id, walletAddress, apiBaseUrl, score, claimedWords]);
 
   async function startChallenge(difficulty = "medium") {
     if (loadingRound) return;
@@ -456,6 +473,7 @@ export function DailyChallenge({
       return;
     }
     await onClaimDaily(roundSeed?.id);
+    updatePlayerStats(walletAddress, { nimWon: 0.1 });
   }
 
   // Wallet gate — must be after all hooks
