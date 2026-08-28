@@ -121,3 +121,64 @@ export function updatePlayerStats(walletAddress, update = {}) {
 
   return updated;
 }
+
+const DAILY_LEADERBOARD_KEY = "nimword_daily_leaderboard_cache";
+
+/**
+ * Record or update a score in the local daily leaderboard cache.
+ */
+export function recordDailyLeaderboardEntry(walletAddress, score = 0) {
+  if (!walletAddress || typeof window === "undefined") return;
+
+  try {
+    const raw = window.localStorage.getItem(DAILY_LEADERBOARD_KEY);
+    let list = raw ? JSON.parse(raw) : [];
+    if (!Array.isArray(list)) list = [];
+
+    const username = getSavedUsername(walletAddress);
+    const existingIdx = list.findIndex(
+      (e) => String(e.walletAddress).toLowerCase() === String(walletAddress).toLowerCase()
+    );
+
+    if (existingIdx >= 0) {
+      if (score > (list[existingIdx].score || 0)) {
+        list[existingIdx].score = score;
+        list[existingIdx].username = username;
+      }
+      list[existingIdx].totalScore = (list[existingIdx].totalScore || 0) + score;
+      list[existingIdx].roundsPlayed = (list[existingIdx].roundsPlayed || 1) + 1;
+    } else {
+      list.push({
+        walletAddress,
+        username,
+        score,
+        totalScore: score,
+        roundsPlayed: 1,
+      });
+    }
+
+    list.sort((a, b) => (b.score || 0) - (a.score || 0));
+    list = list.map((item, idx) => ({ ...item, rank: idx + 1 }));
+
+    window.localStorage.setItem(DAILY_LEADERBOARD_KEY, JSON.stringify(list));
+  } catch (e) {
+    console.warn("Error recording local daily leaderboard entry:", e);
+  }
+}
+
+/**
+ * Get cached local daily leaderboard standings.
+ */
+export function getLocalDailyLeaderboard() {
+  if (typeof window === "undefined") return [];
+  try {
+    const raw = window.localStorage.getItem(DAILY_LEADERBOARD_KEY);
+    if (raw) {
+      const list = JSON.parse(raw);
+      if (Array.isArray(list)) return list;
+    }
+  } catch (e) {
+    console.warn("Error reading local daily leaderboard:", e);
+  }
+  return [];
+}

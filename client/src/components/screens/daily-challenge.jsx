@@ -7,7 +7,7 @@ import {
 } from "../../game.js";
 import { GameLoader } from "../ui/index.js";
 import { isWalletAddress, isNimiqAddress, formatNimiqAddress } from "../../utils/nimiq-identicon.js";
-import { updatePlayerStats } from "../../utils/username.js";
+import { updatePlayerStats, recordDailyLeaderboardEntry } from "../../utils/username.js";
 
 const DAILY_TARGET_SCORE = 40;
 const DAILY_ROUND_SECONDS = 60;
@@ -228,6 +228,8 @@ export function DailyChallenge({
         bestWord: bestWordObj?.word || "-",
         bestWordScore: bestWordObj?.points || 0,
       });
+
+      recordDailyLeaderboardEntry(walletAddress, score);
 
       if (roundSeed?.id) {
         fetch(`${apiBaseUrl}/daily/finalize`, {

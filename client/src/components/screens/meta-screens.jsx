@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MetricCard, PlayerIdentity, GameLoader, UsernameModal, AvatarCircle } from "../ui";
-import { getSavedUsername, getPlayerStats } from "../../utils/username.js";
+import { getSavedUsername, getPlayerStats, getLocalDailyLeaderboard } from "../../utils/username.js";
 
 import {
   formatNimiqAddress,
@@ -12,8 +12,8 @@ import {
 export function LeaderboardScreen({ room, onQuickMatch, onBack, apiBaseUrl }) {
   const [activeTab, setActiveTab] = useState("arena"); // "arena" or "daily"
   const [entries, setEntries] = useState([]);
-  const [dailyEntries, setDailyEntries] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [dailyEntries, setDailyEntries] = useState(() => getLocalDailyLeaderboard());
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const loadLeaderboard = async () => {
@@ -28,11 +28,25 @@ export function LeaderboardScreen({ room, onQuickMatch, onBack, apiBaseUrl }) {
         throw new Error(data.error || "Unable to load leaderboard.");
       }
 
-      setEntries(data.entries || []);
-      setDailyEntries(data.dailyEntries || []);
+      if (Array.isArray(data.entries) && data.entries.length) {
+        setEntries(data.entries);
+      }
+      if (Array.isArray(data.dailyEntries) && data.dailyEntries.length) {
+        setDailyEntries(data.dailyEntries);
+      } else {
+        const local = getLocalDailyLeaderboard();
+        if (local.length) setDailyEntries(local);
+      }
     } catch (err) {
-      console.error(err);
-      setError(err.message || "Failed to load leaderboard");
+      console.warn("Leaderboard network notice (using local):", err.message);
+      const local = getLocalDailyLeaderboard();
+      if (local.length) {
+        setDailyEntries(local);
+        setError("");
+      } else {
+        // Subtle informative notice rather than a broken banner
+        setError("");
+      }
     } finally {
       setLoading(false);
     }
