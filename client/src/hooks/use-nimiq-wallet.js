@@ -318,14 +318,46 @@ export function useNimiqWallet() {
 
     // Standard Browser with Nimiq Hub API
     const hub = await getHubApi();
-    if (hub && typeof hub.checkout === "function") {
-      const result = await hub.checkout({
-        appName: "NIMWORD",
-        recipient: cleanRecipient,
-        value: lunaValue,
-      });
-      const txHash = result?.hash || result?.transactionHash || `nim_tx_${Date.now()}`;
-      return txHash;
+    const cleanSender = walletAddress ? walletAddress.replace(/\s+/g, "") : undefined;
+
+    if (hub) {
+      // 1. Direct native Nimiq transaction (Fastest, skips multi-currency e-commerce shop overhead)
+      if (typeof hub.sendTransaction === "function") {
+        try {
+          const result = await hub.sendTransaction({
+            appName: "NIMWORD",
+            sender: cleanSender,
+            recipient: cleanRecipient,
+            value: lunaValue,
+            extraData: "NimWord Daily Retry",
+          });
+          const txHash = result?.hash || result?.transactionHash || `nim_tx_${Date.now()}`;
+          setWalletStatus(`${amountNim} NIM payment confirmed! Tx: ${txHash.slice(0, 10)}...`);
+          return txHash;
+        } catch (sendErr) {
+          if (
+            sendErr?.message?.toLowerCase().includes("canceled") ||
+            sendErr?.message?.toLowerCase().includes("closed") ||
+            sendErr?.message?.toLowerCase().includes("denied") ||
+            sendErr?.message?.toLowerCase().includes("rejected")
+          ) {
+            throw sendErr;
+          }
+          console.warn("Direct sendTransaction fallback to checkout:", sendErr);
+        }
+      }
+
+      // 2. Checkout fallback with specific sender
+      if (typeof hub.checkout === "function") {
+        const result = await hub.checkout({
+          appName: "NIMWORD",
+          sender: cleanSender,
+          recipient: cleanRecipient,
+          value: lunaValue,
+        });
+        const txHash = result?.hash || result?.transactionHash || `nim_tx_${Date.now()}`;
+        return txHash;
+      }
     }
 
     // Direct fallback confirmation for testing
