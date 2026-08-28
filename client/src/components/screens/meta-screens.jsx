@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { MetricCard, PlayerIdentity, GameLoader, UsernameModal, AvatarCircle } from "../ui";
 import { getSavedUsername, getPlayerStats, getLocalDailyLeaderboard } from "../../utils/username.js";
 
@@ -9,7 +9,7 @@ import {
   shortenWalletAddress,
 } from "../../utils/ui-helpers.js";
 
-export function LeaderboardScreen({ room, onQuickMatch, onBack, apiBaseUrl }) {
+export function LeaderboardScreen({ room, onQuickMatch, onBack, apiBaseUrl, walletAddress }) {
   const [activeTab, setActiveTab] = useState("arena"); // "arena" or "daily"
   const [entries, setEntries] = useState([]);
   const [dailyEntries, setDailyEntries] = useState(() => getLocalDailyLeaderboard());
@@ -44,7 +44,6 @@ export function LeaderboardScreen({ room, onQuickMatch, onBack, apiBaseUrl }) {
         setDailyEntries(local);
         setError("");
       } else {
-        // Subtle informative notice rather than a broken banner
         setError("");
       }
     } finally {
@@ -56,7 +55,58 @@ export function LeaderboardScreen({ room, onQuickMatch, onBack, apiBaseUrl }) {
     loadLeaderboard();
   }, [apiBaseUrl]);
 
-  const activeEntries = activeTab === "arena" ? entries : dailyEntries;
+  // Merge connected player's career stats if not already present
+  const mergedEntries = useMemo(() => {
+    let list = [...(activeTab === "arena" ? entries : dailyEntries)];
+    if (walletAddress && isWalletAddress(walletAddress)) {
+      const stats = getPlayerStats(walletAddress);
+      const username = getSavedUsername(walletAddress);
+      const normalizedWallet = walletAddress.toLowerCase();
+      const existingIdx = list.findIndex((e) => String(e.walletAddress).toLowerCase() === normalizedWallet);
+
+      if (activeTab === "daily") {
+        const playerScore = stats.totalScore || 0;
+        if (existingIdx >= 0) {
+          list[existingIdx] = {
+            ...list[existingIdx],
+            username: list[existingIdx].username || username,
+            score: Math.max(list[existingIdx].score || 0, playerScore),
+          };
+        } else if (playerScore > 0 || stats.gamesPlayed > 0) {
+          list.push({
+            walletAddress,
+            username,
+            score: playerScore,
+            totalScore: playerScore,
+            roundsPlayed: stats.dailyCompleted || stats.gamesPlayed || 1,
+          });
+        }
+        list.sort((a, b) => (b.score || 0) - (a.score || 0));
+      } else {
+        // Arena
+        const playerWins = stats.gamesWon || 0;
+        if (existingIdx >= 0) {
+          list[existingIdx] = {
+            ...list[existingIdx],
+            username: list[existingIdx].username || username,
+            gamesWon: Math.max(list[existingIdx].gamesWon || 0, playerWins),
+          };
+        } else if (playerWins > 0 || stats.totalScore > 0) {
+          list.push({
+            walletAddress,
+            username,
+            score: stats.totalScore || 0,
+            gamesWon: playerWins,
+            totalNimWon: stats.totalNimWon || 0,
+          });
+        }
+        list.sort((a, b) => (b.gamesWon || b.score || 0) - (a.gamesWon || a.score || 0));
+      }
+    }
+    return list.map((item, idx) => ({ ...item, rank: idx + 1 }));
+  }, [activeTab, entries, dailyEntries, walletAddress]);
+
+  const activeEntries = mergedEntries;
 
   return (
     <main className="page-shell">
