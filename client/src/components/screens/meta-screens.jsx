@@ -20,7 +20,7 @@ export function LeaderboardScreen({ room, onQuickMatch, onBack, apiBaseUrl, wall
     try {
       setLoading(true);
       setError("");
-      
+
       const response = await fetch(`${apiBaseUrl}/leaderboard`);
       const data = await response.json();
 
@@ -164,7 +164,7 @@ export function LeaderboardScreen({ room, onQuickMatch, onBack, apiBaseUrl, wall
             </div>
 
             {error ? <div className="notice-strip notice-strip--neutral">{error}</div> : null}
-            
+
             {loading ? (
               <GameLoader label="Loading standings..." letters="LEADER" />
             ) : activeEntries.length ? (
@@ -222,10 +222,10 @@ export function ProfileScreen({ walletAddress, onConnectWallet, onSetManualAddre
     level >= 10
       ? `Level ${level} • Word Grandmaster`
       : level >= 6
-      ? `Level ${level} • Word Champion`
-      : level >= 3
-      ? `Level ${level} • Word Master`
-      : `Level ${level} • Word Explorer`;
+        ? `Level ${level} • Word Champion`
+        : level >= 3
+          ? `Level ${level} • Word Master`
+          : `Level ${level} • Word Explorer`;
 
   const winRate = stats.gamesPlayed > 0 ? Math.round((stats.gamesWon / stats.gamesPlayed) * 100) : 0;
   const avgScore = stats.gamesPlayed > 0 ? Math.round(stats.totalScore / stats.gamesPlayed) : stats.totalScore || 0;
@@ -516,7 +516,7 @@ export function SettingsScreen({ settings, onToggle, onBack }) {
           osc.stop(now + idx * 0.08 + 0.15);
         });
       }
-    } catch {}
+    } catch { }
   };
 
   const handleTestHaptics = () => {

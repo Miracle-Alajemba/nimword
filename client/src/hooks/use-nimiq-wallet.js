@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, useRef } from "react";
 import HubApi from "@nimiq/hub-api";
 import {
   DEFAULT_TREASURY_ADDRESS,
@@ -12,6 +12,29 @@ import {
   isNimiqAddress,
   shortenNimiqAddress,
 } from "../utils/nimiq-identicon.js";
+
+// Cached Mini App SDK provider (resolved once, reused everywhere)
+let miniAppProvider = null;
+let miniAppInitPromise = null;
+
+async function initMiniAppProvider() {
+  if (miniAppProvider) return miniAppProvider;
+  if (miniAppInitPromise) return miniAppInitPromise;
+
+  miniAppInitPromise = (async () => {
+    try {
+      const { init } = await import("@nimiq/mini-app-sdk");
+      miniAppProvider = await init({ timeout: 5000 });
+      return miniAppProvider;
+    } catch {
+      miniAppProvider = null;
+      return null;
+    } finally {
+      miniAppInitPromise = null;
+    }
+  })();
+  return miniAppInitPromise;
+}
 
 let hubApiInstance = null;
 
@@ -82,8 +105,9 @@ export function useNimiqWallet() {
   const [isNimiqPay, setIsNimiqPay] = useState(false);
   const [isConnecting, setIsConnecting] = useState(false);
 
-  // Detect window.nimiq provider (Nimiq Pay mobile app environment)
+  // Detect window.nimiq provider (Nimiq Pay / Nimiq Wallet mobile app)
   const getNimiqProvider = useCallback(() => {
+    if (miniAppProvider) return miniAppProvider;
     if (typeof window !== "undefined") {
       if (window.nimiq) return window.nimiq;
       if (window.Nimiq) return window.Nimiq;
@@ -194,12 +218,39 @@ export function useNimiqWallet() {
     setIsConnecting(true);
     setWalletStatus("Connecting Nimiq wallet...");
     try {
-      const nimiqProvider = getNimiqProvider();
+      // 0. Try Nimiq Mini App SDK first (instant inside Nimiq Wallet app)
+      const sdkProvider = await initMiniAppProvider();
+      if (sdkProvider) {
+        let addr = "";
+        if (typeof sdkProvider.listAccounts === "function") {
+          const accounts = await sdkProvider.listAccounts();
+          addr = Array.isArray(accounts) && accounts.length > 0
+            ? (accounts[0]?.address || accounts[0]) : "";
+        } else if (typeof sdkProvider.connect === "function") {
+          const res = await sdkProvider.connect();
+          addr = res?.address || res?.account || res || "";
+        }
+        if (addr && isNimiqAddress(addr)) {
+          const formatted = formatNimiqAddress(addr);
+          persistWalletAddress(formatted);
+          setWalletAddress(formatted);
+          setWalletStatus(`Connected via Nimiq Wallet (${shortenNimiqAddress(formatted)})`);
+          setIsNimiqPay(true);
+          await fetchBalance(formatted);
+          setIsConnecting(false);
+          return formatted;
+        }
+      }
 
-      // 1. In-App Provider (Nimiq Pay Mobile App)
+      // 1. In-App Provider fallback (window.nimiq / Nimiq Pay)
+      const nimiqProvider = getNimiqProvider();
       if (nimiqProvider) {
         let addr = "";
-        if (typeof nimiqProvider.connect === "function") {
+        if (typeof nimiqProvider.listAccounts === "function") {
+          const accounts = await nimiqProvider.listAccounts();
+          addr = Array.isArray(accounts) && accounts.length > 0
+            ? (accounts[0]?.address || accounts[0]) : "";
+        } else if (typeof nimiqProvider.connect === "function") {
           const res = await nimiqProvider.connect();
           addr = res?.address || res?.account || res || "";
         } else if (typeof nimiqProvider.request === "function") {
@@ -216,6 +267,7 @@ export function useNimiqWallet() {
           persistWalletAddress(formatted);
           setWalletAddress(formatted);
           setWalletStatus(`Connected via Nimiq Pay (${shortenNimiqAddress(formatted)})`);
+          setIsNimiqPay(true);
           await fetchBalance(formatted);
           setIsConnecting(false);
           return formatted;
