@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MetricCard, PlayerIdentity, GameLoader, UsernameModal, AvatarCircle } from "../ui";
-import { getSavedUsername } from "../../utils/username.js";
+import { getSavedUsername, getPlayerStats } from "../../utils/username.js";
 
 import {
   formatNimiqAddress,
