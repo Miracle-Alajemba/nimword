@@ -27,8 +27,56 @@ function getHubApi() {
   return hubApiInstance;
 }
 
+// Durable multi-layer storage helper (LocalStorage + SessionStorage + 1-Year Cookie)
+function persistWalletAddress(address) {
+  if (typeof window === "undefined" || !address) return;
+  try {
+    const clean = formatNimiqAddress(address);
+    window.localStorage.setItem(NIMWORD_STORAGE_KEY, clean);
+    window.sessionStorage.setItem(NIMWORD_STORAGE_KEY, clean);
+    document.cookie = `${NIMWORD_STORAGE_KEY}=${encodeURIComponent(clean)}; max-age=31536000; path=/; SameSite=Lax`;
+  } catch (e) {
+    console.warn("Storage write error:", e);
+  }
+}
+
+function retrieveStoredWalletAddress() {
+  if (typeof window === "undefined") return "";
+  try {
+    // 1. LocalStorage
+    const ls = window.localStorage.getItem(NIMWORD_STORAGE_KEY);
+    if (ls && isNimiqAddress(ls)) return formatNimiqAddress(ls);
+
+    // 2. SessionStorage
+    const ss = window.sessionStorage.getItem(NIMWORD_STORAGE_KEY);
+    if (ss && isNimiqAddress(ss)) return formatNimiqAddress(ss);
+
+    // 3. Persistent Cookie (critical for mobile WebViews / Nimiq Pay in-app browser)
+    const match = document.cookie.match(new RegExp(`(?:^|;\\s*)${NIMWORD_STORAGE_KEY}=([^;]+)`));
+    if (match && match[1]) {
+      const decoded = decodeURIComponent(match[1]);
+      if (isNimiqAddress(decoded)) return formatNimiqAddress(decoded);
+    }
+
+    // 4. URL Param (e.g., returning from external wallet redirect)
+    const params = new URLSearchParams(window.location.search);
+    const urlAddr = params.get("wallet") || params.get("address");
+    if (urlAddr && isNimiqAddress(urlAddr)) return formatNimiqAddress(urlAddr);
+  } catch (e) {}
+  return "";
+}
+
+function clearStoredWalletAddress() {
+  if (typeof window === "undefined") return;
+  try {
+    window.localStorage.removeItem(NIMWORD_STORAGE_KEY);
+    window.sessionStorage.removeItem(NIMWORD_STORAGE_KEY);
+    document.cookie = `${NIMWORD_STORAGE_KEY}=; max-age=0; path=/; SameSite=Lax`;
+  } catch (e) {}
+}
+
 export function useNimiqWallet() {
-  const [walletAddress, setWalletAddress] = useState("");
+  const [walletAddress, setWalletAddress] = useState(() => retrieveStoredWalletAddress());
   const [nimBalance, setNimBalance] = useState(0); // In NIM
   const [walletStatus, setWalletStatus] = useState("Initializing Nimiq wallet...");
   const [isNimiqPay, setIsNimiqPay] = useState(false);
@@ -65,42 +113,79 @@ export function useNimiqWallet() {
     setNimBalance((prev) => (prev > 0 ? prev : 10.0));
   }, []);
 
-  // Initialize and restore saved wallet
+  // Initialize, handle mobile Nimiq Hub redirects, and restore saved wallet
   useEffect(() => {
     let isMounted = true;
 
+    // 1. Check for stored wallet on mount
+    const saved = retrieveStoredWalletAddress();
+    if (saved && isNimiqAddress(saved)) {
+      const formatted = formatNimiqAddress(saved);
+      setWalletAddress(formatted);
+      setWalletStatus(`Connected as ${shortenNimiqAddress(formatted)}`);
+      fetchBalance(formatted);
+    }
+
+    // 2. Setup Nimiq Hub redirect response listener (essential for mobile browser redirects!)
+    const hub = getHubApi();
+    if (hub && typeof hub.on === "function" && HubApi.RequestType) {
+      try {
+        hub.on(
+          HubApi.RequestType.CHOOSE_ADDRESS,
+          (result) => {
+            const addr = result?.address || result?.account?.address || (Array.isArray(result?.addresses) && result.addresses[0]?.address) || "";
+            if (addr && isNimiqAddress(addr)) {
+              const formatted = formatNimiqAddress(addr);
+              persistWalletAddress(formatted);
+              if (isMounted) {
+                setWalletAddress(formatted);
+                setWalletStatus(`Connected as ${shortenNimiqAddress(formatted)}`);
+                fetchBalance(formatted);
+              }
+            }
+          },
+          (err) => {
+            console.warn("Nimiq Hub redirect result:", err);
+          },
+        );
+
+        if (typeof hub.checkRedirectResponse === "function") {
+          hub.checkRedirectResponse();
+        }
+      } catch (err) {
+        console.warn("Error setting up Hub redirect listener:", err);
+      }
+    }
+
+    // 3. Staggered provider checks for Nimiq Pay in-app browser
     const checkProviderAndRestore = () => {
       const nimiqProvider = getNimiqProvider();
       const isPayApp = Boolean(nimiqProvider);
       if (isMounted) setIsNimiqPay(isPayApp);
 
-      // Restore previously connected wallet if valid
-      if (typeof window !== "undefined") {
-        try {
-          const saved = window.localStorage.getItem(NIMWORD_STORAGE_KEY);
-          if (saved && isNimiqAddress(saved)) {
-            const formatted = formatNimiqAddress(saved);
-            if (isMounted) {
-              setWalletAddress(formatted);
-              setWalletStatus(`Connected as ${shortenNimiqAddress(formatted)}`);
-              fetchBalance(formatted);
-              return;
-            }
-          }
-        } catch {}
-      }
-
-      if (isMounted) {
+      const currentSaved = retrieveStoredWalletAddress();
+      if (currentSaved && isNimiqAddress(currentSaved)) {
+        const formatted = formatNimiqAddress(currentSaved);
+        if (isMounted) {
+          setWalletAddress(formatted);
+          setWalletStatus(`Connected as ${shortenNimiqAddress(formatted)}`);
+          fetchBalance(formatted);
+        }
+      } else if (isMounted) {
         setWalletStatus(isPayApp ? "Nimiq Pay detected. Tap to connect." : "Nimiq wallet ready. Tap Connect to play.");
       }
     };
 
     checkProviderAndRestore();
-    const timer = setTimeout(checkProviderAndRestore, 300);
+    const t1 = setTimeout(checkProviderAndRestore, 250);
+    const t2 = setTimeout(checkProviderAndRestore, 800);
+    const t3 = setTimeout(checkProviderAndRestore, 1800);
 
     return () => {
       isMounted = false;
-      clearTimeout(timer);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
     };
   }, [fetchBalance, getNimiqProvider]);
 
@@ -128,18 +213,16 @@ export function useNimiqWallet() {
 
         if (addr && isNimiqAddress(addr)) {
           const formatted = formatNimiqAddress(addr);
+          persistWalletAddress(formatted);
           setWalletAddress(formatted);
           setWalletStatus(`Connected via Nimiq Pay (${shortenNimiqAddress(formatted)})`);
-          try {
-            window.localStorage.setItem(NIMWORD_STORAGE_KEY, formatted);
-          } catch {}
           await fetchBalance(formatted);
           setIsConnecting(false);
           return formatted;
         }
       }
 
-      // 2. Browser with Nimiq Hub API (Synchronous popup initiation)
+      // 2. Browser with Nimiq Hub API (Synchronous popup & redirect initiation)
       const hub = getHubApi();
       if (hub && typeof hub.chooseAddress === "function") {
         setWalletStatus("Opening Nimiq Hub...");
@@ -156,18 +239,16 @@ export function useNimiqWallet() {
         const addr = result?.address || result?.account?.address || (Array.isArray(result?.addresses) && result.addresses[0]?.address) || "";
         if (addr && isNimiqAddress(addr)) {
           const formatted = formatNimiqAddress(addr);
+          persistWalletAddress(formatted);
           setWalletAddress(formatted);
           setWalletStatus(`Connected as ${shortenNimiqAddress(formatted)}`);
-          try {
-            window.localStorage.setItem(NIMWORD_STORAGE_KEY, formatted);
-          } catch {}
           await fetchBalance(formatted);
           setIsConnecting(false);
           return formatted;
         }
       }
 
-      // 3. Fallback address if user cancelled or testing
+      // 3. Fallback message
       setWalletStatus("Please connect your Nimiq wallet or enter your address in Profile.");
       setIsConnecting(false);
       return null;
@@ -185,11 +266,9 @@ export function useNimiqWallet() {
       throw new Error("Invalid Nimiq address format. Must start with NQ followed by 34 characters.");
     }
     const formatted = formatNimiqAddress(address);
+    persistWalletAddress(formatted);
     setWalletAddress(formatted);
     setWalletStatus(`Connected as ${shortenNimiqAddress(formatted)}`);
-    try {
-      window.localStorage.setItem(NIMWORD_STORAGE_KEY, formatted);
-    } catch {}
     fetchBalance(formatted);
     return formatted;
   }, [fetchBalance]);
@@ -199,12 +278,7 @@ export function useNimiqWallet() {
     setWalletAddress("");
     setNimBalance(0);
     setWalletStatus("Wallet disconnected.");
-    if (typeof window !== "undefined") {
-      try {
-        window.localStorage.removeItem(NIMWORD_STORAGE_KEY);
-        window.sessionStorage.removeItem(NIMWORD_STORAGE_KEY);
-      } catch {}
-    }
+    clearStoredWalletAddress();
   }, []);
 
   // 1 NIM Staking Checkout Function
