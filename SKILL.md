@@ -109,7 +109,7 @@ actually gets met, and Design & UX is 25 of the 105 rubric points.
 
 ---
 
-## 1. Fix 1 — No desktop scroll (app-shell approach)
+## 1. Fix 1 — No desktop and mobile scroll (app-shell approach)
 
 **Goal restated:** at ≥768px the page itself never scrolls; everything is reachable.
 
@@ -379,6 +379,7 @@ inventing placements.
 **Accessibility:** each emoji is decorative next to a text label, so it gets
 `<span aria-hidden="true">` — otherwise screen readers announce "party popper target reached".
 Where an emoji is the *only* content (🔴 dot, 🥇 badge) it gets an `aria-label` instead.
+and don't add too much emojis because it will make the ui look too busy and make it look childish and also use a font particulary made for these kind of things.like fonts made for gameslike this and also not too cartoonish.
 
 ---
 
@@ -495,79 +496,3 @@ existing handler. If you'd rather I not touch handlers at all, I can drive it fr
 | G | Tile tap via handler wrap, or `useEffect` on `selectedIndexes`? | **handler wrap** — crisper |
 
 Reply "approved" for all recommendations, or name the ones you want changed.
-
----
-
-# Built — what changed from the plan
-
-All seven fixes are in, with every ▶ recommendation (A–G) as approved. Five places
-where the plan met the actual code and the code won:
-
-| # | Plan said | Built instead | Why |
-|---|---|---|---|
-| 1 | `client/src/lib/game-animations.js` | `client/src/utils/game-animations.js` | There is no `lib/`. `utils/` is the convention (~100 files, JSDoc style, selective barrel). |
-| 2 | GSAP targets `.timer-tone` | `.timer-pill` | `.timer-tone` is a CSS selector name. `TimerTone` (`game-ui.jsx:28`) renders `className="timer-pill"`. The planned selector would have matched nothing. |
-| 3 | Fix 1: `overflow: hidden` on the shell | shell is the single scroller (`height: 100dvh; overflow-y: auto`) | Not one feed, list or table declares `max-height`/`overflow-y`. Clipping the shell would not make them scroll internally, it would cut them off — the bottom of the leaderboard becomes unreachable rather than merely far away. |
-| 4 | Fix 7: desktop `padding-bottom: 1rem` | `1.35rem`, matching `padding-top` | Same intent, symmetric frame. `--nav-reserve` (100px) is for the breakpoints where the nav actually renders. |
-| 5 | Fix 3 changed 2 AA failures | 11 fixed, at source | Measured rather than eyeballed. Details below. |
-
-## Two things the plan got wrong about the DOM
-
-**The bottom nav.** I first read it as rendering at every width and built `--nav-reserve`
-around that. It does not: `.bottom-nav { display: none !important }` at `min-width: 769px`
-has been there since before this work. So the plan's assumption was right and my
-correction was wrong. Reserving 100px on desktop for an invisible nav was 78px of the
-exact blank page Fix 7 exists to remove. Desktop now reserves 21.6px; the four mobile
-reserves still use the token.
-
-**Horizontal overflow, caused by Fix 1.** Making the shell a scroll container converted
-three pre-existing viewport-fixed decorations — the tile canvas, `.page-shell::before`
-(graph paper, `min(100vw, 1440px)`), `.page-shell::after` (blur) — into real sideways
-scroll, because each is centred on the viewport while the shell is 1165px wide.
-Measured: 740px of it at 1920, 260px at 1440, 100px at 1280, 0 at 1024 and below.
-Fixed with `overflow-x: hidden` on the shell (`clip` is coerced to `hidden` once the
-other axis scrolls). All three keep painting edge to edge, because the viewport and not
-the shell is their containing block. Verified at seven widths from 360 to 1920 that no
-in-flow element crosses the shell's right edge, so nothing real is hidden.
-
-## Dead space removed (Fix 7)
-
-- Four hand-picked bottom reserves (7rem / 8.5rem / 9rem / 7.5rem) → one measured
-  `--nav-reserve: calc(6.25rem + env(safe-area-inset-bottom))`. Each was over-reserving
-  20–60px.
-- Desktop reserve 100px → 21.6px (nav is hidden there).
-- Inline `marginBottom: 6rem` on `.chat-room-layout`, on top of the shell's own reserve.
-- `.hero-copy` 2.2rem → 1.6rem 1.75rem on desktop.
-- Eight containers that can render empty now collapse via `:empty`.
-- `align-content: safe center` on the desktop shell: slack used to pool in one lump under
-  the last card (155px at 1440). Now split top and bottom. `safe` is load-bearing — the
-  same screens overflow at 1280 and below, and unsafe centring would lift the first card
-  above the scroll origin where it could never be reached.
-
-## Contrast: 11 failures found by measurement, all fixed at source
-
-`--ink-muted` on `--surface-sunk` 4.45 → 4.64 · `--nq-green-deep` on white 4.49 → 5.20 ·
-`--interactive` as text 4.16 → new `--interactive-ink` 6.45, applied at 10 JSX sites
-including 0.68rem labels · `--bad` at 0.8rem 4.35 → new `--bad-ink` 6.03 ·
-`GameSticker` failed on 3 of 5 fills (`--ink` on red 3.46, on blue 3.63, on blue-deep
-2.34; white was worse on two of them) — each hue kept, lightness moved; `fastFingers`
-flattened green→green because `--ink` fails on the `--nq-green-deep` end.
-Final: **21/21 pass.**
-
-## Verification (all 8 steps)
-
-1. Build green — 207 modules, CSS 70.54 kB / 13.90 kB gzip
-2. `server/` tests — **175/175**, 7 suites, 0 fail
-3. No logic touched — 11 modified + 3 new, every one under `client/src/`; zero `server/`,
-   zero hooks, zero game logic
-4. Contrast — **21/21**
-5. Desktop frame, headless Chrome at 1920/1440/1280/1024/900 — window scroll false at
-   all five, shell is the scroller, nothing clipped, no horizontal scroll
-6. Undefined tokens **0** (68 defined, 62 referenced) · invisible text **0**
-7. `prefers-reduced-motion`, with a control: forced on → canvas pixels identical across
-   700ms (loop never starts), no inline transform or opacity left on the shell, static
-   field still painted. Off → loop running, shell caught mid-tween at
-   `translate3d(0, 10.94px, 0)` / `opacity: 0.453`, proving the tween fires
-8. CSS 70.47 → 70.54 kB (13.88 → 13.90 kB gzip), +83 lines
-
-Not committed — left staged for you.
