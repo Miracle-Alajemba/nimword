@@ -118,6 +118,7 @@ export function HomeScreen({
   onConnectWallet,
   onDisconnectWallet,
   roomError,
+  joiningMatch = false,
 }) {
   const [presetIndex, setPresetIndex] = useState(0);
   const currentPreset = SAMPLE_PRESETS[presetIndex];
@@ -447,10 +448,19 @@ export function HomeScreen({
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", width: "100%" }}>
                 <button
                   type="button"
+                  disabled={joiningMatch}
                   onClick={() => onQuickMatch(stakeAmount)}
-                  style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.94rem", fontWeight: 800, borderRadius: "12px" }}
+                  style={{
+                    minHeight: "48px",
+                    padding: "0.75rem 1.1rem",
+                    fontSize: "0.94rem",
+                    fontWeight: 800,
+                    borderRadius: "12px",
+                    opacity: joiningMatch ? 0.75 : 1,
+                    cursor: joiningMatch ? "wait" : "pointer",
+                  }}
                 >
-                  🎮 Stake {stakeAmount} NIM & Play
+                  {joiningMatch ? "⏳ Finding Match..." : `🎮 Stake ${stakeAmount} NIM & Play`}
                 </button>
                 <button
                   type="button"

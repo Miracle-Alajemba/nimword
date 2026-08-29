@@ -363,8 +363,8 @@ export function PracticeScreen({
                   loadPracticeRound(`Switched to ${lvl.label} round.`, lvl.id);
                 }}
               >
-                <span>{lvl.icon}</span>
-                <span>{lvl.label}</span>
+                <span style={{ fontSize: "0.95rem", display: "inline-flex", alignItems: "center", lineHeight: 1 }}>{lvl.icon}</span>
+                <span style={{ display: "inline-flex", alignItems: "center", lineHeight: 1 }}>{lvl.label}</span>
               </button>
             );
           })}

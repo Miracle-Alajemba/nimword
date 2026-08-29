@@ -437,6 +437,8 @@ export default function App() {
     }
   }
 
+  const [joiningMatch, setJoiningMatch] = useState(false);
+
   async function handleHomeJoin(selectedStake = 1) {
     setRoomError("");
 
@@ -456,9 +458,11 @@ export default function App() {
   async function handleQuickMatch(targetRoomId = "", selectedStake = 1) {
     setRoomError("");
     setRoomMessage("");
+    setJoiningMatch(true);
 
     if (!isNimiqOrAnyAddress(walletAddress.trim())) {
       setRoomError("Connect a valid wallet before joining quick match.");
+      setJoiningMatch(false);
       return;
     }
 
@@ -499,7 +503,9 @@ export default function App() {
       );
       setScreen("lobby");
     } catch (error) {
-      setRoomError(error.message || "Unable to join quick match.");
+      setRoomError(error.message || "Unable to join quick match. Please check your connection.");
+    } finally {
+      setJoiningMatch(false);
     }
   }
 
@@ -841,6 +847,7 @@ export default function App() {
       nimBalance={nimBalance}
       shortenedAddress={shortenedAddress}
       isNimiqPay={isNimiqPay}
+      joiningMatch={joiningMatch}
     />
   );
 
