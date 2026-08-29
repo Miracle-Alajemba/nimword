@@ -60,7 +60,13 @@ export function evaluatePracticeSubmission({
     };
   }
 
-  if (claimedWords.has(normalized)) {
+  const isAlreadyClaimed = claimedWords instanceof Set
+    ? claimedWords.has(normalized)
+    : Array.isArray(claimedWords)
+      ? claimedWords.includes(normalized)
+      : false;
+
+  if (isAlreadyClaimed) {
     return {
       ok: false,
       code: "claimed",
@@ -78,7 +84,13 @@ export function evaluatePracticeSubmission({
     };
   }
 
-  if (!validWords.includes(normalized)) {
+  const isValid = validWords instanceof Set
+    ? validWords.has(normalized)
+    : Array.isArray(validWords)
+      ? validWords.includes(normalized)
+      : false;
+
+  if (!isValid) {
     return {
       ok: false,
       code: "not_found",
