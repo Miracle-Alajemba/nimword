@@ -21,10 +21,21 @@ async function initMiniAppProvider() {
   if (miniAppProvider) return miniAppProvider;
   if (miniAppInitPromise) return miniAppInitPromise;
 
+  // If outside iframe or window.nimiq/Nimiq isn't present, mini-app handshake is not needed
+  const isLikelyMiniApp = typeof window !== "undefined" && (
+    Boolean(window.nimiq) ||
+    Boolean(window.Nimiq) ||
+    window.self !== window.top
+  );
+
+  if (!isLikelyMiniApp) {
+    return null;
+  }
+
   miniAppInitPromise = (async () => {
     try {
       const { init } = await import("@nimiq/mini-app-sdk");
-      miniAppProvider = await init({ timeout: 5000 });
+      miniAppProvider = await init({ timeout: 400 });
       return miniAppProvider;
     } catch {
       miniAppProvider = null;
