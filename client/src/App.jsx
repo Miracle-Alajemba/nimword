@@ -171,6 +171,11 @@ export default function App() {
 
   const socketRef = useRef(null);
 
+  // Proactively warm up the server on load so match creation responds in milliseconds
+  useEffect(() => {
+    fetch(`${API_BASE_URL}/health`).catch(() => {});
+  }, []);
+
   useEffect(() => {
     const socketUrl = API_BASE_URL.replace(/\/api\/?$/, "");
     const socket = io(socketUrl, {
