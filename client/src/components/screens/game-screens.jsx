@@ -348,6 +348,55 @@ export function HomeScreen({
               Form words. Beat the clock. Win NIM.
             </p>
 
+            {/* Welcome Back & Forget Wallet Header Bar */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "10px",
+                background: "var(--surface-sunk)",
+                border: "1px solid var(--rule-strong)",
+                borderRadius: "14px",
+                padding: "8px 12px",
+                marginBottom: "0.85rem",
+                width: "100%",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", minWidth: 0 }}>
+                <AvatarCircle address={walletAddress} size={30} />
+                <div style={{ display: "flex", flexDirection: "column", minWidth: 0, textAlign: "left" }}>
+                  <span style={{ fontSize: "0.84rem", fontWeight: 800, color: "var(--ink)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    Welcome back, <span style={{ color: "var(--interactive-ink)" }}>{getPlayerAlias(walletAddress)}</span>
+                  </span>
+                  <span style={{ fontSize: "0.72rem", color: "var(--ink-2)", fontFamily: "var(--font-mono)" }}>
+                    Balance: <strong style={{ color: "var(--good)" }}>{nimBalance} NIM</strong>
+                  </span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={onDisconnectWallet}
+                style={{
+                  padding: "5px 11px",
+                  fontSize: "0.74rem",
+                  fontWeight: 800,
+                  borderRadius: "8px",
+                  background: "var(--surface)",
+                  border: "1px solid var(--rule)",
+                  color: "var(--bad, #E04B4B)",
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                  minHeight: "28px",
+                  transition: "all 0.15s ease",
+                }}
+                title="Forget this wallet and sign in as someone else"
+              >
+                Forget Wallet ✕
+              </button>
+            </div>
+
             <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.75rem", width: "100%", margin: 0 }}>
               {/* Stake Selector */}
               <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "12px", padding: "12px 14px", display: "flex", flexDirection: "column", gap: "8px" }}>
