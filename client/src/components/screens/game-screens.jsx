@@ -230,19 +230,22 @@ export function HomeScreen({
                 }}
               />
 
-              {/* Bold Editorial Title */}
+              {/* Bold Editorial Title matching Logo Colors */}
               <h1
                 style={{
-                  fontSize: "clamp(2.5rem, 6vw, 3.4rem)",
+                  fontSize: "clamp(2.6rem, 6.5vw, 3.6rem)",
                   fontWeight: 900,
                   fontFamily: "var(--font-game, 'Outfit', 'Inter', serif)",
                   letterSpacing: "-0.02em",
-                  color: "var(--ink)",
                   margin: "0 0 0.75rem",
                   lineHeight: 1.05,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                NimWord
+                <span style={{ color: "rgb(237, 172, 18)" }}>Nim</span>
+                <span style={{ color: "var(--ink, #1F2544)" }}>Word</span>
               </h1>
 
               {/* Witty & Humorous Subtitle */}
@@ -349,7 +352,10 @@ export function HomeScreen({
                 alt="NimWord"
                 className="hero-logo__img"
               />
-              <h1 className="hero-logo__name">NimWord</h1>
+              <h1 className="hero-logo__name">
+                <span style={{ color: "rgb(237, 172, 18)" }}>Nim</span>
+                <span>Word</span>
+              </h1>
             </div>
 
             <p className="lede lede--tagline" style={{ fontSize: "1.05rem", margin: "0 0 0.75rem" }}>
