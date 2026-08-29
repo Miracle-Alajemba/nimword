@@ -215,44 +215,7 @@ export function HomeScreen({
             Form words. Beat the clock. Win NIM.
           </p>
 
-          {!isNimiqPay && (
-            <div
-              style={{
-                background: "linear-gradient(135deg, oklch(0.7924 0.1593 85.61 / 0.1) 0%, oklch(0.5849 0.1438 244.29 / 0.1) 100%)",
-                border: "1px solid oklch(0.7924 0.1593 85.61 / 0.3)",
-                borderRadius: "12px",
-                padding: "8px 14px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: "10px",
-                marginBottom: "0.85rem",
-                fontSize: "0.82rem",
-                color: "var(--ink)",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <span style={{ fontSize: "1.1rem" }}>📱</span>
-                <span>
-                  <strong>Nimiq Pay Mini App</strong> • Open in Nimiq Wallet for 1-tap instant play
-                </span>
-              </div>
-              <span
-                style={{
-                  background: "var(--nq-gold)",
-                  color: "#1A1200",
-                  fontWeight: 800,
-                  fontSize: "0.72rem",
-                  padding: "3px 8px",
-                  borderRadius: "6px",
-                  letterSpacing: "0.02em",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                Nimiq Pay Ready
-              </span>
-            </div>
-          )}
+
 
           {!walletAddress ? (
             /* ── Sign In Gate for Unauthenticated Users ── */
