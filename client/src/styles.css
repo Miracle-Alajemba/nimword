@@ -5586,4 +5586,147 @@ body:has(.app-unauth-container) {
     height: 58px !important;
     margin-bottom: 0.75rem !important;
   }
+
+  /* ── Mobile Typography & Symmetrical Box Alignment Pass ── */
+  h1 {
+    font-size: clamp(1.65rem, 5.5vw, 2.1rem) !important;
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  h2 {
+    font-size: clamp(1.25rem, 4.2vw, 1.55rem) !important;
+    font-weight: 750 !important;
+    line-height: 1.2 !important;
+  }
+
+  h3 {
+    font-size: clamp(0.98rem, 3.5vw, 1.18rem) !important;
+    font-weight: 700 !important;
+    line-height: 1.25 !important;
+  }
+
+  /* Metric cards & Stat boxes: centered, balanced, no overflow */
+  .metrics-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+
+  .metric-card {
+    padding: 0.65rem 0.6rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+  }
+
+  .metric-card strong,
+  .metric-card__value {
+    font-size: 1.15rem !important;
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+    margin: 2px 0 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+  }
+
+  .metric-card span,
+  .metric-card__label {
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.04em !important;
+  }
+
+  .metric-card small,
+  .metric-card__hint {
+    font-size: 0.68rem !important;
+    line-height: 1.2 !important;
+    opacity: 0.8 !important;
+  }
+
+  /* Word chips: tight, centered, readable */
+  .word-chip {
+    padding: 0.3rem 0.6rem !important;
+    font-size: 0.78rem !important;
+    font-weight: 600 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+  }
+
+  .word-chip strong {
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+  }
+
+  /* Action buttons: symmetrical padding, aligned text, no clipping */
+  .hero-actions button,
+  .submit-panel button,
+  .button-secondary {
+    font-size: 0.88rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.01em !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Level selector buttons: proportional font, vertically aligned icon & text */
+  .practice-level-bar {
+    max-width: 100% !important;
+    gap: 4px !important;
+    margin-bottom: 0.85rem !important;
+  }
+
+  .practice-level-btn {
+    font-size: 0.76rem !important;
+    font-weight: 750 !important;
+    height: 36px !important;
+    min-height: 36px !important;
+    padding: 0 4px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+  }
+
+  .practice-level-btn span {
+    display: inline-block !important;
+    line-height: 1 !important;
+  }
+
+  /* Letter Rack & Play Hero */
+  .play-hero {
+    padding: 0.85rem !important;
+    gap: 0.75rem !important;
+  }
+
+  .play-hero h1 {
+    font-size: 1.7rem !important;
+    letter-spacing: 0.05em !important;
+    margin: 0.15rem 0 0.35rem !important;
+  }
+
+  .letter-tile--play {
+    width: clamp(2.4rem, 11vw, 2.9rem) !important;
+    height: clamp(2.4rem, 11vw, 2.9rem) !important;
+    min-width: clamp(2.4rem, 11vw, 2.9rem) !important;
+    font-size: 1.25rem !important;
+    font-weight: 800 !important;
+    border-radius: 10px !important;
+  }
+
+  .word-preview {
+    font-size: 1.05rem !important;
+    min-height: 40px !important;
+    padding: 0.4rem 0.6rem !important;
+  }
 }
