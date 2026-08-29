@@ -260,7 +260,7 @@ export function HomeScreen({
                     marginBottom: "0.45rem",
                   }}
                 >
-                  Think Fast. Spell Faster. ⚡
+                  Think Fast. Spell Faster.
                 </div>
                 <div
                   style={{
