@@ -181,8 +181,8 @@ export function useNimiqWallet() {
       }
     }
 
-    // 3. Staggered provider checks for Nimiq Pay in-app browser
-    const checkProviderAndRestore = () => {
+    // 3. Staggered provider checks and auto-connect for Nimiq Pay in-app browser
+    const checkProviderAndRestore = async () => {
       const nimiqProvider = getNimiqProvider();
       const isPayApp = Boolean(nimiqProvider);
       if (isMounted) setIsNimiqPay(isPayApp);
@@ -195,7 +195,36 @@ export function useNimiqWallet() {
           setWalletStatus(`Connected as ${shortenNimiqAddress(formatted)}`);
           fetchBalance(formatted);
         }
-      } else if (isMounted) {
+        return;
+      }
+
+      // If inside Nimiq Pay app, attempt seamless auto-connect
+      try {
+        const sdkProvider = await initMiniAppProvider();
+        if (sdkProvider) {
+          if (isMounted) setIsNimiqPay(true);
+          let addr = "";
+          if (typeof sdkProvider.listAccounts === "function") {
+            const accounts = await sdkProvider.listAccounts();
+            addr = Array.isArray(accounts) && accounts.length > 0
+              ? (accounts[0]?.address || accounts[0]) : "";
+          }
+          if (addr && isNimiqAddress(addr)) {
+            const formatted = formatNimiqAddress(addr);
+            persistWalletAddress(formatted);
+            if (isMounted) {
+              setWalletAddress(formatted);
+              setWalletStatus(`Connected as ${shortenNimiqAddress(formatted)}`);
+              fetchBalance(formatted);
+              return;
+            }
+          }
+        }
+      } catch (err) {
+        console.warn("Auto-connect via Mini App SDK notice:", err);
+      }
+
+      if (isMounted) {
         setWalletStatus(isPayApp ? "Nimiq Pay detected. Tap to connect." : "Nimiq wallet ready. Tap Connect to play.");
       }
     };
