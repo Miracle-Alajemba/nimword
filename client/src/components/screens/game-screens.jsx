@@ -245,7 +245,7 @@ export function HomeScreen({
                 }}
               >
                 <span style={{ color: "rgb(237, 172, 18)" }}>Nim</span>
-                <span style={{ color: "var(--ink, #1F2544)" }}>Word</span>
+                <span style={{ color: "#0582CA" }}>Word</span>
               </h1>
 
               {/* Catchy Word Sprint Tagline */}
@@ -354,7 +354,7 @@ export function HomeScreen({
               />
               <h1 className="hero-logo__name">
                 <span style={{ color: "rgb(237, 172, 18)" }}>Nim</span>
-                <span>Word</span>
+                <span style={{ color: "#0582CA" }}>Word</span>
               </h1>
             </div>
 
