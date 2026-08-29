@@ -201,107 +201,171 @@ export function HomeScreen({
     <main className={`page-shell ${!walletAddress ? "page-shell--unauth" : ""}`} ref={shellRef}>
       <FloatingTilesBg />
       <section className="hero">
-        <div className="hero-copy">
-          <div className="hero-logo">
-            <img
-              src="/logo.png"
-              alt="NimWord"
-              className="hero-logo__img"
-            />
-            <h1 className="hero-logo__name">NimWord</h1>
-          </div>
-
-          <p className="lede lede--tagline" style={{ fontSize: "1.05rem", margin: "0 0 0.75rem" }}>
-            Form words. Beat the clock. Win NIM.
-          </p>
-
-
-
-          {!walletAddress ? (
-            /* ── Sign In Gate for Unauthenticated Users ── */
+        {!walletAddress ? (
+          /* ── Minimalist Wordle-Style Landing Screen ── */
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              textAlign: "center",
+              width: "100%",
+              maxWidth: "480px",
+              margin: "0 auto",
+              padding: "1rem 0.5rem",
+            }}
+          >
+            {/* 3x3 Wordle-Style Grid Icon */}
             <div
               style={{
-                background: "var(--surface)",
-                border: "1px solid var(--rule-strong)",
-                borderRadius: "20px",
-                padding: "1.75rem 1.35rem",
-                textAlign: "center",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: "1rem",
-                boxShadow: "0 12px 32px -8px oklch(0.2737 0.068 276.29 / 0.12)",
-                width: "100%",
-                margin: "0.25rem 0 0.85rem",
+                display: "grid",
+                gridTemplateColumns: "repeat(3, 1fr)",
+                gap: "3.5px",
+                width: "56px",
+                height: "56px",
+                padding: "5px",
+                background: "var(--ink)",
+                borderRadius: "12px",
+                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.16)",
+                marginBottom: "0.85rem",
               }}
             >
-              <div
+              <div style={{ background: "var(--surface)", borderRadius: "2px" }} />
+              <div style={{ background: "var(--surface)", borderRadius: "2px" }} />
+              <div style={{ background: "var(--surface)", borderRadius: "2px" }} />
+              <div style={{ background: "var(--surface)", borderRadius: "2px" }} />
+              <div style={{ background: "var(--nq-gold, #E5A823)", borderRadius: "2px" }} />
+              <div style={{ background: "var(--good, #21B36C)", borderRadius: "2px" }} />
+              <div style={{ background: "var(--good, #21B36C)", borderRadius: "2px" }} />
+              <div style={{ background: "var(--good, #21B36C)", borderRadius: "2px" }} />
+              <div style={{ background: "var(--good, #21B36C)", borderRadius: "2px" }} />
+            </div>
+
+            {/* Bold Editorial Title */}
+            <h1
+              style={{
+                fontSize: "clamp(2.4rem, 6vw, 3.2rem)",
+                fontWeight: 900,
+                fontFamily: "var(--font-game, 'Outfit', 'Inter', serif)",
+                letterSpacing: "-0.02em",
+                color: "var(--ink)",
+                margin: "0 0 0.75rem",
+                lineHeight: 1.05,
+              }}
+            >
+              NimWord
+            </h1>
+
+            {/* Editorial Subtitle */}
+            <p
+              style={{
+                fontSize: "clamp(1.3rem, 4vw, 1.7rem)",
+                fontFamily: "var(--font-serif, 'Newsreader', 'Georgia', serif)",
+                color: "var(--ink)",
+                margin: "0 0 1.75rem",
+                lineHeight: 1.28,
+                maxWidth: "380px",
+                fontWeight: 500,
+              }}
+            >
+              Get 60 seconds to find words & win NIM.
+            </p>
+
+            {/* Wordle-Style Pill Actions */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+                flexWrap: "wrap",
+                width: "100%",
+                marginBottom: "1.75rem",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setShowRulesModal(true)}
                 style={{
-                  width: "60px",
-                  height: "60px",
-                  borderRadius: "18px",
-                  background: "linear-gradient(135deg, oklch(0.7924 0.1593 85.61 / 0.2) 0%, oklch(0.5849 0.1438 244.29 / 0.2) 100%)",
-                  border: "1.5px solid var(--nq-gold)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: "2rem",
-                  boxShadow: "0 8px 24px oklch(0.7924 0.1593 85.61 / 0.25)",
+                  padding: "10px 20px",
+                  borderRadius: "9999px",
+                  background: "var(--surface)",
+                  border: "1.5px solid var(--rule-strong)",
+                  color: "var(--ink)",
+                  fontSize: "0.92rem",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  minHeight: "44px",
+                  transition: "all 0.15s ease",
                 }}
               >
-                👛
-              </div>
-
-              <div>
-                <h2 style={{ fontSize: "1.45rem", fontFamily: "var(--font-game)", margin: "0 0 0.35rem", color: "var(--ink)", letterSpacing: "0.02em" }}>
-                  Sign In with Nimiq Wallet
-                </h2>
-                <p style={{ fontSize: "0.9rem", color: "var(--ink-2)", margin: 0, lineHeight: 1.45, maxWidth: "380px" }}>
-                  Connect your Nimiq Wallet to enter live 1 NIM matches, compete on the leaderboard, and unlock daily rewards.
-                </p>
-              </div>
+                How to play
+              </button>
 
               <button
                 type="button"
                 onClick={onConnectWallet}
                 style={{
-                  width: "100%",
-                  minHeight: "48px",
-                  fontSize: "1.02rem",
-                  fontWeight: 800,
-                  borderRadius: "12px",
+                  padding: "10px 24px",
+                  borderRadius: "9999px",
+                  background: "var(--surface)",
+                  border: "1.5px solid var(--rule-strong)",
+                  color: "var(--ink)",
+                  fontSize: "0.92rem",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  minHeight: "44px",
+                  transition: "all 0.15s ease",
                 }}
               >
-                ⚡ Sign In with Nimiq
+                Log in
               </button>
 
-              <div style={{ display: "flex", alignItems: "center", gap: "8px", width: "100%" }}>
-                <div style={{ flex: 1, height: "1px", background: "var(--rule)" }} />
-                <span style={{ fontSize: "0.75rem", color: "var(--ink-2)", textTransform: "uppercase", letterSpacing: "1px" }}>or</span>
-                <div style={{ flex: 1, height: "1px", background: "var(--rule)" }} />
-              </div>
-
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%" }}>
-                <button
-                  type="button"
-                  className="button-secondary"
-                  onClick={onStartPractice}
-                  style={{ minHeight: "40px", fontSize: "0.85rem", borderRadius: "10px", padding: "0.5rem" }}
-                >
-                  Practice Arena
-                </button>
-                <button
-                  type="button"
-                  className="button-secondary"
-                  onClick={onOpenLeaderboard}
-                  style={{ minHeight: "40px", fontSize: "0.85rem", borderRadius: "10px", padding: "0.5rem" }}
-                >
-                  Leaderboard
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={onConnectWallet}
+                style={{
+                  padding: "10px 32px",
+                  borderRadius: "9999px",
+                  background: "var(--ink)",
+                  border: "1.5px solid var(--ink)",
+                  color: "var(--surface)",
+                  fontSize: "0.92rem",
+                  fontWeight: 800,
+                  cursor: "pointer",
+                  minHeight: "44px",
+                  transition: "all 0.15s ease",
+                }}
+              >
+                Play
+              </button>
             </div>
-          ) : (
-            /* ── Full Game Dashboard for Authenticated Players ── */
+
+            {/* Editorial Metadata Footer */}
+            <div style={{ color: "var(--ink-2)", fontSize: "0.82rem", lineHeight: 1.45 }}>
+              <div style={{ fontWeight: 800, color: "var(--ink)", fontSize: "0.88rem" }}>
+                {new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(new Date())}
+              </div>
+              <div>Daily Challenge & Live Arena</div>
+              <div style={{ fontSize: "0.75rem", opacity: 0.8, marginTop: "2px" }}>Powered by Nimiq Pay</div>
+            </div>
+          </div>
+        ) : (
+          /* ── Full Game Dashboard for Authenticated Players ── */
+          <div className="hero-copy">
+            <div className="hero-logo">
+              <img
+                src="/logo.png"
+                alt="NimWord"
+                className="hero-logo__img"
+              />
+              <h1 className="hero-logo__name">NimWord</h1>
+            </div>
+
+            <p className="lede lede--tagline" style={{ fontSize: "1.05rem", margin: "0 0 0.75rem" }}>
+              Form words. Beat the clock. Win NIM.
+            </p>
+
             <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.75rem", width: "100%", margin: 0 }}>
               {/* Stake Selector */}
               <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "12px", padding: "12px 14px", display: "flex", flexDirection: "column", gap: "8px" }}>
@@ -383,16 +447,16 @@ export function HomeScreen({
                 </button>
               </div>
             </div>
-          )}
 
-          {roomError ? (
-            <div className="notice-strip notice-strip--error">
-              {roomError}
-            </div>
-          ) : null}
+            {roomError ? (
+              <div className="notice-strip notice-strip--error">
+                {roomError}
+              </div>
+            ) : null}
 
-          {walletAddress ? <TotalPayoutsBanner /> : null}
-        </div>
+            <TotalPayoutsBanner />
+          </div>
+        )}
 
         {walletAddress ? (
           <div className="hero-card hero-card--interactive" style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
