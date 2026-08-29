@@ -4421,25 +4421,16 @@ button.difficulty-card:active:not(:disabled) {
 
 @media (max-width: 768px) {
   .mobile-sticky-bottom-wrap {
-    position: fixed;
-    /* Clears the nav AND the home bar — the nav's own inset is already
-       inside its bottom, so this adds the same inset once more. */
-    bottom: calc(5.2rem + env(safe-area-inset-bottom));
-    left: 0.9rem;
-    right: 0.9rem;
-    z-index: 100;
-    background: var(--surface);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    padding: 0.85rem;
-    border-radius: 16px;
-    border: 1px solid var(--rule);
-    box-shadow: 0 -2px 24px oklch(0.2737 0.068 276.29 / 0.1);
+    position: static;
+    background: transparent;
+    padding: 0;
+    margin-top: 0.5rem;
+    box-shadow: none;
+    border: none;
   }
 
   .play-shell {
-    padding-bottom: 12rem;
-    /* Prevent fixed bottom panel from blocking final list items */
+    padding-bottom: calc(var(--nav-reserve, 4.5rem) + 1.25rem);
   }
 }
 
