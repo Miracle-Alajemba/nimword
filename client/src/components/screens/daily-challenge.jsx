@@ -515,7 +515,7 @@ export function DailyChallenge({
             className="results-sheet"
             style={{
               textAlign: "center",
-              padding: "2.5rem 1.75rem",
+              padding: "1.5rem 1.25rem",
               background: "var(--surface)",
               border: "1px solid var(--rule-strong)",
               borderRadius: "20px",
@@ -523,21 +523,21 @@ export function DailyChallenge({
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: "1.25rem",
-            }}
-          >
+              gap: "0.85rem",
+            }}>
+
             {/* Animated Trophy Icon */}
             <div
               style={{
-                width: "76px",
-                height: "76px",
-                borderRadius: "20px",
+                width: "56px",
+                height: "56px",
+                borderRadius: "16px",
                 background: "linear-gradient(135deg, oklch(0.7924 0.1593 85.61 / 0.2) 0%, oklch(0.5849 0.1438 244.29 / 0.2) 100%)",
                 border: "1.5px solid var(--nq-gold)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: "2.5rem",
+                fontSize: "1.8rem",
                 boxShadow: "0 8px 24px oklch(0.7924 0.1593 85.61 / 0.25)",
               }}
             >
@@ -551,7 +551,7 @@ export function DailyChallenge({
                   Web3 Wallet Sign-In Required
                 </span>
               </div>
-              <h2 style={{ fontSize: "2rem", fontFamily: "var(--font-game)", margin: "0 0 0.4rem", color: "var(--ink)", letterSpacing: "0.03em" }}>
+              <h2 style={{ fontSize: "1.5rem", fontFamily: "var(--font-game)", margin: "0 0 0.3rem", color: "var(--ink)", letterSpacing: "0.03em" }}>
                 Unlock Daily Rewards
               </h2>
               <p style={{ fontSize: "0.92rem", color: "var(--ink-2)", margin: "0 auto", maxWidth: "440px", lineHeight: 1.5 }}>
@@ -628,7 +628,7 @@ export function DailyChallenge({
             className="results-sheet"
             style={{
               textAlign: "center",
-              padding: "2.5rem 1.75rem",
+              padding: "1.5rem 1.25rem",
               background: "var(--surface)",
               border: "1px solid var(--rule-strong)",
               borderRadius: "20px",
@@ -636,11 +636,10 @@ export function DailyChallenge({
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: "1rem",
-            }}
-          >
-            <div className="hourglass-animated" style={{ fontSize: "3.2rem", marginBottom: "0.25rem", lineHeight: 1 }}>⏳</div>
-            <h2 style={{ fontSize: "1.75rem", fontFamily: "var(--font-game)", margin: 0, color: "var(--ink)" }}>
+              gap: "0.75rem",
+            }}>
+            <div className="hourglass-animated" style={{ fontSize: "2.2rem", marginBottom: "0.15rem", lineHeight: 1 }}>⏳</div>
+            <h2 style={{ fontSize: "1.35rem", fontFamily: "var(--font-game)", margin: 0, color: "var(--ink)" }}>
               Next Play Available In
             </h2>
 

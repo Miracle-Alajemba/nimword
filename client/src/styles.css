@@ -5296,3 +5296,230 @@ textarea {
   color: var(--interactive-ink) !important;
   border-color: var(--interactive-ink) !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════════
+   COMPACT MOBILE – Nimiq Pay & small in-app browsers
+   Eliminates page scrolling on Daily Challenge screens by tightening
+   spacing, shrinking icons, and compacting card layouts.
+   ═══════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+
+  /* Tighter page padding for in-app browsers */
+  .page-shell {
+    padding: 0.6rem 0.65rem 3.5rem;
+  }
+
+  /* Daily Challenge panels: less padding, smaller gaps */
+  .play-shell .results-sheet,
+  .play-shell .dc-result-card {
+    padding: 1.25rem 1rem;
+    gap: 0.6rem;
+    border-radius: 16px;
+  }
+
+  .play-shell .play-header {
+    margin-bottom: 0.4rem;
+  }
+
+  /* Shrink all trophy/emoji decorations */
+  .trophy-cup-animated,
+  .hourglass-animated,
+  .play-shell .results-sheet > div:first-child {
+    font-size: 2rem !important;
+  }
+
+  /* Shrink decorative icon containers */
+  .play-shell .results-sheet > div[style*="width: 76px"] {
+    width: 52px !important;
+    height: 52px !important;
+    font-size: 1.6rem !important;
+    border-radius: 14px !important;
+  }
+
+  /* Compact headings inside daily challenge */
+  .play-shell h2 {
+    font-size: 1.35rem !important;
+    margin-bottom: 0.2rem !important;
+  }
+
+  /* Compact description text */
+  .play-shell .results-sheet p,
+  .play-shell .dc-result-card p {
+    font-size: 0.8rem !important;
+    line-height: 1.35 !important;
+  }
+
+  /* Compact the 3-perk chips grid */
+  .play-shell .results-sheet div[style*="gridTemplateColumns"] {
+    gap: 0.35rem !important;
+  }
+
+  .play-shell .results-sheet div[style*="gridTemplateColumns"] > div {
+    padding: 0.45rem 0.35rem !important;
+    border-radius: 8px !important;
+  }
+
+  .play-shell .results-sheet div[style*="gridTemplateColumns"] > div span:first-child {
+    font-size: 0.9rem !important;
+  }
+
+  /* Difficulty cards compact */
+  .difficulty-card {
+    padding: 0.7rem 0.9rem !important;
+    border-radius: 12px !important;
+  }
+
+  .difficulty-card strong {
+    font-size: 0.95rem !important;
+  }
+
+  .difficulty-card span[style*="fontSize"] {
+    font-size: 0.7rem !important;
+  }
+
+  .difficulty-card div[style*="textAlign: \"right\""] {
+    padding: 0.3rem 0.6rem !important;
+    border-radius: 8px !important;
+  }
+
+  .difficulty-choices {
+    gap: 0.55rem !important;
+    margin-bottom: 0.8rem !important;
+  }
+
+  /* Cooldown timer compact */
+  .play-shell div[style*="minWidth: \"68px\""] {
+    min-width: 52px !important;
+    padding: 0.4rem 0.6rem !important;
+    border-radius: 8px !important;
+  }
+
+  .play-shell div[style*="minWidth: \"68px\""] > div:first-child {
+    font-size: 1.35rem !important;
+  }
+
+  /* Buttons */
+  .play-shell button {
+    min-height: 40px;
+  }
+
+  /* Game loader compact */
+  .game-loader-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .game-loader-tile {
+    width: 2.4rem !important;
+    height: 2.4rem !important;
+    min-width: 2.4rem !important;
+    font-size: 1rem !important;
+    border-radius: 8px !important;
+  }
+
+  .game-loader-label {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+  }
+
+  /* Score row compact */
+  .score-row {
+    gap: 0.35rem;
+  }
+
+  .score-badge {
+    padding: 0.35rem 0.5rem;
+    font-size: 0.72rem;
+  }
+
+  .score-badge strong {
+    font-size: 0.95rem;
+  }
+
+  /* DC result card compact */
+  .dc-result-card__header {
+    padding: 1.25rem 1rem;
+  }
+
+  .dc-result-card__body {
+    padding: 1rem;
+  }
+
+  .dc-result-card__score-podium {
+    padding: 0.6rem;
+  }
+
+  .dc-result-card__score {
+    font-size: 2.2rem;
+  }
+
+  .dc-result-card__stats {
+    gap: 0.35rem;
+  }
+
+  .dc-result-stat {
+    padding: 0.5rem 0.4rem;
+  }
+
+  /* Claimed screen compact */
+  .dc-claimed-screen {
+    padding: 1.5rem 1rem;
+    gap: 0.7rem;
+  }
+
+  .dc-claimed-screen__icon {
+    font-size: 2.2rem !important;
+  }
+
+  .dc-claimed-screen__title {
+    font-size: 1.3rem;
+  }
+
+  /* Word preview compact */
+  .word-preview {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.7rem;
+  }
+
+  /* Eyebrow compact */
+  .eyebrow {
+    font-size: 0.68rem;
+  }
+
+  /* Play hero compact */
+  .play-hero h1 {
+    font-size: 1.6rem;
+  }
+
+  .play-hero .lede {
+    font-size: 0.78rem;
+    margin-bottom: 0.4rem;
+  }
+
+  /* Profile panel inside leaderboard */
+  .profile-panel {
+    padding: 0.85rem;
+  }
+}
+
+/* Extra-small: very tight in-app browsers (< 380px width) */
+@media (max-width: 380px) {
+  .page-shell {
+    padding: 0.4rem 0.5rem 3.2rem;
+  }
+
+  .play-shell h2 {
+    font-size: 1.15rem !important;
+  }
+
+  .difficulty-card {
+    padding: 0.55rem 0.7rem !important;
+  }
+
+  .game-loader-tile {
+    width: 2rem !important;
+    height: 2rem !important;
+    min-width: 2rem !important;
+    font-size: 0.85rem !important;
+  }
+}

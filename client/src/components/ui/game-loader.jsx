@@ -1,53 +1,67 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useLayoutEffect } from "react";
 import gsap from "gsap";
 
 export function GameLoader({ label = "Loading...", letters = "NIMWORD" }) {
   const containerRef = useRef(null);
   const lettersRef = useRef([]);
 
+  const letterArray = String(letters).toUpperCase().split("");
+
+  // Reset refs array before each render so stale entries don't linger
+  lettersRef.current = [];
+
   useEffect(() => {
     if (!containerRef.current) return;
+    // Wait a tick for all refs to populate
+    const raf = requestAnimationFrame(() => {
+      const tiles = lettersRef.current.filter(Boolean);
+      if (!tiles.length) return;
 
-    // Build timeline using GSAP context for proper memory cleanup on unmount
-    const ctx = gsap.context(() => {
-      // 1. Staggered drop and flip of tiles on mount
-      gsap.fromTo(
-        lettersRef.current,
-        {
-          y: -100,
-          rotationY: -180,
-          opacity: 0,
-          scale: 0.5,
-        },
-        {
-          y: 0,
-          rotationY: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.6,
-          ease: "back.out(1.5)",
-          stagger: 0.08,
-          onComplete: () => {
-            // Once initial bounce completes, transition to a gentle wave loop
-            gsap.to(lettersRef.current, {
-              y: -12,
-              duration: 0.4,
-              ease: "sine.inOut",
-              stagger: {
-                each: 0.06,
-                repeat: -1,
-                yoyo: true,
-              },
-            });
+      const ctx = gsap.context(() => {
+        gsap.fromTo(
+          tiles,
+          {
+            y: -80,
+            rotationY: -180,
+            opacity: 0,
+            scale: 0.5,
           },
-        }
-      );
-    }, containerRef);
+          {
+            y: 0,
+            rotationY: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.5,
+            ease: "back.out(1.5)",
+            stagger: 0.07,
+            onComplete: () => {
+              gsap.to(tiles, {
+                y: -10,
+                duration: 0.4,
+                ease: "sine.inOut",
+                stagger: {
+                  each: 0.06,
+                  repeat: -1,
+                  yoyo: true,
+                },
+              });
+            },
+          }
+        );
+      }, containerRef);
 
-    return () => ctx.revert(); // clean up all GSAP animations
+      // Store cleanup in ref so we can call it in effect cleanup
+      containerRef._gsapCtx = ctx;
+    });
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (containerRef._gsapCtx) {
+        containerRef._gsapCtx.revert();
+        containerRef._gsapCtx = null;
+      }
+    };
   }, [letters]);
-
-  const letterArray = String(letters).toUpperCase().split("");
 
   // Calculate dynamic sizing to avoid wrapping on mobile viewports
   const len = letterArray.length;
@@ -61,7 +75,7 @@ export function GameLoader({ label = "Loading...", letters = "NIMWORD" }) {
       <div className="game-loader-rack" style={{ gap, flexWrap: "nowrap", justifyContent: "center" }}>
         {letterArray.map((char, index) => (
           <div
-            key={index}
+            key={`${letters}-${index}`}
             className="letter-tile letter-tile--play game-loader-tile"
             style={{
               width: tileSize,
