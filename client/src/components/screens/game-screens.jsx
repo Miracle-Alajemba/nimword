@@ -254,94 +254,173 @@ export function HomeScreen({
             </div>
           )}
 
-          <div className="feature-strip" style={{ marginBottom: "0.85rem" }}>
-            <div className="feature-pill">60s Rounds</div>
-            <div className="feature-pill">🪙 {stakeAmount} NIM Entry</div>
-            <div className="feature-pill">90% Win Pool</div>
-            <div className="feature-pill">Instant Payouts</div>
-          </div>
-
-          <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.75rem", width: "100%", margin: 0 }}>
-            {/* Stake Selector */}
-            <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "12px", padding: "12px 14px", display: "flex", flexDirection: "column", gap: "8px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.86rem", color: "var(--ink-2)" }}>
-                <span>Stake Amount:</span>
-                <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
-                  {stakeAmount} NIM
-                </strong>
+          {!walletAddress ? (
+            /* ── Sign In Gate for Unauthenticated Users ── */
+            <div
+              style={{
+                background: "var(--surface)",
+                border: "1px solid var(--rule-strong)",
+                borderRadius: "20px",
+                padding: "1.75rem 1.35rem",
+                textAlign: "center",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "1rem",
+                boxShadow: "0 12px 32px -8px oklch(0.2737 0.068 276.29 / 0.12)",
+                width: "100%",
+                margin: "0.25rem 0 0.85rem",
+              }}
+            >
+              <div
+                style={{
+                  width: "60px",
+                  height: "60px",
+                  borderRadius: "18px",
+                  background: "linear-gradient(135deg, oklch(0.7924 0.1593 85.61 / 0.2) 0%, oklch(0.5849 0.1438 244.29 / 0.2) 100%)",
+                  border: "1.5px solid var(--nq-gold)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "2rem",
+                  boxShadow: "0 8px 24px oklch(0.7924 0.1593 85.61 / 0.25)",
+                }}
+              >
+                👛
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px" }}>
-                {STAKE_PRESETS.map((amt) => (
-                  <button
-                    key={amt}
-                    type="button"
-                    onClick={() => setStakeAmount(amt)}
-                    style={{
-                      padding: "8px 4px",
-                      fontSize: "0.9rem",
-                      fontWeight: 800,
-                      background: stakeAmount === amt ? "var(--nq-gold)" : "var(--surface)",
-                      border: stakeAmount === amt ? "1px solid oklch(0.72 0.16 85.61)" : "1px solid var(--rule)",
-                      color: stakeAmount === amt ? "#1A1200" : "var(--ink)",
-                      borderRadius: "8px",
-                      cursor: "pointer",
-                      transition: "all 0.15s ease",
-                      minHeight: "38px",
-                      boxShadow: stakeAmount === amt ? "0 2px 8px oklch(0.7924 0.1593 85.61 / 0.28)" : "none",
-                    }}
-                  >
-                    {amt}
-                  </button>
-                ))}
+
+              <div>
+                <h2 style={{ fontSize: "1.45rem", fontFamily: "var(--font-game)", margin: "0 0 0.35rem", color: "var(--ink)", letterSpacing: "0.02em" }}>
+                  Sign In with Nimiq Wallet
+                </h2>
+                <p style={{ fontSize: "0.9rem", color: "var(--ink-2)", margin: 0, lineHeight: 1.45, maxWidth: "380px" }}>
+                  Connect your Nimiq Wallet to enter live 1 NIM matches, compete on the leaderboard, and unlock daily rewards.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={onConnectWallet}
+                style={{
+                  width: "100%",
+                  minHeight: "48px",
+                  fontSize: "1.02rem",
+                  fontWeight: 800,
+                  borderRadius: "12px",
+                }}
+              >
+                ⚡ Sign In with Nimiq
+              </button>
+
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", width: "100%" }}>
+                <div style={{ flex: 1, height: "1px", background: "var(--rule)" }} />
+                <span style={{ fontSize: "0.75rem", color: "var(--ink-2)", textTransform: "uppercase", letterSpacing: "1px" }}>or</span>
+                <div style={{ flex: 1, height: "1px", background: "var(--rule)" }} />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.6rem", width: "100%" }}>
+                <button
+                  type="button"
+                  className="button-secondary"
+                  onClick={onStartPractice}
+                  style={{ minHeight: "40px", fontSize: "0.85rem", borderRadius: "10px", padding: "0.5rem" }}
+                >
+                  Practice Arena
+                </button>
+                <button
+                  type="button"
+                  className="button-secondary"
+                  onClick={onOpenLeaderboard}
+                  style={{ minHeight: "40px", fontSize: "0.85rem", borderRadius: "10px", padding: "0.5rem" }}
+                >
+                  Leaderboard
+                </button>
               </div>
             </div>
+          ) : (
+            /* ── Full Game Dashboard for Authenticated Players ── */
+            <div className="hero-actions" style={{ display: "flex", flexDirection: "column", gap: "0.75rem", width: "100%", margin: 0 }}>
+              {/* Stake Selector */}
+              <div style={{ background: "var(--surface-sunk)", border: "1px solid var(--rule)", borderRadius: "12px", padding: "12px 14px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "0.86rem", color: "var(--ink-2)" }}>
+                  <span>Stake Amount:</span>
+                  <strong style={{ color: "var(--nq-gold-deep, var(--ink))", fontFamily: "var(--font-mono)", fontSize: "0.95rem" }}>
+                    {stakeAmount} NIM
+                  </strong>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: "6px" }}>
+                  {STAKE_PRESETS.map((amt) => (
+                    <button
+                      key={amt}
+                      type="button"
+                      onClick={() => setStakeAmount(amt)}
+                      style={{
+                        padding: "8px 4px",
+                        fontSize: "0.9rem",
+                        fontWeight: 800,
+                        background: stakeAmount === amt ? "var(--nq-gold)" : "var(--surface)",
+                        border: stakeAmount === amt ? "1px solid oklch(0.72 0.16 85.61)" : "1px solid var(--rule)",
+                        color: stakeAmount === amt ? "#1A1200" : "var(--ink)",
+                        borderRadius: "8px",
+                        cursor: "pointer",
+                        transition: "all 0.15s ease",
+                        minHeight: "38px",
+                        boxShadow: stakeAmount === amt ? "0 2px 8px oklch(0.7924 0.1593 85.61 / 0.28)" : "none",
+                      }}
+                    >
+                      {amt}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-            {/* 2x2 Balanced Action Grid */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", width: "100%" }}>
-              <button
-                type="button"
-                onClick={() => onQuickMatch(stakeAmount)}
-                style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.94rem", fontWeight: 800, borderRadius: "12px" }}
-              >
-                {joinLabel}
-              </button>
-              <button
-                type="button"
-                className="button-secondary"
-                onClick={onOpenDailyChallenge}
-                style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
-              >
-                Daily Challenge
-              </button>
-              <button
-                type="button"
-                className="button-secondary"
-                onClick={onStartPractice}
-                style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
-              >
-                Practice Arena
-              </button>
-              <button
-                type="button"
-                className="button-secondary button-accent-blue"
-                onClick={onOpenLeaderboard}
-                style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
-              >
-                Leaderboard
-              </button>
-            </div>
+              {/* 2x2 Balanced Action Grid */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.75rem", width: "100%" }}>
+                <button
+                  type="button"
+                  onClick={() => onQuickMatch(stakeAmount)}
+                  style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.94rem", fontWeight: 800, borderRadius: "12px" }}
+                >
+                  🎮 Stake {stakeAmount} NIM & Play
+                </button>
+                <button
+                  type="button"
+                  className="button-secondary"
+                  onClick={onOpenDailyChallenge}
+                  style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
+                >
+                  Daily Challenge
+                </button>
+                <button
+                  type="button"
+                  className="button-secondary"
+                  onClick={onStartPractice}
+                  style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
+                >
+                  Practice Arena
+                </button>
+                <button
+                  type="button"
+                  className="button-secondary button-accent-blue"
+                  onClick={onOpenLeaderboard}
+                  style={{ minHeight: "48px", padding: "0.75rem 1.1rem", fontSize: "0.9rem", borderRadius: "12px" }}
+                >
+                  Leaderboard
+                </button>
+              </div>
 
-            <div style={{ display: "flex", justifyContent: "center", margin: "0.15rem 0 0.1rem" }}>
-              <button
-                type="button"
-                className="ghost-button"
-                onClick={() => setShowRulesModal(true)}
-                style={{ fontSize: "0.84rem", padding: "5px 14px", minHeight: "30px", color: "var(--ink-2)", display: "inline-flex", alignItems: "center", gap: "5px" }}
-              >
-                📖 How to Play & Rules
-              </button>
+              <div style={{ display: "flex", justifyContent: "center", margin: "0.15rem 0 0.1rem" }}>
+                <button
+                  type="button"
+                  className="ghost-button"
+                  onClick={() => setShowRulesModal(true)}
+                  style={{ fontSize: "0.84rem", padding: "5px 14px", minHeight: "30px", color: "var(--ink-2)", display: "inline-flex", alignItems: "center", gap: "5px" }}
+                >
+                  📖 How to Play & Rules
+                </button>
+              </div>
             </div>
-          </div>
+          )}
 
           {roomError ? (
             <div className="notice-strip notice-strip--error">
