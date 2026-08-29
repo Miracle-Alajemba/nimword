@@ -366,11 +366,8 @@ export function HomeScreen({
               <div style={{ display: "flex", alignItems: "center", gap: "8px", minWidth: 0 }}>
                 <AvatarCircle address={walletAddress} size={30} />
                 <div style={{ display: "flex", flexDirection: "column", minWidth: 0, textAlign: "left" }}>
-                  <span style={{ fontSize: "0.84rem", fontWeight: 800, color: "var(--ink)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  <span style={{ fontSize: "0.86rem", fontWeight: 800, color: "var(--ink)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                     Welcome back, <span style={{ color: "var(--interactive-ink)" }}>{getPlayerAlias(walletAddress)}</span>
-                  </span>
-                  <span style={{ fontSize: "0.72rem", color: "var(--ink-2)", fontFamily: "var(--font-mono)" }}>
-                    Balance: <strong style={{ color: "var(--good)" }}>{nimBalance} NIM</strong>
                   </span>
                 </div>
               </div>
