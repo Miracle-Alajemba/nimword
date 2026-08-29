@@ -840,6 +840,7 @@ export default function App() {
       avatarUrl={avatarUrl}
       nimBalance={nimBalance}
       shortenedAddress={shortenedAddress}
+      isNimiqPay={isNimiqPay}
     />
   );
 
