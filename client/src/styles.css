@@ -5523,3 +5523,51 @@ textarea {
     font-size: 0.85rem !important;
   }
 }
+
+/* ── Unauthenticated Screen: Zero-Scroll Lock on Mobile ── */
+.page-shell--unauth {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 600px) {
+  .page-shell--unauth {
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    overflow: hidden !important;
+    padding: 0.75rem 1rem 4.5rem !important;
+    justify-content: center !important;
+  }
+
+  .page-shell--unauth .hero {
+    grid-template-columns: 1fr !important;
+    width: 100% !important;
+    max-width: 440px !important;
+    margin: 0 auto !important;
+  }
+
+  .page-shell--unauth .hero-copy {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .page-shell--unauth .hero-logo {
+    margin-bottom: 0.25rem !important;
+  }
+
+  .page-shell--unauth .hero-logo__img {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .page-shell--unauth .hero-logo__name {
+    font-size: 1.6rem !important;
+  }
+}

@@ -198,7 +198,7 @@ export function HomeScreen({
     : "⚡ Connect Nimiq Wallet";
 
   return (
-    <main className="page-shell" ref={shellRef}>
+    <main className={`page-shell ${!walletAddress ? "page-shell--unauth" : ""}`} ref={shellRef}>
       <FloatingTilesBg />
       <section className="hero">
         <div className="hero-copy">
@@ -391,21 +391,22 @@ export function HomeScreen({
             </div>
           ) : null}
 
-          <TotalPayoutsBanner />
+          {walletAddress ? <TotalPayoutsBanner /> : null}
         </div>
 
-        <div className="hero-card hero-card--interactive" style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-          {/* Header HUD Bar */}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              gap: "8px",
-              paddingBottom: "0.45rem",
-              borderBottom: "1px solid var(--rule)",
-            }}
-          >
+        {walletAddress ? (
+          <div className="hero-card hero-card--interactive" style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+            {/* Header HUD Bar */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: "8px",
+                paddingBottom: "0.45rem",
+                borderBottom: "1px solid var(--rule)",
+              }}
+            >
             <div style={{ minWidth: 0, flex: 1 }}>
               <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "2px" }}>
                 <span
@@ -677,6 +678,7 @@ export function HomeScreen({
             </div>
           </div>
         </div>
+      ) : null}
       </section>
 
       {showRulesModal ? (
