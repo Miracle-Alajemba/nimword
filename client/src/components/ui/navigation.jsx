@@ -52,25 +52,38 @@ function Icon({ name }) {
   return <svg aria-hidden="true" {...common}>{paths[name] || paths.home}</svg>;
 }
 
-export function AppBottomNav({ screen, onNavigate, walletAddress }) {
+export function AppBottomNav({ screen, onNavigate, walletAddress, onConnectWallet }) {
   const items = [
     { id: "home", label: "Home", icon: "home" },
     { id: "daily-challenge", label: "Daily", icon: "daily" },
     { id: "leaderboard", label: "Board", icon: "leaderboard" },
-    { id: "profile", label: walletAddress ? "Profile" : "Profile", icon: "profile" },
+    { id: "profile", label: "Profile", icon: "profile" },
   ];
 
   return (
     <nav className="bottom-nav" aria-label="Primary" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)" }}>
       {items.map((item) => {
+        const isHome = item.id === "home";
+        const isLocked = !walletAddress && !isHome;
         const isActive = screen === item.id;
         const isProfile = item.id === "profile";
+
+        const handleClick = () => {
+          if (isLocked) {
+            if (typeof onConnectWallet === "function") {
+              onConnectWallet();
+            }
+            return;
+          }
+          onNavigate(item.id);
+        };
+
         return (
           <button
             key={item.id}
             type="button"
             className={`bottom-nav__item ${isActive ? "bottom-nav__item--active" : ""}`}
-            onClick={() => onNavigate(item.id)}
+            onClick={handleClick}
             style={{
               position: "relative",
               display: "flex",
@@ -80,11 +93,27 @@ export function AppBottomNav({ screen, onNavigate, walletAddress }) {
               padding: "0.55rem 0.25rem",
               fontSize: "0.72rem",
               fontWeight: isActive ? 800 : 600,
+              opacity: isLocked ? 0.38 : 1,
+              cursor: isLocked ? "not-allowed" : "pointer",
+              transition: "opacity 0.2s ease, transform 0.15s ease",
             }}
+            title={isLocked ? "Connect Nimiq Wallet to unlock" : item.label}
           >
             <div style={{ position: "relative" }}>
               <Icon name={item.icon} />
-              {isProfile && walletAddress ? (
+              {isLocked ? (
+                <span
+                  style={{
+                    position: "absolute",
+                    top: "-3px",
+                    right: "-5px",
+                    fontSize: "0.6rem",
+                  }}
+                  title="Locked (Sign in to unlock)"
+                >
+                  🔒
+                </span>
+              ) : isProfile && walletAddress ? (
                 <span
                   style={{
                     position: "absolute",
@@ -100,7 +129,9 @@ export function AppBottomNav({ screen, onNavigate, walletAddress }) {
                 />
               ) : null}
             </div>
-            <span className="bottom-nav__label" style={{ marginTop: "2px" }}>{item.label}</span>
+            <span className="bottom-nav__label" style={{ marginTop: "2px" }}>
+              {item.label}
+            </span>
           </button>
         );
       })}

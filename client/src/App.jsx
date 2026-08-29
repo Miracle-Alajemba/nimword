@@ -967,6 +967,7 @@ export default function App() {
         screen={screen}
         onNavigate={setScreen}
         walletAddress={walletAddress}
+        onConnectWallet={connectWallet}
         onWalletAction={walletAddress ? disconnectWallet : connectWallet}
       />
     </div>
