@@ -245,23 +245,31 @@ export function HomeScreen({
                 NimWord
               </h1>
 
-              {/* Editorial Subtitle */}
-              <p
-                style={{
-                  fontSize: "clamp(1.35rem, 4.2vw, 1.8rem)",
-                  fontFamily: "var(--font-serif, 'Newsreader', 'Georgia', serif)",
-                  color: "var(--ink)",
-                  margin: "0 0 2rem",
-                  lineHeight: 1.32,
-                  maxWidth: "420px",
-                  fontWeight: 500,
-                }}
-              >
-                60 seconds. 7 letters. <br />
-                <span style={{ fontStyle: "italic", color: "var(--interactive-ink)" }}>
-                  How many words can you find?
-                </span>
-              </p>
+              {/* Catchy & Fun Subtitle */}
+              <div style={{ margin: "0 0 1.85rem", maxWidth: "440px" }}>
+                <div
+                  style={{
+                    fontSize: "clamp(1.35rem, 4.5vw, 1.85rem)",
+                    fontFamily: "var(--font-game, 'Outfit', sans-serif)",
+                    fontWeight: 800,
+                    color: "var(--ink)",
+                    lineHeight: 1.2,
+                    marginBottom: "0.45rem",
+                  }}
+                >
+                  Think Fast. Spell Faster. ⚡
+                </div>
+                <div
+                  style={{
+                    fontSize: "clamp(1.05rem, 3.5vw, 1.22rem)",
+                    color: "var(--interactive-ink)",
+                    fontWeight: 700,
+                    lineHeight: 1.35,
+                  }}
+                >
+                  60-second word sprints. Real NIM rewards. 🪙
+                </div>
+              </div>
 
               {/* Wordle-Style Pill Actions */}
               <div

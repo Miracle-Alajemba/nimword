@@ -28,7 +28,7 @@ export function normalizeWord(value) {
 export function evaluatePracticeSubmission({
   input,
   sourceWord,
-  validWords, 
+  validWords,
   claimedWords,
 }) {
   const normalized = normalizeWord(input);
