@@ -248,16 +248,19 @@ export function HomeScreen({
               {/* Editorial Subtitle */}
               <p
                 style={{
-                  fontSize: "clamp(1.35rem, 4.2vw, 1.75rem)",
+                  fontSize: "clamp(1.35rem, 4.2vw, 1.8rem)",
                   fontFamily: "var(--font-serif, 'Newsreader', 'Georgia', serif)",
                   color: "var(--ink)",
                   margin: "0 0 2rem",
-                  lineHeight: 1.28,
-                  maxWidth: "380px",
+                  lineHeight: 1.32,
+                  maxWidth: "420px",
                   fontWeight: 500,
                 }}
               >
-                Get 60 seconds to find words & win NIM.
+                60 seconds. 7 letters. <br />
+                <span style={{ fontStyle: "italic", color: "var(--interactive-ink)" }}>
+                  How many words can you find?
+                </span>
               </p>
 
               {/* Wordle-Style Pill Actions */}
