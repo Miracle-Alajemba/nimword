@@ -969,6 +969,7 @@ export default function App() {
         paymentBusy={paymentBusy}
         onBack={backHome}
         paymentProviderLabel={paymentProviderLabel}
+        musicToggle={musicToggleEl}
       />
     );
   } else if (screen === "match-room") {

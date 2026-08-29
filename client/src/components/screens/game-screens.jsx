@@ -947,6 +947,7 @@ export function LobbyScreen({
   paymentBusy,
   onBack,
   paymentProviderLabel,
+  musicToggle = null,
 }) {
   const [roomTimeLeft, setRoomTimeLeft] = useState("");
   const myPlayer = room?.players?.find((p) => p.id === playerId);
