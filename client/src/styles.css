@@ -5525,15 +5525,41 @@ textarea {
 }
 
 /* ── Unauthenticated Screen: Zero-Scroll & Centered Landing ── */
+html:has(.app-unauth-container),
+body:has(.app-unauth-container) {
+  overflow: hidden !important;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  touch-action: none;
+}
+
+.app-unauth-container {
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  position: relative !important;
+  width: 100% !important;
+}
+
 .page-shell--unauth {
-  min-height: 100dvh;
-  height: 100dvh;
+  height: 100dvh !important;
+  max-height: 100dvh !important;
+  min-height: 100dvh !important;
+  overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
   padding: 1.5rem !important;
   margin: 0 auto !important;
+  box-sizing: border-box !important;
 }
 
 .page-shell--unauth .hero {
@@ -5543,8 +5569,10 @@ textarea {
   align-items: center !important;
   grid-template-columns: 1fr !important;
   width: 100% !important;
-  max-width: 520px !important;
+  max-width: 480px !important;
   margin: auto !important;
+  padding: 0 !important;
+  overflow: hidden !important;
 }
 
 @media (max-width: 600px) {
@@ -5552,13 +5580,19 @@ textarea {
     height: 100dvh !important;
     max-height: 100dvh !important;
     overflow: hidden !important;
-    padding: 1rem 1rem 4.5rem !important;
+    padding: 1rem 1rem 4.75rem !important;
     justify-content: center !important;
   }
 
   .page-shell--unauth .hero {
     width: 100% !important;
-    max-width: 440px !important;
+    max-width: 380px !important;
     margin: auto !important;
+  }
+
+  .page-shell--unauth img {
+    width: 58px !important;
+    height: 58px !important;
+    margin-bottom: 0.75rem !important;
   }
 }
