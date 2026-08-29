@@ -954,11 +954,13 @@ export default function App() {
     );
   }
 
+  const isUnauthHome = screen === "home" && !walletAddress;
+
   return (
     <div
       className={[
         "app-dark-mode",
-        !walletAddress ? "app-unauth-container" : "",
+        isUnauthHome ? "app-unauth-container" : "",
         settings.largeText ? "app-text-scale" : "",
         settings.highContrast ? "app-high-contrast" : "",
       ].filter(Boolean).join(" ")}
