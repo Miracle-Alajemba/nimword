@@ -1495,15 +1495,43 @@ export function MatchRoomScreen({
                 <div className="claim-card__meta">
                   <div className="claim-meta-chip">
                     <span>Join Tx</span>
-                    <strong>{myJoinTx?.txHash ? shortenHash(myJoinTx.txHash) : "Pending"}</strong>
+                    <strong>
+                      {myJoinTx?.txHash ? (
+                        <a
+                          href={`https://nimiqwatch.com/#/tx/${myJoinTx.txHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: "var(--interactive-ink)", textDecoration: "underline" }}
+                          title="View on Nimiq Watch"
+                        >
+                          {shortenHash(myJoinTx.txHash)} ↗
+                        </a>
+                      ) : (
+                        "Pending"
+                      )}
+                    </strong>
                   </div>
                   <div className="claim-meta-chip">
                     <span>Claim Tx</span>
-                    <strong>{myClaimTx?.txHash ? shortenHash(myClaimTx.txHash) : "Not claimed"}</strong>
+                    <strong>
+                      {myClaimTx?.txHash ? (
+                        <a
+                          href={`https://nimiqwatch.com/#/tx/${myClaimTx.txHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: "var(--good)", textDecoration: "underline" }}
+                          title="View on Nimiq Watch"
+                        >
+                          {shortenHash(myClaimTx.txHash)} ↗
+                        </a>
+                      ) : (
+                        "Not claimed"
+                      )}
+                    </strong>
                   </div>
                   <div className="claim-meta-chip">
                     <span>Payout Mode</span>
-                    <strong>{contractRoomId ? "Contract" : "Beta"}</strong>
+                    <strong>{contractRoomId ? "Contract" : "Instant"}</strong>
                   </div>
                 </div>
                 <div className="hero-actions">

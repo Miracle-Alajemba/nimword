@@ -745,6 +745,25 @@ export function DailyChallenge({
             </h2>
             <p className="dc-claimed-screen__sub">You claimed your 0.1 NIM reward today.</p>
             <div className="dc-claimed-screen__amount">0.1 NIM</div>
+            {dailyClaimTx ? (
+              <a
+                href={`https://nimiqwatch.com/#/tx/${dailyClaimTx}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "0.82rem",
+                  color: "var(--interactive-ink)",
+                  textDecoration: "underline",
+                  fontWeight: 700,
+                  margin: "0.2rem 0 0.4rem",
+                }}
+              >
+                🔍 View Onchain Receipt (Nimiq Watch) ↗
+              </a>
+            ) : null}
             <button
               type="button"
               className="dc-result-card__share-btn"
