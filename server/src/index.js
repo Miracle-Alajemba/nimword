@@ -2420,8 +2420,9 @@ app.post("/api/rooms/:roomId/claim", async (req, res) => {
   }
 
   const derived = getRoomDerived(room);
+  const cleanTarget = walletAddress.replace(/\s+/g, "").toUpperCase();
   const payout = derived.payouts.find(
-    (p) => p.walletAddress?.toLowerCase() === walletAddress.toLowerCase()
+    (p) => String(p.walletAddress || "").replace(/\s+/g, "").toUpperCase() === cleanTarget
   );
 
   if (!payout || payout.amount <= 0) {
@@ -2431,6 +2432,21 @@ app.post("/api/rooms/:roomId/claim", async (req, res) => {
   try {
     const nimiqService = createNimWordContractService();
     const txHash = await nimiqService.sendDailyReward(walletAddress, payout.amount);
+
+    // Record settlement in Firestore stats
+    try {
+      await recordMatchSettlement({
+        roomId: room.id,
+        stakeAmount: room.entryFeeNim || 1,
+        players: room.players.map((p) => p.walletAddress),
+        winnerAddress: walletAddress,
+        potAmount: payout.amount,
+        payoutTxHash: txHash,
+      });
+    } catch (dbErr) {
+      console.warn("Match settlement logging notice:", dbErr.message);
+    }
+
     return res.json({ ok: true, txHash, amount: `${payout.amount} NIM` });
   } catch (error) {
     console.error("[claim] failed:", error.message);
