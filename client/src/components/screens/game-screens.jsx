@@ -245,29 +245,29 @@ export function HomeScreen({
                 NimWord
               </h1>
 
-              {/* Catchy & Fun Subtitle */}
-              <div style={{ margin: "0 0 1.85rem", maxWidth: "440px" }}>
+              {/* Witty & Humorous Subtitle */}
+              <div style={{ margin: "0 0 1.85rem", maxWidth: "420px" }}>
                 <div
                   style={{
-                    fontSize: "clamp(1.35rem, 4.5vw, 1.85rem)",
+                    fontSize: "clamp(1.25rem, 4vw, 1.65rem)",
                     fontFamily: "var(--font-game, 'Outfit', sans-serif)",
                     fontWeight: 800,
                     color: "var(--ink)",
-                    lineHeight: 1.2,
+                    lineHeight: 1.25,
                     marginBottom: "0.45rem",
                   }}
                 >
-                  Think Fast. Spell Faster. ⚡
+                  Finally, a use for all those weird words you know.
                 </div>
                 <div
                   style={{
-                    fontSize: "clamp(1.05rem, 3.5vw, 1.22rem)",
+                    fontSize: "clamp(0.98rem, 3.2vw, 1.15rem)",
                     color: "var(--interactive-ink)",
-                    fontWeight: 700,
+                    fontWeight: 600,
                     lineHeight: 1.35,
                   }}
                 >
-                  60-second word sprints. Real NIM rewards. 🪙
+                  60 seconds. 7 letters. Win NIM.
                 </div>
               </div>
 
