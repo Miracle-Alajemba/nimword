@@ -248,29 +248,29 @@ export function HomeScreen({
                 <span style={{ color: "var(--ink, #1F2544)" }}>Word</span>
               </h1>
 
-              {/* Witty & Humorous Subtitle */}
-              <div style={{ margin: "0 0 1.85rem", maxWidth: "420px" }}>
+              {/* Catchy Word Sprint Tagline */}
+              <div style={{ margin: "0 0 1.85rem", maxWidth: "440px" }}>
                 <div
                   style={{
-                    fontSize: "clamp(1.25rem, 4vw, 1.65rem)",
+                    fontSize: "clamp(1.35rem, 4.5vw, 1.85rem)",
                     fontFamily: "var(--font-game, 'Outfit', sans-serif)",
                     fontWeight: 800,
                     color: "var(--ink)",
-                    lineHeight: 1.25,
+                    lineHeight: 1.2,
                     marginBottom: "0.45rem",
                   }}
                 >
-                  Finally, a use for all those weird words you know.
+                  Think Fast. Spell Faster. ⚡
                 </div>
                 <div
                   style={{
-                    fontSize: "clamp(0.98rem, 3.2vw, 1.15rem)",
+                    fontSize: "clamp(1.02rem, 3.5vw, 1.22rem)",
                     color: "var(--interactive-ink)",
-                    fontWeight: 600,
+                    fontWeight: 700,
                     lineHeight: 1.35,
                   }}
                 >
-                  60 seconds. 7 letters. Win NIM.
+                  60-second word sprints. Real NIM rewards. 🪙
                 </div>
               </div>
 
