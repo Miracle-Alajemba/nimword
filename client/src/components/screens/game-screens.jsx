@@ -202,154 +202,133 @@ export function HomeScreen({
       <FloatingTilesBg />
       <section className="hero">
         {!walletAddress ? (
-          /* ── Minimalist Wordle-Style Landing Screen ── */
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              textAlign: "center",
-              width: "100%",
-              maxWidth: "480px",
-              margin: "0 auto",
-              padding: "1rem 0.5rem",
-            }}
-          >
-            {/* 3x3 Wordle-Style Grid Icon */}
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(3, 1fr)",
-                gap: "3.5px",
-                width: "56px",
-                height: "56px",
-                padding: "5px",
-                background: "var(--ink)",
-                borderRadius: "12px",
-                boxShadow: "0 8px 24px rgba(0, 0, 0, 0.16)",
-                marginBottom: "0.85rem",
-              }}
-            >
-              <div style={{ background: "var(--surface)", borderRadius: "2px" }} />
-              <div style={{ background: "var(--surface)", borderRadius: "2px" }} />
-              <div style={{ background: "var(--surface)", borderRadius: "2px" }} />
-              <div style={{ background: "var(--surface)", borderRadius: "2px" }} />
-              <div style={{ background: "var(--nq-gold, #E5A823)", borderRadius: "2px" }} />
-              <div style={{ background: "var(--good, #21B36C)", borderRadius: "2px" }} />
-              <div style={{ background: "var(--good, #21B36C)", borderRadius: "2px" }} />
-              <div style={{ background: "var(--good, #21B36C)", borderRadius: "2px" }} />
-              <div style={{ background: "var(--good, #21B36C)", borderRadius: "2px" }} />
-            </div>
-
-            {/* Bold Editorial Title */}
-            <h1
-              style={{
-                fontSize: "clamp(2.4rem, 6vw, 3.2rem)",
-                fontWeight: 900,
-                fontFamily: "var(--font-game, 'Outfit', 'Inter', serif)",
-                letterSpacing: "-0.02em",
-                color: "var(--ink)",
-                margin: "0 0 0.75rem",
-                lineHeight: 1.05,
-              }}
-            >
-              NimWord
-            </h1>
-
-            {/* Editorial Subtitle */}
-            <p
-              style={{
-                fontSize: "clamp(1.3rem, 4vw, 1.7rem)",
-                fontFamily: "var(--font-serif, 'Newsreader', 'Georgia', serif)",
-                color: "var(--ink)",
-                margin: "0 0 1.75rem",
-                lineHeight: 1.28,
-                maxWidth: "380px",
-                fontWeight: 500,
-              }}
-            >
-              Get 60 seconds to find words & win NIM.
-            </p>
-
-            {/* Wordle-Style Pill Actions */}
+            /* ── Centered Wordle-Style Landing Screen ── */
             <div
               style={{
                 display: "flex",
+                flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "10px",
-                flexWrap: "wrap",
+                textAlign: "center",
                 width: "100%",
-                marginBottom: "1.75rem",
+                maxWidth: "480px",
+                margin: "auto",
+                padding: "1rem 0.5rem",
               }}
             >
-              <button
-                type="button"
-                onClick={() => setShowRulesModal(true)}
+              {/* Official NimWord Logo */}
+              <img
+                src="/logo.png"
+                alt="NimWord"
                 style={{
-                  padding: "10px 20px",
-                  borderRadius: "9999px",
-                  background: "var(--surface)",
-                  border: "1.5px solid var(--rule-strong)",
+                  width: "72px",
+                  height: "72px",
+                  borderRadius: "18px",
+                  boxShadow: "0 10px 28px -4px rgba(0, 0, 0, 0.18)",
+                  marginBottom: "1rem",
+                  objectFit: "contain",
+                }}
+              />
+
+              {/* Bold Editorial Title */}
+              <h1
+                style={{
+                  fontSize: "clamp(2.5rem, 6vw, 3.4rem)",
+                  fontWeight: 900,
+                  fontFamily: "var(--font-game, 'Outfit', 'Inter', serif)",
+                  letterSpacing: "-0.02em",
                   color: "var(--ink)",
-                  fontSize: "0.92rem",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  minHeight: "44px",
-                  transition: "all 0.15s ease",
+                  margin: "0 0 0.75rem",
+                  lineHeight: 1.05,
                 }}
               >
-                How to play
-              </button>
+                NimWord
+              </h1>
 
-              <button
-                type="button"
-                onClick={onConnectWallet}
+              {/* Editorial Subtitle */}
+              <p
                 style={{
-                  padding: "10px 24px",
-                  borderRadius: "9999px",
-                  background: "var(--surface)",
-                  border: "1.5px solid var(--rule-strong)",
+                  fontSize: "clamp(1.35rem, 4.2vw, 1.75rem)",
+                  fontFamily: "var(--font-serif, 'Newsreader', 'Georgia', serif)",
                   color: "var(--ink)",
-                  fontSize: "0.92rem",
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  minHeight: "44px",
-                  transition: "all 0.15s ease",
+                  margin: "0 0 2rem",
+                  lineHeight: 1.28,
+                  maxWidth: "380px",
+                  fontWeight: 500,
                 }}
               >
-                Log in
-              </button>
+                Get 60 seconds to find words & win NIM.
+              </p>
 
-              <button
-                type="button"
-                onClick={onConnectWallet}
+              {/* Wordle-Style Pill Actions */}
+              <div
                 style={{
-                  padding: "10px 32px",
-                  borderRadius: "9999px",
-                  background: "var(--ink)",
-                  border: "1.5px solid var(--ink)",
-                  color: "var(--surface)",
-                  fontSize: "0.92rem",
-                  fontWeight: 800,
-                  cursor: "pointer",
-                  minHeight: "44px",
-                  transition: "all 0.15s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "10px",
+                  flexWrap: "wrap",
+                  width: "100%",
                 }}
               >
-                Play
-              </button>
-            </div>
+                <button
+                  type="button"
+                  onClick={() => setShowRulesModal(true)}
+                  style={{
+                    padding: "10px 22px",
+                    borderRadius: "9999px",
+                    background: "var(--surface)",
+                    border: "1.5px solid var(--rule-strong)",
+                    color: "var(--ink)",
+                    fontSize: "0.92rem",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    minHeight: "44px",
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  How to play
+                </button>
 
-            {/* Editorial Metadata Footer */}
-            <div style={{ color: "var(--ink-2)", fontSize: "0.82rem", lineHeight: 1.45 }}>
-              <div style={{ fontWeight: 800, color: "var(--ink)", fontSize: "0.88rem" }}>
-                {new Intl.DateTimeFormat("en-US", { month: "long", day: "numeric", year: "numeric" }).format(new Date())}
+                <button
+                  type="button"
+                  onClick={onConnectWallet}
+                  style={{
+                    padding: "10px 26px",
+                    borderRadius: "9999px",
+                    background: "var(--surface)",
+                    border: "1.5px solid var(--rule-strong)",
+                    color: "var(--ink)",
+                    fontSize: "0.92rem",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                    minHeight: "44px",
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  Log in
+                </button>
+
+                <button
+                  type="button"
+                  onClick={onConnectWallet}
+                  style={{
+                    padding: "10px 34px",
+                    borderRadius: "9999px",
+                    background: "var(--ink)",
+                    border: "1.5px solid var(--ink)",
+                    color: "var(--surface)",
+                    fontSize: "0.92rem",
+                    fontWeight: 800,
+                    cursor: "pointer",
+                    minHeight: "44px",
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  Play
+                </button>
               </div>
-              <div>Daily Challenge & Live Arena</div>
-              <div style={{ fontSize: "0.75rem", opacity: 0.8, marginTop: "2px" }}>Powered by Nimiq Pay</div>
             </div>
-          </div>
         ) : (
           /* ── Full Game Dashboard for Authenticated Players ── */
           <div className="hero-copy">
