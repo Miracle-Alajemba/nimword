@@ -394,13 +394,6 @@ export function PracticeScreen({
                   className={`letter-tile letter-tile--play letter-tile--interactive ${selectedIndexes.includes(index) ? "letter-tile--selected" : ""}`}
                   onClick={() => handleToggleTile(index)}
                   aria-label={`Select letter ${letter}`}
-                  style={{
-                    height: "3.2rem",
-                    width: "3.2rem",
-                    fontSize: "1.35rem",
-                    fontFamily: "var(--font-game)",
-                    borderRadius: "12px",
-                  }}
                 >
                   {letter}
                 </button>
