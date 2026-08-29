@@ -8,7 +8,7 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import { createAdapter } from "@socket.io/redis-adapter";
 import { canBuildFromSource, getDynamicRound } from "./rounds.js";
-import { createNimWordContractService } from "./wordpot-contract.js";
+import { createNimWordContractService } from "./nimword-contract.js";
 import { query, initDb } from "./db.js";
 import {
   initFirestore,
@@ -265,7 +265,7 @@ const dailyLeaderboard = loadDailyLeaderboard();
 let roomStateVersion = 0;
 let leaderboardCache = null;
 
-const wordPotContract = createNimWordContractService({
+const nimwordContract = createNimWordContractService({
   contractAddress: NIMWORD_CONTRACT_ADDRESS,
   operatorPrivateKey: CONTRACT_OPERATOR_PRIVATE_KEY,
   rpcUrl: NIM_MAINNET_RPC_URL,
@@ -963,21 +963,21 @@ async function getRoomSummary(room, options = {}) {
       contractSettleError: room.contractSettleError || null,
       contractCancelTx: room.contractCancelTx || null,
       contractCancelError: room.contractCancelError || null,
-      contractReady: wordPotContract.enabled,
-      contractOperatorAddress: wordPotContract.enabled
-        ? wordPotContract.account
+      contractReady: nimwordContract.enabled,
+      contractOperatorAddress: nimwordContract.enabled
+        ? nimwordContract.account
         : null,
       joinPaymentWei: JOIN_PAYMENT_WEI,
       joinPaymentDisplay: JOIN_PAYMENT_DISPLAY,
       joinMode:
         isWalletAddress(NIMWORD_CONTRACT_ADDRESS) &&
-        wordPotContract.enabled &&
+        nimwordContract.enabled &&
         room.contractRoomId
           ? "contract_join"
           : "contract_unavailable",
       payoutMode:
         isWalletAddress(NIMWORD_CONTRACT_ADDRESS) &&
-        wordPotContract.enabled &&
+        nimwordContract.enabled &&
         room.contractRoomId
           ? "contract_claim"
           : "contract_unavailable",
@@ -1164,7 +1164,7 @@ async function processRoomRefund(room, requestedByWalletAddress) {
     throw new Error("You are not in this room");
   }
 
-  const cancelResult = await wordPotContract.cancelRoom(
+  const cancelResult = await nimwordContract.cancelRoom(
     room.contractRoomId,
     paidPlayerAddresses,
   );
@@ -1280,18 +1280,18 @@ app.get("/api/meta", (_req, res) => {
       chainId: NIM_CHAIN_ID,
       treasuryWallet: TREASURY_WALLET,
       contractAddress: NIMWORD_CONTRACT_ADDRESS,
-      contractReady: wordPotContract.enabled,
-      contractOperatorAddress: wordPotContract.enabled
-        ? wordPotContract.account
+      contractReady: nimwordContract.enabled,
+      contractOperatorAddress: nimwordContract.enabled
+        ? nimwordContract.account
         : null,
       joinPaymentWei: JOIN_PAYMENT_WEI,
       joinPaymentDisplay: JOIN_PAYMENT_DISPLAY,
       joinMode:
-        isWalletAddress(NIMWORD_CONTRACT_ADDRESS) && wordPotContract.enabled
+        isWalletAddress(NIMWORD_CONTRACT_ADDRESS) && nimwordContract.enabled
           ? "contract_join"
           : "contract_unavailable",
       payoutMode:
-        isWalletAddress(NIMWORD_CONTRACT_ADDRESS) && wordPotContract.enabled
+        isWalletAddress(NIMWORD_CONTRACT_ADDRESS) && nimwordContract.enabled
           ? "contract_claim"
           : "contract_unavailable",
     },
@@ -1362,10 +1362,10 @@ app.get("/api/stats", (_req, res) => {
       try {
         let onChain = null;
         if (
-          wordPotContract?.enabled &&
+          nimwordContract?.enabled &&
           isWalletAddress(NIMWORD_CONTRACT_ADDRESS)
         ) {
-          onChain = await wordPotContract.getContractBalance();
+          onChain = await nimwordContract.getContractBalance();
         }
 
         const prizePool = onChain || `${totalPrize.toFixed(4)} NIM`;
@@ -1857,7 +1857,7 @@ app.post("/api/rooms/quick-match", async (req, res) => {
   if (!room) {
     if (
       REQUIRE_ONCHAIN_ROOM &&
-      (!isWalletAddress(NIMWORD_CONTRACT_ADDRESS) || !wordPotContract.enabled)
+      (!isWalletAddress(NIMWORD_CONTRACT_ADDRESS) || !nimwordContract.enabled)
     ) {
       return res.status(503).json({
         error:
@@ -1892,10 +1892,10 @@ app.post("/api/rooms/quick-match", async (req, res) => {
     await addRoomToWaiting(room.id, difficulty);
 
     // Create contract room in background — player lands in lobby immediately
-    if (wordPotContract.enabled && isWalletAddress(NIMWORD_CONTRACT_ADDRESS)) {
+    if (nimwordContract.enabled && isWalletAddress(NIMWORD_CONTRACT_ADDRESS)) {
       room._contractRoomPending = true;
       await saveRoom(room);
-      wordPotContract
+      nimwordContract
         .createRoom(JOIN_PAYMENT_WEI)
         .then(async (contractRoom) => {
           const currentRoom = await getRoom(room.id);
@@ -2485,7 +2485,7 @@ app.post("/api/rooms/:roomId/settle", async (req, res) => {
   }
 
   if (
-    !wordPotContract.enabled ||
+    !nimwordContract.enabled ||
     !isWalletAddress(NIMWORD_CONTRACT_ADDRESS) ||
     !room.contractRoomId
   ) {
@@ -2496,7 +2496,7 @@ app.post("/api/rooms/:roomId/settle", async (req, res) => {
 
   try {
     const settlement = buildSettlementPayload(room);
-    const settleResult = await wordPotContract.settleRoom(
+    const settleResult = await nimwordContract.settleRoom(
       room.contractRoomId,
       settlement.map((entry) => entry.walletAddress),
       settlement.map((entry) => entry.score),
@@ -2561,7 +2561,7 @@ app.post("/api/rooms/:roomId/cancel", async (req, res) => {
 
   if (getPaidPlayerIds(room).size > 0) {
     if (
-      !wordPotContract.enabled ||
+      !nimwordContract.enabled ||
       !isWalletAddress(NIMWORD_CONTRACT_ADDRESS) ||
       !room.contractRoomId
     ) {
