@@ -88,18 +88,18 @@ export function FloatingTilesBg() {
      */
     function seed() {
       const isMobile = width < 768;
-      const count = isMobile ? 10 : 20;
+      const count = isMobile ? 18 : 28;
       tiles = Array.from({ length: count }, () => {
-        const depth = 0.2 + Math.random() * 0.6;
+        const depth = 0.35 + Math.random() * 0.65;
         return {
           x: Math.random() * width,
           y: Math.random() * height,
-          size: isMobile ? 22 + depth * 18 : 28 + depth * 28,
-          speed: 0.08 + depth * 0.16,
-          drift: (Math.random() - 0.5) * 0.10,
-          angle: (Math.random() - 0.5) * 0.40,
-          spin: (Math.random() - 0.5) * 0.002,
-          alpha: isMobile ? 0.06 + depth * 0.08 : 0.12 + depth * 0.10,
+          size: isMobile ? 32 + depth * 28 : 38 + depth * 36,
+          speed: 0.12 + depth * 0.20,
+          drift: (Math.random() - 0.5) * 0.14,
+          angle: (Math.random() - 0.5) * 0.45,
+          spin: (Math.random() - 0.5) * 0.003,
+          alpha: isMobile ? 0.22 + depth * 0.20 : 0.25 + depth * 0.22,
           letter: LETTERS[Math.floor(Math.random() * LETTERS.length)],
         };
       });
@@ -123,12 +123,12 @@ export function FloatingTilesBg() {
       ctx.fillStyle = tileFill;
       ctx.fill();
 
-      // Subtle outline
-      ctx.strokeStyle = "rgba(255, 170, 0, 0.25)";
-      ctx.lineWidth = 1;
+      // Warm vibrant outline
+      ctx.strokeStyle = "rgba(255, 170, 0, 0.45)";
+      ctx.lineWidth = 1.2;
       ctx.stroke();
 
-      ctx.globalAlpha = Math.min(tile.alpha * 1.5, 0.65);
+      ctx.globalAlpha = Math.min(tile.alpha * 2.0, 0.92);
       ctx.fillStyle = tileInk;
       ctx.font = `900 ${Math.round(tile.size * 0.54)}px 'Orbitron', 'Chakra Petch', Mulish, sans-serif`;
       ctx.textAlign = "center";
