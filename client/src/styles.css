@@ -5515,42 +5515,29 @@ textarea {
   }
 }
 
-/* ── Unauthenticated Screen: Zero-Scroll & Centered Landing ── */
-html:has(.app-unauth-container),
-body:has(.app-unauth-container) {
-  overflow: hidden !important;
-  height: 100dvh !important;
-  max-height: 100dvh !important;
-  position: fixed !important;
-  inset: 0 !important;
-  width: 100vw !important;
-  touch-action: none;
-}
-
+/* ── Unauthenticated Screen: Centered Responsive Landing ── */
 .app-unauth-container {
-  height: 100dvh !important;
-  max-height: 100dvh !important;
-  overflow: hidden !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: center !important;
-  position: relative !important;
-  width: 100% !important;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .page-shell--unauth {
-  height: 100dvh !important;
-  max-height: 100dvh !important;
-  min-height: 100dvh !important;
-  overflow: hidden !important;
+  min-height: 100dvh;
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
-  padding: 1.5rem !important;
+  padding: 1.5rem 1rem calc(var(--nav-reserve, 4.5rem) + 1rem) !important;
   margin: 0 auto !important;
   box-sizing: border-box !important;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .page-shell--unauth .hero {
@@ -5563,15 +5550,12 @@ body:has(.app-unauth-container) {
   max-width: 480px !important;
   margin: auto !important;
   padding: 0 !important;
-  overflow: hidden !important;
 }
 
 @media (max-width: 600px) {
   .page-shell--unauth {
-    height: 100dvh !important;
-    max-height: 100dvh !important;
-    overflow: hidden !important;
-    padding: 1rem 1rem 4.75rem !important;
+    min-height: 100dvh !important;
+    padding: 1rem 1rem calc(var(--nav-reserve, 4.5rem) + 1.25rem) !important;
     justify-content: center !important;
   }
 
