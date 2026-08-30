@@ -1037,13 +1037,15 @@ export default function App() {
       ].filter(Boolean).join(" ")}
     >
       {content}
-      <AppBottomNav
-        screen={screen}
-        onNavigate={setScreen}
-        walletAddress={walletAddress}
-        onConnectWallet={connectWallet}
-        onWalletAction={walletAddress ? disconnectWallet : connectWallet}
-      />
+      {Boolean(walletAddress) && (
+        <AppBottomNav
+          screen={screen}
+          onNavigate={setScreen}
+          walletAddress={walletAddress}
+          onConnectWallet={connectWallet}
+          onWalletAction={walletAddress ? disconnectWallet : connectWallet}
+        />
+      )}
     </div>
   );
 }

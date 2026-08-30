@@ -204,19 +204,7 @@ export function HomeScreen({
       <section className="hero">
         {!walletAddress ? (
             /* ── Centered Wordle-Style Landing Screen ── */
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-                width: "100%",
-                maxWidth: "480px",
-                margin: "auto",
-                padding: "1rem 0.5rem",
-              }}
-            >
+            <div className="unauth-landing-card">
               {/* Official NimWord Logo */}
               <img
                 src="/logo.png"

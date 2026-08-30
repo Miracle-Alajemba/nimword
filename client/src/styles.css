@@ -5533,7 +5533,7 @@ textarea {
   flex-direction: column !important;
   justify-content: center !important;
   align-items: center !important;
-  padding: 1.5rem 1rem calc(var(--nav-reserve, 4.5rem) + 1rem) !important;
+  padding: 1.5rem 1rem !important;
   margin: 0 auto !important;
   box-sizing: border-box !important;
   overflow-y: auto;
@@ -5547,27 +5547,54 @@ textarea {
   align-items: center !important;
   grid-template-columns: 1fr !important;
   width: 100% !important;
-  max-width: 480px !important;
+  max-width: 500px !important;
   margin: auto !important;
   padding: 0 !important;
+}
+
+.unauth-landing-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+  margin: auto;
+  padding: 2.25rem 1.75rem;
+  border-radius: 28px;
+  border: 1.5px solid var(--rule-strong, rgba(255, 255, 255, 0.16));
+  background: var(--surface, rgba(18, 24, 38, 0.82));
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 24px 54px -12px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
 }
 
 @media (max-width: 600px) {
   .page-shell--unauth {
     min-height: 100dvh !important;
-    padding: 1rem 1rem calc(var(--nav-reserve, 4.5rem) + 1.25rem) !important;
+    padding: 1.25rem 1rem !important;
     justify-content: center !important;
   }
 
   .page-shell--unauth .hero {
     width: 100% !important;
-    max-width: 380px !important;
+    max-width: 100% !important;
     margin: auto !important;
   }
 
+  .unauth-landing-card {
+    padding: 1.85rem 1.25rem;
+    border-radius: 22px;
+    max-width: 100%;
+  }
+
   .page-shell--unauth img {
-    width: 58px !important;
-    height: 58px !important;
+    width: 64px !important;
+    height: 64px !important;
     margin-bottom: 0.75rem !important;
   }
 
