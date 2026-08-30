@@ -5563,14 +5563,20 @@ textarea {
   margin: auto;
   padding: 2.25rem 1.75rem;
   border-radius: 28px;
-  border: 1.5px solid var(--rule-strong, rgba(255, 255, 255, 0.16));
-  background: var(--surface, rgba(18, 24, 38, 0.82));
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 24px 54px -12px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.25);
   box-sizing: border-box;
   position: relative;
   z-index: 2;
+}
+
+.app-dark-mode .unauth-landing-card {
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 28px 64px -12px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.16);
 }
 
 @media (max-width: 600px) {
