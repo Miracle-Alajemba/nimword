@@ -5554,6 +5554,33 @@ textarea {
 
 
 
+.glass-landing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 100%;
+  max-width: 480px;
+  margin: auto;
+  padding: 2.25rem 1.75rem;
+  border-radius: 28px;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.22);
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+}
+
+.app-dark-mode .glass-landing-container {
+  border: 1.5px solid rgba(255, 255, 255, 0.16);
+  background: rgba(15, 23, 42, 0.32);
+  box-shadow: 0 28px 64px -12px rgba(0, 0, 0, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.18);
+}
+
 @media (max-width: 600px) {
   .page-shell--unauth {
     min-height: 100dvh !important;
@@ -5567,15 +5594,15 @@ textarea {
     margin: auto !important;
   }
 
-  .unauth-landing-card {
-    padding: 1.85rem 1.25rem;
-    border-radius: 22px;
+  .glass-landing-container {
+    padding: 1.75rem 1.25rem;
+    border-radius: 24px;
     max-width: 100%;
   }
 
   .page-shell--unauth img {
-    width: 64px !important;
-    height: 64px !important;
+    width: 68px !important;
+    height: 68px !important;
     margin-bottom: 0.75rem !important;
   }
 

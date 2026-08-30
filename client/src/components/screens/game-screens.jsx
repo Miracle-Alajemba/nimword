@@ -203,31 +203,19 @@ export function HomeScreen({
       <FloatingTilesBg />
       <section className="hero">
         {!walletAddress ? (
-            /* ── Centered Wordle-Style Landing Screen ── */
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                textAlign: "center",
-                width: "100%",
-                maxWidth: "480px",
-                margin: "auto",
-                padding: "1rem 0.5rem",
-              }}
-            >
-              {/* Official NimWord Logo */}
+            /* ── Centered Wordle-Style Landing Screen with Transparent Glassmorphism Border ── */
+            <div className="glass-landing-container">
+              {/* Official NimWord Logo with Transparent Background */}
               <img
                 src="/logo.png"
                 alt="NimWord"
                 style={{
-                  width: "72px",
-                  height: "72px",
-                  borderRadius: "18px",
-                  boxShadow: "0 10px 28px -4px rgba(0, 0, 0, 0.18)",
+                  width: "76px",
+                  height: "76px",
                   marginBottom: "1rem",
                   objectFit: "contain",
+                  background: "transparent",
+                  filter: "drop-shadow(0 8px 20px rgba(0, 0, 0, 0.25))",
                 }}
               />
 
